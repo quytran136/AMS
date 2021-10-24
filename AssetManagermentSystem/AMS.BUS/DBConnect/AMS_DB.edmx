@@ -1,0 +1,1033 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AMS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="asset_allocation_history">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="AssetID" Type="varchar" MaxLength="64" />
+          <Property Name="AllocationFor" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="AllocationBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="RequestBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="LocalStep" Type="varchar" MaxLength="64" />
+          <Property Name="isApprove" Type="bit" />
+          <Property Name="IsReject" Type="bit" />
+        </EntityType>
+        <EntityType Name="asset_classify">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="AssetName" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="IsDelete" Type="bit" />
+        </EntityType>
+        <EntityType Name="asset_detail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="StoreID" Type="varchar" MaxLength="64" />
+          <Property Name="AssetClassifyID" Type="varchar" MaxLength="64" />
+          <Property Name="AssetFullName" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="QuantityOriginalStock" Type="int" />
+          <Property Name="Unit" Type="int" />
+          <Property Name="QuantityUsed" Type="int" />
+          <Property Name="QuantityInStock" Type="int" />
+          <Property Name="QuantityDestroyed" Type="int" />
+          <Property Name="Price" Type="float" />
+        </EntityType>
+        <EntityType Name="asset_recovery_history">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="AssetID" Type="varchar" MaxLength="64" />
+          <Property Name="RecoveryFor" Type="nvarchar" MaxLength="128" />
+          <Property Name="RecoveryBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="RequestBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="LocalStep" Type="varchar" MaxLength="64" />
+          <Property Name="isApprove" Type="bit" />
+          <Property Name="RequestBy1" Type="nvarchar" MaxLength="128" />
+          <Property Name="LocalStep1" Type="varchar" MaxLength="64" />
+          <Property Name="isApprove1" Type="bit" />
+        </EntityType>
+        <EntityType Name="assets_liquidation_history">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="AssetID" Type="varchar" MaxLength="64" />
+          <Property Name="LiquidationFor" Type="nvarchar" MaxLength="128" />
+          <Property Name="LiquidationBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="RequestBy" Type="nvarchar" MaxLength="128" />
+          <Property Name="LocalStep" Type="varchar" MaxLength="64" />
+          <Property Name="isApprove" Type="bit" />
+          <Property Name="Price" Type="float" />
+          <Property Name="RecoveryPrice" Type="float" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="DepartmentName" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="function">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="FunctionName" Type="nvarchar" MaxLength="128" />
+          <Property Name="FunctionKey" Type="varchar" MaxLength="64" />
+        </EntityType>
+        <EntityType Name="rank">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="RankName" Type="nvarchar" MaxLength="128" />
+          <Property Name="RankParent" Type="varchar" MaxLength="64" />
+          <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+          <Property Name="CreateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="IsLock" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="role_function">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="RoleID" Type="varchar" MaxLength="64" />
+          <Property Name="FunctionID" Type="varchar" MaxLength="64" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UserID" Type="varchar" MaxLength="64" />
+        </EntityType>
+        <EntityType Name="role_view">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="RoleID" Type="varchar" MaxLength="64" />
+          <Property Name="ViewID" Type="varchar" MaxLength="64" />
+          <Property Name="CreateDate" Type="date" />
+          <Property Name="UserID" Type="varchar" MaxLength="64" />
+        </EntityType>
+        <EntityType Name="store_Identifie">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="StoreName" Type="nchar" MaxLength="10" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UserID" Type="varchar" MaxLength="64" />
+          <Property Name="Owner" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="user_identifie">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="64" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="64" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="IsLock" Type="bit" />
+          <Property Name="IsDelete" Type="bit" />
+          <Property Name="Role" Type="varchar" MaxLength="64" />
+          <Property Name="UserFullName" Type="nvarchar" MaxLength="128" />
+          <Property Name="Image" Type="nvarchar" MaxLength="128" />
+          <Property Name="Token" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="view_page">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="ViewName" Type="nvarchar" MaxLength="128" />
+          <Property Name="ViewKey" Type="varchar" MaxLength="64" />
+        </EntityType>
+        <Association Name="FK_asset_allocation_history_asset_detail1">
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+          <End Role="asset_allocation_history" Type="Self.asset_allocation_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_detail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_allocation_history">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_allocation_history_rank">
+          <End Role="rank" Type="Self.rank" Multiplicity="0..1" />
+          <End Role="asset_allocation_history" Type="Self.asset_allocation_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rank">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_allocation_history">
+              <PropertyRef Name="LocalStep" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_detail_asset_classify">
+          <End Role="asset_classify" Type="Self.asset_classify" Multiplicity="0..1" />
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_classify">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_detail">
+              <PropertyRef Name="AssetClassifyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_detail_store_Identifie">
+          <End Role="store_Identifie" Type="Self.store_Identifie" Multiplicity="0..1" />
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="store_Identifie">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_detail">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_recovery_history_asset_detail1">
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+          <End Role="asset_recovery_history" Type="Self.asset_recovery_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_detail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_recovery_history">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_assets_liquidation_history_asset_detail">
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+          <End Role="assets_liquidation_history" Type="Self.assets_liquidation_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_detail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="assets_liquidation_history">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_rank_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="rank" Type="Self.rank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="rank">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_function_function">
+          <End Role="function" Type="Self.function" Multiplicity="0..1" />
+          <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="function">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_function">
+              <PropertyRef Name="FunctionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_function_role">
+          <End Role="role" Type="Self.role" Multiplicity="0..1" />
+          <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_function">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_function_user_identifie">
+          <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
+          <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_identifie">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_function">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_view_role">
+          <End Role="role" Type="Self.role" Multiplicity="0..1" />
+          <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_view">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_view_user_identifie">
+          <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
+          <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_identifie">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_view">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_view_view_page">
+          <End Role="view_page" Type="Self.view_page" Multiplicity="0..1" />
+          <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="view_page">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_view">
+              <PropertyRef Name="ViewID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AMS_DBModelStoreContainer">
+          <EntitySet Name="asset_allocation_history" EntityType="Self.asset_allocation_history" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="asset_classify" EntityType="Self.asset_classify" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="asset_detail" EntityType="Self.asset_detail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="asset_recovery_history" EntityType="Self.asset_recovery_history" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="assets_liquidation_history" EntityType="Self.assets_liquidation_history" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="function" EntityType="Self.function" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rank" EntityType="Self.rank" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role_function" EntityType="Self.role_function" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role_view" EntityType="Self.role_view" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_identifie" EntityType="Self.user_identifie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_page" EntityType="Self.view_page" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_asset_allocation_history_asset_detail1" Association="Self.FK_asset_allocation_history_asset_detail1">
+            <End Role="asset_detail" EntitySet="asset_detail" />
+            <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_allocation_history_rank" Association="Self.FK_asset_allocation_history_rank">
+            <End Role="rank" EntitySet="rank" />
+            <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_detail_asset_classify" Association="Self.FK_asset_detail_asset_classify">
+            <End Role="asset_classify" EntitySet="asset_classify" />
+            <End Role="asset_detail" EntitySet="asset_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_detail_store_Identifie" Association="Self.FK_asset_detail_store_Identifie">
+            <End Role="store_Identifie" EntitySet="store_Identifie" />
+            <End Role="asset_detail" EntitySet="asset_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_recovery_history_asset_detail1" Association="Self.FK_asset_recovery_history_asset_detail1">
+            <End Role="asset_detail" EntitySet="asset_detail" />
+            <End Role="asset_recovery_history" EntitySet="asset_recovery_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_assets_liquidation_history_asset_detail" Association="Self.FK_assets_liquidation_history_asset_detail">
+            <End Role="asset_detail" EntitySet="asset_detail" />
+            <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_rank_Department" Association="Self.FK_rank_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="rank" EntitySet="rank" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_function_function" Association="Self.FK_role_function_function">
+            <End Role="function" EntitySet="function" />
+            <End Role="role_function" EntitySet="role_function" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_function_role" Association="Self.FK_role_function_role">
+            <End Role="role" EntitySet="role" />
+            <End Role="role_function" EntitySet="role_function" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_function_user_identifie" Association="Self.FK_role_function_user_identifie">
+            <End Role="user_identifie" EntitySet="user_identifie" />
+            <End Role="role_function" EntitySet="role_function" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_view_role" Association="Self.FK_role_view_role">
+            <End Role="role" EntitySet="role" />
+            <End Role="role_view" EntitySet="role_view" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_view_user_identifie" Association="Self.FK_role_view_user_identifie">
+            <End Role="user_identifie" EntitySet="user_identifie" />
+            <End Role="role_view" EntitySet="role_view" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_view_view_page" Association="Self.FK_role_view_view_page">
+            <End Role="view_page" EntitySet="view_page" />
+            <End Role="role_view" EntitySet="role_view" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AMS_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="asset_allocation_history">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="AllocationFor" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="AllocationBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RequestBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LocalStep" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="isApprove" Type="Boolean" />
+          <Property Name="IsReject" Type="Boolean" />
+          <NavigationProperty Name="asset_detail" Relationship="Self.FK_asset_allocation_history_asset_detail1" FromRole="asset_allocation_history" ToRole="asset_detail" />
+          <NavigationProperty Name="rank" Relationship="Self.FK_asset_allocation_history_rank" FromRole="asset_allocation_history" ToRole="rank" />
+        </EntityType>
+        <EntityType Name="asset_classify">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AssetName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <NavigationProperty Name="asset_detail" Relationship="Self.FK_asset_detail_asset_classify" FromRole="asset_classify" ToRole="asset_detail" />
+        </EntityType>
+        <EntityType Name="asset_detail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StoreID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="AssetClassifyID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="AssetFullName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="QuantityOriginalStock" Type="Int32" />
+          <Property Name="Unit" Type="Int32" />
+          <Property Name="QuantityUsed" Type="Int32" />
+          <Property Name="QuantityInStock" Type="Int32" />
+          <Property Name="QuantityDestroyed" Type="Int32" />
+          <Property Name="Price" Type="Double" />
+          <NavigationProperty Name="asset_allocation_history" Relationship="Self.FK_asset_allocation_history_asset_detail1" FromRole="asset_detail" ToRole="asset_allocation_history" />
+          <NavigationProperty Name="asset_classify" Relationship="Self.FK_asset_detail_asset_classify" FromRole="asset_detail" ToRole="asset_classify" />
+          <NavigationProperty Name="store_Identifie" Relationship="Self.FK_asset_detail_store_Identifie" FromRole="asset_detail" ToRole="store_Identifie" />
+          <NavigationProperty Name="asset_recovery_history" Relationship="Self.FK_asset_recovery_history_asset_detail1" FromRole="asset_detail" ToRole="asset_recovery_history" />
+          <NavigationProperty Name="assets_liquidation_history" Relationship="Self.FK_assets_liquidation_history_asset_detail" FromRole="asset_detail" ToRole="assets_liquidation_history" />
+        </EntityType>
+        <EntityType Name="asset_recovery_history">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="RecoveryFor" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RecoveryBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="RequestBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LocalStep" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="isApprove" Type="Boolean" />
+          <Property Name="RequestBy1" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LocalStep1" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="isApprove1" Type="Boolean" />
+          <NavigationProperty Name="asset_detail" Relationship="Self.FK_asset_recovery_history_asset_detail1" FromRole="asset_recovery_history" ToRole="asset_detail" />
+        </EntityType>
+        <EntityType Name="assets_liquidation_history">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="LiquidationFor" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LiquidationBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="RequestBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="LocalStep" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="isApprove" Type="Boolean" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="RecoveryPrice" Type="Double" />
+          <NavigationProperty Name="asset_detail" Relationship="Self.FK_assets_liquidation_history_asset_detail" FromRole="assets_liquidation_history" ToRole="asset_detail" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DepartmentName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ranks" Relationship="Self.FK_rank_Department" FromRole="Department" ToRole="rank" />
+        </EntityType>
+        <EntityType Name="function">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FunctionName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FunctionKey" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="role_function" Relationship="Self.FK_role_function_function" FromRole="function" ToRole="role_function" />
+        </EntityType>
+        <EntityType Name="rank">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RankName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RankParent" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="asset_allocation_history" Relationship="Self.FK_asset_allocation_history_rank" FromRole="rank" ToRole="asset_allocation_history" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_rank_Department" FromRole="rank" ToRole="Department" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="IsLock" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="role_function" Relationship="Self.FK_role_function_role" FromRole="role" ToRole="role_function" />
+          <NavigationProperty Name="role_view" Relationship="Self.FK_role_view_role" FromRole="role" ToRole="role_view" />
+        </EntityType>
+        <EntityType Name="role_function">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="FunctionID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UserID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="function" Relationship="Self.FK_role_function_function" FromRole="role_function" ToRole="function" />
+          <NavigationProperty Name="role" Relationship="Self.FK_role_function_role" FromRole="role_function" ToRole="role" />
+          <NavigationProperty Name="user_identifie" Relationship="Self.FK_role_function_user_identifie" FromRole="role_function" ToRole="user_identifie" />
+        </EntityType>
+        <EntityType Name="role_view">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="ViewID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="0" />
+          <Property Name="UserID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="role" Relationship="Self.FK_role_view_role" FromRole="role_view" ToRole="role" />
+          <NavigationProperty Name="user_identifie" Relationship="Self.FK_role_view_user_identifie" FromRole="role_view" ToRole="user_identifie" />
+          <NavigationProperty Name="view_page" Relationship="Self.FK_role_view_view_page" FromRole="role_view" ToRole="view_page" />
+        </EntityType>
+        <EntityType Name="store_Identifie">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StoreName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UserID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Owner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="asset_detail" Relationship="Self.FK_asset_detail_store_Identifie" FromRole="store_Identifie" ToRole="asset_detail" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="user_identifie">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="IsLock" Type="Boolean" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <Property Name="Role" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="UserFullName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="role_function" Relationship="Self.FK_role_function_user_identifie" FromRole="user_identifie" ToRole="role_function" />
+          <NavigationProperty Name="role_view" Relationship="Self.FK_role_view_user_identifie" FromRole="user_identifie" ToRole="role_view" />
+          <Property Name="Token" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_page">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ViewName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ViewKey" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="role_view" Relationship="Self.FK_role_view_view_page" FromRole="view_page" ToRole="role_view" />
+        </EntityType>
+        <Association Name="FK_asset_allocation_history_asset_detail1">
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+          <End Role="asset_allocation_history" Type="Self.asset_allocation_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_detail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_allocation_history">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_allocation_history_rank">
+          <End Role="rank" Type="Self.rank" Multiplicity="0..1" />
+          <End Role="asset_allocation_history" Type="Self.asset_allocation_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rank">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_allocation_history">
+              <PropertyRef Name="LocalStep" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_detail_asset_classify">
+          <End Role="asset_classify" Type="Self.asset_classify" Multiplicity="0..1" />
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_classify">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_detail">
+              <PropertyRef Name="AssetClassifyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_detail_store_Identifie">
+          <End Role="store_Identifie" Type="Self.store_Identifie" Multiplicity="0..1" />
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="store_Identifie">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_detail">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_recovery_history_asset_detail1">
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+          <End Role="asset_recovery_history" Type="Self.asset_recovery_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_detail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_recovery_history">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_assets_liquidation_history_asset_detail">
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+          <End Role="assets_liquidation_history" Type="Self.assets_liquidation_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="asset_detail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="assets_liquidation_history">
+              <PropertyRef Name="AssetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_rank_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="rank" Type="Self.rank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="rank">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_function_function">
+          <End Role="function" Type="Self.function" Multiplicity="0..1" />
+          <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="function">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_function">
+              <PropertyRef Name="FunctionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_function_role">
+          <End Role="role" Type="Self.role" Multiplicity="0..1" />
+          <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_function">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_view_role">
+          <End Role="role" Type="Self.role" Multiplicity="0..1" />
+          <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_view">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_function_user_identifie">
+          <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
+          <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_identifie">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_function">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_view_user_identifie">
+          <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
+          <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user_identifie">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_view">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_role_view_view_page">
+          <End Role="view_page" Type="Self.view_page" Multiplicity="0..1" />
+          <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="view_page">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="role_view">
+              <PropertyRef Name="ViewID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AMS_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="asset_allocation_history" EntityType="Self.asset_allocation_history" />
+          <EntitySet Name="asset_classify" EntityType="Self.asset_classify" />
+          <EntitySet Name="asset_detail" EntityType="Self.asset_detail" />
+          <EntitySet Name="asset_recovery_history" EntityType="Self.asset_recovery_history" />
+          <EntitySet Name="assets_liquidation_history" EntityType="Self.assets_liquidation_history" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="functions" EntityType="Self.function" />
+          <EntitySet Name="ranks" EntityType="Self.rank" />
+          <EntitySet Name="roles" EntityType="Self.role" />
+          <EntitySet Name="role_function" EntityType="Self.role_function" />
+          <EntitySet Name="role_view" EntityType="Self.role_view" />
+          <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="user_identifie" EntityType="Self.user_identifie" />
+          <EntitySet Name="view_page" EntityType="Self.view_page" />
+          <AssociationSet Name="FK_asset_allocation_history_asset_detail1" Association="Self.FK_asset_allocation_history_asset_detail1">
+            <End Role="asset_detail" EntitySet="asset_detail" />
+            <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_allocation_history_rank" Association="Self.FK_asset_allocation_history_rank">
+            <End Role="rank" EntitySet="ranks" />
+            <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_detail_asset_classify" Association="Self.FK_asset_detail_asset_classify">
+            <End Role="asset_classify" EntitySet="asset_classify" />
+            <End Role="asset_detail" EntitySet="asset_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_detail_store_Identifie" Association="Self.FK_asset_detail_store_Identifie">
+            <End Role="store_Identifie" EntitySet="store_Identifie" />
+            <End Role="asset_detail" EntitySet="asset_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_recovery_history_asset_detail1" Association="Self.FK_asset_recovery_history_asset_detail1">
+            <End Role="asset_detail" EntitySet="asset_detail" />
+            <End Role="asset_recovery_history" EntitySet="asset_recovery_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_assets_liquidation_history_asset_detail" Association="Self.FK_assets_liquidation_history_asset_detail">
+            <End Role="asset_detail" EntitySet="asset_detail" />
+            <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
+          </AssociationSet>
+          <AssociationSet Name="FK_rank_Department" Association="Self.FK_rank_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="rank" EntitySet="ranks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_function_function" Association="Self.FK_role_function_function">
+            <End Role="function" EntitySet="functions" />
+            <End Role="role_function" EntitySet="role_function" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_function_role" Association="Self.FK_role_function_role">
+            <End Role="role" EntitySet="roles" />
+            <End Role="role_function" EntitySet="role_function" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_view_role" Association="Self.FK_role_view_role">
+            <End Role="role" EntitySet="roles" />
+            <End Role="role_view" EntitySet="role_view" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_function_user_identifie" Association="Self.FK_role_function_user_identifie">
+            <End Role="user_identifie" EntitySet="user_identifie" />
+            <End Role="role_function" EntitySet="role_function" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_view_user_identifie" Association="Self.FK_role_view_user_identifie">
+            <End Role="user_identifie" EntitySet="user_identifie" />
+            <End Role="role_view" EntitySet="role_view" />
+          </AssociationSet>
+          <AssociationSet Name="FK_role_view_view_page" Association="Self.FK_role_view_view_page">
+            <End Role="view_page" EntitySet="view_page" />
+            <End Role="role_view" EntitySet="role_view" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AMS_DBModelStoreContainer" CdmEntityContainer="AMS_DBEntities">
+          <EntitySetMapping Name="asset_allocation_history">
+            <EntityTypeMapping TypeName="AMS_DBModel.asset_allocation_history">
+              <MappingFragment StoreEntitySet="asset_allocation_history">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+                <ScalarProperty Name="AllocationFor" ColumnName="AllocationFor" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="AllocationBy" ColumnName="AllocationBy" />
+                <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
+                <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
+                <ScalarProperty Name="isApprove" ColumnName="isApprove" />
+                <ScalarProperty Name="IsReject" ColumnName="IsReject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="asset_classify">
+            <EntityTypeMapping TypeName="AMS_DBModel.asset_classify">
+              <MappingFragment StoreEntitySet="asset_classify">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="asset_detail">
+            <EntityTypeMapping TypeName="AMS_DBModel.asset_detail">
+              <MappingFragment StoreEntitySet="asset_detail">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+                <ScalarProperty Name="AssetClassifyID" ColumnName="AssetClassifyID" />
+                <ScalarProperty Name="AssetFullName" ColumnName="AssetFullName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="QuantityOriginalStock" ColumnName="QuantityOriginalStock" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="QuantityUsed" ColumnName="QuantityUsed" />
+                <ScalarProperty Name="QuantityInStock" ColumnName="QuantityInStock" />
+                <ScalarProperty Name="QuantityDestroyed" ColumnName="QuantityDestroyed" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="asset_recovery_history">
+            <EntityTypeMapping TypeName="AMS_DBModel.asset_recovery_history">
+              <MappingFragment StoreEntitySet="asset_recovery_history">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+                <ScalarProperty Name="RecoveryFor" ColumnName="RecoveryFor" />
+                <ScalarProperty Name="RecoveryBy" ColumnName="RecoveryBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
+                <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
+                <ScalarProperty Name="isApprove" ColumnName="isApprove" />
+                <ScalarProperty Name="RequestBy1" ColumnName="RequestBy1" />
+                <ScalarProperty Name="LocalStep1" ColumnName="LocalStep1" />
+                <ScalarProperty Name="isApprove1" ColumnName="isApprove1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="assets_liquidation_history">
+            <EntityTypeMapping TypeName="AMS_DBModel.assets_liquidation_history">
+              <MappingFragment StoreEntitySet="assets_liquidation_history">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+                <ScalarProperty Name="LiquidationFor" ColumnName="LiquidationFor" />
+                <ScalarProperty Name="LiquidationBy" ColumnName="LiquidationBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
+                <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
+                <ScalarProperty Name="isApprove" ColumnName="isApprove" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="RecoveryPrice" ColumnName="RecoveryPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="AMS_DBModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="functions">
+            <EntityTypeMapping TypeName="AMS_DBModel.function">
+              <MappingFragment StoreEntitySet="function">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+                <ScalarProperty Name="FunctionKey" ColumnName="FunctionKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ranks">
+            <EntityTypeMapping TypeName="AMS_DBModel.rank">
+              <MappingFragment StoreEntitySet="rank">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RankName" ColumnName="RankName" />
+                <ScalarProperty Name="RankParent" ColumnName="RankParent" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="AMS_DBModel.role">
+              <MappingFragment StoreEntitySet="role">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="role_function">
+            <EntityTypeMapping TypeName="AMS_DBModel.role_function">
+              <MappingFragment StoreEntitySet="role_function">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="role_view">
+            <EntityTypeMapping TypeName="AMS_DBModel.role_view">
+              <MappingFragment StoreEntitySet="role_view">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ViewID" ColumnName="ViewID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="store_Identifie">
+            <EntityTypeMapping TypeName="AMS_DBModel.store_Identifie">
+              <MappingFragment StoreEntitySet="store_Identifie">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="AMS_DBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_identifie">
+            <EntityTypeMapping TypeName="AMS_DBModel.user_identifie">
+              <MappingFragment StoreEntitySet="user_identifie">
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_page">
+            <EntityTypeMapping TypeName="AMS_DBModel.view_page">
+              <MappingFragment StoreEntitySet="view_page">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ViewName" ColumnName="ViewName" />
+                <ScalarProperty Name="ViewKey" ColumnName="ViewKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

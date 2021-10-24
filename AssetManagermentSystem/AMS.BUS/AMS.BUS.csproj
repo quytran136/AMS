@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2E15F8E8-2340-469E-944C-FBADDA9E9315}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AMS.BUS</RootNamespace>
+    <AssemblyName>AMS.BUS</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessHandle\Access.cs" />
+    <Compile Include="BusinessHandle\AssetClassify.cs" />
+    <Compile Include="BusinessHandle\UserInfor.cs" />
+    <Compile Include="DBConnect\AMS_DB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AMS_DB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\AMS_DB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\AMS_DB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AMS_DB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\assets_liquidation_history.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\asset_allocation_history.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\asset_classify.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\asset_detail.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\asset_recovery_history.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\DBConnect.cs" />
+    <Compile Include="DBConnect\Department.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\function.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\rank.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\role.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\role_function.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\role_view.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\store_Identifie.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\sysdiagram.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\user_identifie.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\view_page.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="DBConnect\AMS_DB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AMS_DB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DBConnect\AMS_DB.edmx.diagram">
+      <DependentUpon>AMS_DB.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DBConnect\AMS_DB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AMS_DB.edmx</DependentUpon>
+      <LastGenOutput>AMS_DB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DBConnect\AMS_DB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AMS_DB.edmx</DependentUpon>
+      <LastGenOutput>AMS_DB.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AMS.COMMON\AMS.COMMON.csproj">
+      <Project>{48edcfbc-f009-4384-9505-dc425854f2be}</Project>
+      <Name>AMS.COMMON</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,14 @@
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\AMS.BUS.dll.config
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\AMS.BUS.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\AMS.BUS.pdb
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\EntityFramework.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\EntityFramework.xml
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.csprojAssemblyReference.cache
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.csproj.CoreCompileInputs.cache
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.csproj.CopyComplete
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.pdb
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\AMS.COMMON.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\AMS.COMMON.pdb
