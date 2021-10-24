@@ -62,8 +62,6 @@ namespace AMS.API.Controllers
                     Message = ex.Message
                 };
             }
-
-
         }
     }
 }

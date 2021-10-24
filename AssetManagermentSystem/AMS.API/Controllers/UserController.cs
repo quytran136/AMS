@@ -1,6 +1,7 @@
 ﻿using AMS.API.Models.RequestModel;
 using AMS.API.Models.ResponseModel;
 using AMS.BUS.BusinessHandle;
+using AMS.BUS.DBConnect;
 using AMS.COMMON.Constands;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,12 @@ namespace AMS.API.Controllers
 {
     public class UserController : ApiController
     {
-        [HttpPost]
-        public BaseResponse<UserInformation> GetUserInformation(BaseRequest<GetUserInformation> req)
+        public BaseResponse<UserInformation> UserInformation(BaseRequest<Information> req)
         {
             try
             {
-                if (Access.CheckToken(req.Token))
+                // validate token
+                if (Access.CheckToken(req.Token, req.Data.UserName))
                 {
                     return new BaseResponse<UserInformation>()
                     {
@@ -26,75 +27,176 @@ namespace AMS.API.Controllers
                         Message = "user is not login"
                     };
                 }
-                UserInfor user = new UserInfor();
-                var userinfor = user.GetUserInfor(req.Data.UserID);
-                if (userinfor == null)
+
+                switch (req.Key)
                 {
-                    return new BaseResponse<UserInformation>()
-                    {
-                        Code = MessagesValue.WARNING,
-                        Message = "not have user infor",
-                    };
-                }
-                else
-                {
-                    return new BaseResponse<UserInformation>()
-                    {
-                        Code = MessagesValue.SUCCESS,
-                        Message = MessagesValue.SUCCESS,
-                        Response = new UserInformation()
+                    case "CREATE_USER":
+                        try
                         {
-                            UserFullName = userinfor.UserFullName,
-                            UserID = userinfor.ID,
-                            Roles = user.GetRole(userinfor.Role)
+                            UserInfor user = new UserInfor();
+                            user_identifie user_infor = user.CreateUserInfor(req.Data.UserName,req.Data.UserPassword, req.Data.UserFullName);
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = MessagesValue.SUCCESS,
+                                Response = new UserInformation()
+                                {
+                                    UserFullName = user_infor.UserFullName ?? "",
+                                    IsDelete = user_infor.IsDelete ?? true,
+                                    IsLock = user_infor.IsLock ?? true,
+                                    UserName = user_infor.UserFullName ?? ""
+                                }
+                            };
                         }
-                    };
+                        catch (Exception ex)
+                        {
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = ex.Message,
+                            };
+                        }
+                    case "CHANGE_PASSWORD":
+                        try
+                        {
+                            UserInfor user = new UserInfor();
+                            user.ChangePassword(req.Data.UserID, req.Data.UserPassword, req.Data.NewPassword);
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = MessagesValue.SUCCESS,
+                                Response = new UserInformation()
+                            };
+                        }
+                        catch (Exception ex)
+                        {
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = ex.Message,
+                            };
+                        }
+                    case "LOCK_USER":
+                        try
+                        {
+                            UserInfor user = new UserInfor();
+                            user.Lock(req.Data.UserID);
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = MessagesValue.SUCCESS,
+                                Response = new UserInformation()
+                            };
+                        }
+                        catch (Exception ex)
+                        {
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = ex.Message,
+                            };
+                        }
+                    case "UNLOCK_USER":
+                        try
+                        {
+                            UserInfor user = new UserInfor();
+                            user.Lock(req.Data.UserID);
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = MessagesValue.SUCCESS,
+                                Response = new UserInformation()
+                            };
+                        }
+                        catch (Exception ex)
+                        {
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = ex.Message,
+                            };
+                        }
+                    case "DELETE_USER":
+                        try
+                        {
+                            UserInfor user = new UserInfor();
+                            user.Delete(req.Data.UserID);
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = MessagesValue.SUCCESS,
+                                Response = new UserInformation()
+                            };
+                        }
+                        catch (Exception ex)
+                        {
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = ex.Message,
+                            };
+                        }
+                    case "CHANGE_ROLE":
+                        try
+                        {
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = MessagesValue.SUCCESS,
+                            };
+                        }
+                        catch (Exception ex)
+                        {
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = ex.Message,
+                            };
+                        }
+                    case "GET_INFORMATION":
+                        try
+                        {
+                            UserInfor user = new UserInfor();
+                            user_identifie user_infor = user.GetUserInfor(req.Data.UserName);
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = MessagesValue.SUCCESS,
+                                Response = new UserInformation()
+                                {
+                                    UserFullName = user_infor.UserFullName ?? "",
+                                    IsDelete = user_infor.IsDelete ?? true,
+                                    IsLock = user_infor.IsLock ?? true,
+                                    UserName = user_infor.UserFullName ?? ""
+                                }
+                            };
+                        }
+                        catch (Exception ex)
+                        {
+                            return new BaseResponse<UserInformation>()
+                            {
+                                Code = "201",
+                                Message = ex.Message,
+                            };
+                        }
+                    default:
+                        return new BaseResponse<UserInformation>()
+                        {
+                            Code = "404",
+                            Message = "Not found function",
+                        };
                 }
             }
             catch (Exception ex)
             {
+                // show log message
                 return new BaseResponse<UserInformation>()
                 {
-                    Code = MessagesValue.ERROR,
-                    Message = ex.Message
+                    Code = "500",
+                    Message = ex.Message,
                 };
             }
         }
 
-        [HttpPost]
-        public BaseResponse<UserInformation> CreateUserInformation(BaseRequest<CreateUserInformation> req)
-        {
-            try
-            {
-                if (Access.CheckToken(req.Token))
-                {
-                    return new BaseResponse<UserInformation>()
-                    {
-                        Code = MessagesValue.ERROR,
-                        Message = "user is not login"
-                    };
-                }
-                UserInfor user = new UserInfor();
-                var userInfo = user.CreateUserInfor(req.Data.UserName, req.Data.UserPassword, req.Data.UserFullName, req.Data.Role);
-                return new BaseResponse<UserInformation>()
-                {
-                    Code = MessagesValue.SUCCESS,
-                    Message = MessagesValue.SUCCESS,
-                    Response = new UserInformation()
-                    {
-                        UserFullName = userInfo.UserFullName,
-                        UserID = userInfo.ID
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<UserInformation>()
-                {
-                    Code = MessagesValue.ERROR,
-                    Message = ex.Message
-                };
-            }
-        }
     }
 }

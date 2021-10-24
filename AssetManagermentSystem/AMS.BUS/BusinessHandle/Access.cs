@@ -49,7 +49,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public static bool CheckToken(string token)
+        public static bool CheckToken(string token, string userName)
         {
             try
             {
@@ -61,7 +61,14 @@ namespace AMS.BUS.BusinessHandle
                 }
                 else
                 {
-                    return true;
+                    if (userName == user.UserName)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             catch (Exception ex)

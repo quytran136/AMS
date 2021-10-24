@@ -9,8 +9,9 @@ namespace AMS.API.Models.ResponseModel
 {
     public class UserInformation
     {
+        public string UserName { get; set; }
         public string UserFullName { get; set; }
-        public string UserID { get; set; }
-        public role_function Roles { get; set; }
+        public bool IsLock { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

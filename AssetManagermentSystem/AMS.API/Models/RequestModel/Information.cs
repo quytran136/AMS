@@ -5,11 +5,15 @@ using System.Web;
 
 namespace AMS.API.Models.RequestModel
 {
-    public class CreateUserInformation
+    public class Information
     {
+        public string UserID { get; set; }
         public string UserName { get; set; }
         public string UserPassword { get; set; }
+        public string NewPassword { get; set; }
         public string UserFullName { get; set; }
+        public bool IsLock { get; set; }
+        public bool IsDelete { get; set; }
         public string Role { get; set; }
     }
 }
