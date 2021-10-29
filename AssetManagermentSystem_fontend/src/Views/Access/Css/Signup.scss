@@ -1,0 +1,21 @@
+.register {
+    position     : relative;
+    padding-top  : 30vh;
+    padding-left : 10vh;
+    padding-right: 10vh;
+
+    .register-Header {
+        font-weight   : bold;
+        text-align    : center;
+        padding-bottom: 10px;
+    }
+
+    .register-footer {
+        margin-top: 0.5vh;
+
+        .button-register {
+            display: block;
+            width: 100%;
+        }
+    }
+}

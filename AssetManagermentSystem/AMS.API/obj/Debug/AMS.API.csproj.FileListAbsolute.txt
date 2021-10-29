@@ -92,3 +92,9 @@ C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\bin\AMS.BUS.dll.config
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\bin\AMS.COMMON.pdb
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\obj\Debug\AMS.API.csprojAssemblyReference.cache
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\bin\System.Web.Cors.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\bin\System.Web.Http.Cors.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\bin\System.Web.Http.Cors.xml
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\bin\log4net.config
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\bin\log4net.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.API\bin\log4net.xml

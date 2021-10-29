@@ -5,34 +5,38 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="60b1598cf69f4c1d81151293c49e22d3" Name="Diagram1" ZoomLevel="88">
-        <EntityTypeShape EntityType="AMS_DBModel.asset_allocation_history" Width="1.5" PointX="5.25" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.asset_classify" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.asset_detail" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.asset_recovery_history" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.assets_liquidation_history" Width="1.5" PointX="5.25" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.Department" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.function" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.rank" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.role" Width="1.5" PointX="7.75" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.role_function" Width="1.5" PointX="10" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.role_view" Width="1.5" PointX="13" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.store_Identifie" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.sysdiagram" Width="1.5" PointX="9.75" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.user_identifie" Width="1.5" PointX="7.75" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="AMS_DBModel.view_page" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="AMS_DBModel.FK_asset_allocation_history_asset_detail1" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_asset_allocation_history_rank" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_asset_detail_asset_classify" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_asset_detail_store_Identifie" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_asset_recovery_history_asset_detail1" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_assets_liquidation_history_asset_detail" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_rank_Department" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_role_function_function" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_role_function_role" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_role_view_role" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_role_function_user_identifie" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_role_view_user_identifie" ManuallyRouted="false" />
-        <AssociationConnector Association="AMS_DBModel.FK_role_view_view_page" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AMS_DBModel.asset_allocation_history" Width="1.5" PointX="5.25" PointY="3.375" />
+        <EntityTypeShape EntityType="AMS_DBModel.asset_classify" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="AMS_DBModel.asset_detail" Width="1.5" PointX="3" PointY="5.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.asset_recovery_history" Width="1.5" PointX="5.25" PointY="12.125" />
+        <EntityTypeShape EntityType="AMS_DBModel.assets_liquidation_history" Width="1.5" PointX="5.25" PointY="8.25" />
+        <EntityTypeShape EntityType="AMS_DBModel.Department" Width="1.5" PointX="0.75" PointY="1.25" />
+        <EntityTypeShape EntityType="AMS_DBModel.function" Width="1.5" PointX="10.75" PointY="8.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.message_list" Width="1.5" PointX="7.75" PointY="13.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.rank" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.role" Width="1.5" PointX="7.75" PointY="9.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.role_function" Width="1.5" PointX="13" PointY="5.5" />
+        <EntityTypeShape EntityType="AMS_DBModel.role_view" Width="1.5" PointX="10" PointY="1.5" />
+        <EntityTypeShape EntityType="AMS_DBModel.store_Identifie" Width="1.5" PointX="0.75" PointY="6.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.sysdiagram" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.system_log" Width="1.5" PointX="10" PointY="5.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.user_identifie" Width="1.5" PointX="7.75" PointY="5" />
+        <EntityTypeShape EntityType="AMS_DBModel.view_page" Width="1.5" PointX="7.75" PointY="2.25" />
+        <AssociationConnector Association="AMS_DBModel.FK_asset_allocation_history_asset_detail1" />
+        <AssociationConnector Association="AMS_DBModel.FK_asset_allocation_history_rank" />
+        <AssociationConnector Association="AMS_DBModel.FK_asset_detail_asset_classify" />
+        <AssociationConnector Association="AMS_DBModel.FK_asset_detail_store_Identifie" />
+        <AssociationConnector Association="AMS_DBModel.FK_asset_recovery_history_asset_detail1" />
+        <AssociationConnector Association="AMS_DBModel.FK_assets_liquidation_history_asset_detail" />
+        <AssociationConnector Association="AMS_DBModel.FK_rank_Department" />
+        <AssociationConnector Association="AMS_DBModel.FK_role_function_function" />
+        <AssociationConnector Association="AMS_DBModel.FK_system_log_message_list" />
+        <AssociationConnector Association="AMS_DBModel.FK_role_function_role" />
+        <AssociationConnector Association="AMS_DBModel.FK_role_view_role" />
+        <AssociationConnector Association="AMS_DBModel.FK_role_function_user_identifie" />
+        <AssociationConnector Association="AMS_DBModel.FK_role_view_user_identifie" />
+        <AssociationConnector Association="AMS_DBModel.FK_role_view_view_page" />
+        <AssociationConnector Association="AMS_DBModel.FK_system_log_user_identifie" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

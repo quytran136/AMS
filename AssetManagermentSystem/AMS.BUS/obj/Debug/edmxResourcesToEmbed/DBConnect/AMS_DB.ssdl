@@ -85,6 +85,16 @@
     <Property Name="FunctionName" Type="nvarchar" MaxLength="128" />
     <Property Name="FunctionKey" Type="varchar" MaxLength="64" />
   </EntityType>
+  <EntityType Name="message_list">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="KeyCode" Type="varchar" MaxLength="64" />
+    <Property Name="Code" Type="varchar" MaxLength="64" />
+    <Property Name="Message_EN" Type="nvarchar(max)" />
+    <Property Name="Message_VN" Type="nvarchar(max)" />
+  </EntityType>
   <EntityType Name="rank">
     <Key>
       <PropertyRef Name="ID" />
@@ -143,6 +153,16 @@
     <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="version" Type="int" />
     <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="system_log">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="MessageID" Type="varchar" MaxLength="64" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Creator" Type="varchar" MaxLength="64" />
+    <Property Name="Detail" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="user_identifie">
     <Key>
@@ -323,6 +343,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_system_log_message_list">
+    <End Role="message_list" Type="Self.message_list" Multiplicity="0..1" />
+    <End Role="system_log" Type="Self.system_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="message_list">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="system_log">
+        <PropertyRef Name="MessageID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_system_log_user_identifie">
+    <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
+    <End Role="system_log" Type="Self.system_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_identifie">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="system_log">
+        <PropertyRef Name="Creator" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="AMS_DBModelStoreContainer">
     <EntitySet Name="asset_allocation_history" EntityType="Self.asset_allocation_history" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="asset_classify" EntityType="Self.asset_classify" Schema="dbo" store:Type="Tables" />
@@ -331,12 +375,14 @@
     <EntitySet Name="assets_liquidation_history" EntityType="Self.assets_liquidation_history" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="function" EntityType="Self.function" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="message_list" EntityType="Self.message_list" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="rank" EntityType="Self.rank" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="role_function" EntityType="Self.role_function" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="role_view" EntityType="Self.role_view" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="system_log" EntityType="Self.system_log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="user_identifie" EntityType="Self.user_identifie" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="view_page" EntityType="Self.view_page" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_asset_allocation_history_asset_detail1" Association="Self.FK_asset_allocation_history_asset_detail1">
@@ -390,6 +436,14 @@
     <AssociationSet Name="FK_role_view_view_page" Association="Self.FK_role_view_view_page">
       <End Role="view_page" EntitySet="view_page" />
       <End Role="role_view" EntitySet="role_view" />
+    </AssociationSet>
+    <AssociationSet Name="FK_system_log_message_list" Association="Self.FK_system_log_message_list">
+      <End Role="message_list" EntitySet="message_list" />
+      <End Role="system_log" EntitySet="system_log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_system_log_user_identifie" Association="Self.FK_system_log_user_identifie">
+      <End Role="user_identifie" EntitySet="user_identifie" />
+      <End Role="system_log" EntitySet="system_log" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

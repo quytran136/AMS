@@ -8,6 +8,5 @@ namespace AMS.BUS.BusinessHandle
 {
     public class AssetClassify
     {
-        public asset
     }
 }

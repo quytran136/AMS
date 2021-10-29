@@ -44,8 +44,8 @@
     <Compile Include="Constands\MessagesValue.cs" />
     <Compile Include="Encryption\SecuritiesHandle.cs" />
     <Compile Include="Encryption\TokenHandle.cs" />
+    <Compile Include="FunctionCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

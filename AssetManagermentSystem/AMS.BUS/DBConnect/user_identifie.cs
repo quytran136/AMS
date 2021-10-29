@@ -19,6 +19,7 @@ namespace AMS.BUS.DBConnect
         {
             this.role_function = new HashSet<role_function>();
             this.role_view = new HashSet<role_view>();
+            this.system_log = new HashSet<system_log>();
         }
     
         public string ID { get; set; }
@@ -36,5 +37,7 @@ namespace AMS.BUS.DBConnect
         public virtual ICollection<role_function> role_function { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<role_view> role_view { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<system_log> system_log { get; set; }
     }
 }

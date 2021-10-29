@@ -1,0 +1,42 @@
+.warnign-message {
+    color: orange;
+}
+
+.error-message {
+    color: red;
+}
+
+.success-message {
+    color: green;
+}
+
+.label{
+    width: 100vh;
+    height: 100vh;
+    text-align: start;
+}
+
+.input {
+    margin-bottom: 1vh;
+    border-radius: 25px;
+    font-size    : 2rem;
+}
+
+.group {
+    padding-top: 1vh;
+}
+
+.link {
+    color : #fff;
+    cursor: pointer;
+}
+
+.ams-btn {
+    margin-bottom: 1vh;
+    cursor: pointer;
+    color: white;
+
+    &:hover{
+        color: rgb(192, 192, 192) !important;
+    }
+}

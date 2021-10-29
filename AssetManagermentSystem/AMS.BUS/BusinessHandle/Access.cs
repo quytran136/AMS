@@ -1,4 +1,6 @@
-﻿using AMS.BUS.DBConnect;
+﻿using AMS.BUS.BusModels;
+using AMS.BUS.DBConnect;
+using AMS.COMMON;
 using AMS.COMMON.Encryption;
 using System;
 using System.Collections.Generic;
@@ -8,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace AMS.BUS.BusinessHandle
 {
-    public class Access
+    public class Access : IBaseHandle
     {
-        public string CheckLogin(string userName, string userPassword)
+        public BaseModel<string> CheckLogin(string userName, string userPassword)
         {
             try
             {
@@ -19,22 +21,43 @@ namespace AMS.BUS.BusinessHandle
                 var user = db.user_identifie.Where(ptr => ptr.UserName == userName && ptr.UserPassword == passwordEncode).ToList().LastOrDefault();
                 if (user == null)
                 {
-                    return string.Empty;
+                    return new BaseModel<string>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            // không tồn tại user
+                            Code = BUSMessageCode(1)
+                        },
+                    };
                 }
                 else
                 {
                     string token = TokenHandle.Init(userName, userPassword);
-                    SaveToken(token, user.ID);
-                    return token;
+                    BaseModel<string> savetoken = SaveToken(token, user.ID);
+                    if (!string.IsNullOrEmpty(savetoken?    .Exception?.Message))
+                    {
+                        return savetoken;
+                    }
+                    return new BaseModel<string>()
+                    {
+                        Result = token,
+                    };
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex,
+                    }
+                };
             }
         }
 
-        private void SaveToken(string token, string userID)
+        private BaseModel<string> SaveToken(string token, string userID)
         {
             try
             {
@@ -42,14 +65,24 @@ namespace AMS.BUS.BusinessHandle
                 var user = db.user_identifie.Where(ptr => ptr.ID == userID).ToList().LastOrDefault();
                 user.Token = token;
                 db.SaveChanges();
+                return new BaseModel<string>() { 
+                    Result = token
+                };
             }
             catch (Exception ex)
             {
-                throw ex;
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    },
+                };
             }
         }
 
-        public static bool CheckToken(string token, string userName)
+        public BaseModel<bool> CheckToken(string token, string userName)
         {
             try
             {
@@ -57,24 +90,66 @@ namespace AMS.BUS.BusinessHandle
                 var user = db.user_identifie.Where(ptr => ptr.Token == token).ToList().LastOrDefault();
                 if (user == null)
                 {
-                    return false;
+                    return new BaseModel<bool>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(2)
+                        },
+                        Result = false,
+                    };
                 }
                 else
                 {
                     if (userName == user.UserName)
                     {
-                        return true;
+                        return new BaseModel<bool>()
+                        {
+                            Exception = new ExceptionHandle()
+                            {
+                                Code = BUSMessageCode(2)
+                            },
+                            Result = false,
+                        };
                     }
                     else
                     {
-                        return false;
+                        return new BaseModel<bool>()
+                        {
+                            Result = true,
+                        };
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                return new BaseModel<bool>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    },
+                };
             }
+        }
+
+        public string BUSMessageCode(int id)
+        {
+            return string.Format("{0}{1}{2}{3}",
+                FunctionCode.BUS_EX,
+                FunctionCode.API,
+                FunctionCode.ACCESS,
+                id);
+        }
+
+        public string SYSMessageCode(int id)
+        {
+            return string.Format("{0}{1}{2}{3}",
+                FunctionCode.SYS_EX,
+                FunctionCode.API,
+                FunctionCode.ACCESS,
+                id);
         }
     }
 }

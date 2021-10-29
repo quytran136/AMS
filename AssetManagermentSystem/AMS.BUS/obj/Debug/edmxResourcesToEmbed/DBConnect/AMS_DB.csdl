@@ -1,10 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="AMS_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="AMS_DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="asset_allocation_history" EntityType="AMS_DBModel.asset_allocation_history" />
+    <EntitySet Name="asset_classify" EntityType="AMS_DBModel.asset_classify" />
+    <EntitySet Name="asset_detail" EntityType="AMS_DBModel.asset_detail" />
+    <EntitySet Name="asset_recovery_history" EntityType="AMS_DBModel.asset_recovery_history" />
+    <EntitySet Name="assets_liquidation_history" EntityType="AMS_DBModel.assets_liquidation_history" />
+    <EntitySet Name="Departments" EntityType="AMS_DBModel.Department" />
+    <EntitySet Name="functions" EntityType="AMS_DBModel.function" />
+    <EntitySet Name="message_list" EntityType="AMS_DBModel.message_list" />
+    <EntitySet Name="ranks" EntityType="AMS_DBModel.rank" />
+    <EntitySet Name="roles" EntityType="AMS_DBModel.role" />
+    <EntitySet Name="role_function" EntityType="AMS_DBModel.role_function" />
+    <EntitySet Name="role_view" EntityType="AMS_DBModel.role_view" />
+    <EntitySet Name="store_Identifie" EntityType="AMS_DBModel.store_Identifie" />
+    <EntitySet Name="sysdiagrams" EntityType="AMS_DBModel.sysdiagram" />
+    <EntitySet Name="system_log" EntityType="AMS_DBModel.system_log" />
+    <EntitySet Name="user_identifie" EntityType="AMS_DBModel.user_identifie" />
+    <EntitySet Name="view_page" EntityType="AMS_DBModel.view_page" />
+    <AssociationSet Name="FK_asset_allocation_history_asset_detail1" Association="AMS_DBModel.FK_asset_allocation_history_asset_detail1">
+      <End Role="asset_detail" EntitySet="asset_detail" />
+      <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_allocation_history_rank" Association="AMS_DBModel.FK_asset_allocation_history_rank">
+      <End Role="rank" EntitySet="ranks" />
+      <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_detail_asset_classify" Association="AMS_DBModel.FK_asset_detail_asset_classify">
+      <End Role="asset_classify" EntitySet="asset_classify" />
+      <End Role="asset_detail" EntitySet="asset_detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_detail_store_Identifie" Association="AMS_DBModel.FK_asset_detail_store_Identifie">
+      <End Role="store_Identifie" EntitySet="store_Identifie" />
+      <End Role="asset_detail" EntitySet="asset_detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_recovery_history_asset_detail1" Association="AMS_DBModel.FK_asset_recovery_history_asset_detail1">
+      <End Role="asset_detail" EntitySet="asset_detail" />
+      <End Role="asset_recovery_history" EntitySet="asset_recovery_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_assets_liquidation_history_asset_detail" Association="AMS_DBModel.FK_assets_liquidation_history_asset_detail">
+      <End Role="asset_detail" EntitySet="asset_detail" />
+      <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rank_Department" Association="AMS_DBModel.FK_rank_Department">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="rank" EntitySet="ranks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_function_function" Association="AMS_DBModel.FK_role_function_function">
+      <End Role="function" EntitySet="functions" />
+      <End Role="role_function" EntitySet="role_function" />
+    </AssociationSet>
+    <AssociationSet Name="FK_system_log_message_list" Association="AMS_DBModel.FK_system_log_message_list">
+      <End Role="message_list" EntitySet="message_list" />
+      <End Role="system_log" EntitySet="system_log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_function_role" Association="AMS_DBModel.FK_role_function_role">
+      <End Role="role" EntitySet="roles" />
+      <End Role="role_function" EntitySet="role_function" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_view_role" Association="AMS_DBModel.FK_role_view_role">
+      <End Role="role" EntitySet="roles" />
+      <End Role="role_view" EntitySet="role_view" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_function_user_identifie" Association="AMS_DBModel.FK_role_function_user_identifie">
+      <End Role="user_identifie" EntitySet="user_identifie" />
+      <End Role="role_function" EntitySet="role_function" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_view_user_identifie" Association="AMS_DBModel.FK_role_view_user_identifie">
+      <End Role="user_identifie" EntitySet="user_identifie" />
+      <End Role="role_view" EntitySet="role_view" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_view_view_page" Association="AMS_DBModel.FK_role_view_view_page">
+      <End Role="view_page" EntitySet="view_page" />
+      <End Role="role_view" EntitySet="role_view" />
+    </AssociationSet>
+    <AssociationSet Name="FK_system_log_user_identifie" Association="AMS_DBModel.FK_system_log_user_identifie">
+      <End Role="user_identifie" EntitySet="user_identifie" />
+      <End Role="system_log" EntitySet="system_log" />
+    </AssociationSet>
+  </EntityContainer>
   <EntityType Name="asset_allocation_history">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="AllocationFor" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
@@ -13,24 +92,24 @@
     <Property Name="LocalStep" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="isApprove" Type="Boolean" />
     <Property Name="IsReject" Type="Boolean" />
-    <NavigationProperty Name="asset_detail" Relationship="Self.FK_asset_allocation_history_asset_detail1" FromRole="asset_allocation_history" ToRole="asset_detail" />
-    <NavigationProperty Name="rank" Relationship="Self.FK_asset_allocation_history_rank" FromRole="asset_allocation_history" ToRole="rank" />
+    <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_allocation_history_asset_detail1" FromRole="asset_allocation_history" ToRole="asset_detail" />
+    <NavigationProperty Name="rank" Relationship="AMS_DBModel.FK_asset_allocation_history_rank" FromRole="asset_allocation_history" ToRole="rank" />
   </EntityType>
   <EntityType Name="asset_classify">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="AssetName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
     <Property Name="IsDelete" Type="Boolean" />
-    <NavigationProperty Name="asset_detail" Relationship="Self.FK_asset_detail_asset_classify" FromRole="asset_classify" ToRole="asset_detail" />
+    <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_detail_asset_classify" FromRole="asset_classify" ToRole="asset_detail" />
   </EntityType>
   <EntityType Name="asset_detail">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="StoreID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="AssetClassifyID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="AssetFullName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
@@ -41,17 +120,17 @@
     <Property Name="QuantityInStock" Type="Int32" />
     <Property Name="QuantityDestroyed" Type="Int32" />
     <Property Name="Price" Type="Double" />
-    <NavigationProperty Name="asset_allocation_history" Relationship="Self.FK_asset_allocation_history_asset_detail1" FromRole="asset_detail" ToRole="asset_allocation_history" />
-    <NavigationProperty Name="asset_classify" Relationship="Self.FK_asset_detail_asset_classify" FromRole="asset_detail" ToRole="asset_classify" />
-    <NavigationProperty Name="store_Identifie" Relationship="Self.FK_asset_detail_store_Identifie" FromRole="asset_detail" ToRole="store_Identifie" />
-    <NavigationProperty Name="asset_recovery_history" Relationship="Self.FK_asset_recovery_history_asset_detail1" FromRole="asset_detail" ToRole="asset_recovery_history" />
-    <NavigationProperty Name="assets_liquidation_history" Relationship="Self.FK_assets_liquidation_history_asset_detail" FromRole="asset_detail" ToRole="assets_liquidation_history" />
+    <NavigationProperty Name="asset_allocation_history" Relationship="AMS_DBModel.FK_asset_allocation_history_asset_detail1" FromRole="asset_detail" ToRole="asset_allocation_history" />
+    <NavigationProperty Name="asset_classify" Relationship="AMS_DBModel.FK_asset_detail_asset_classify" FromRole="asset_detail" ToRole="asset_classify" />
+    <NavigationProperty Name="store_Identifie" Relationship="AMS_DBModel.FK_asset_detail_store_Identifie" FromRole="asset_detail" ToRole="store_Identifie" />
+    <NavigationProperty Name="asset_recovery_history" Relationship="AMS_DBModel.FK_asset_recovery_history_asset_detail1" FromRole="asset_detail" ToRole="asset_recovery_history" />
+    <NavigationProperty Name="assets_liquidation_history" Relationship="AMS_DBModel.FK_assets_liquidation_history_asset_detail" FromRole="asset_detail" ToRole="assets_liquidation_history" />
   </EntityType>
   <EntityType Name="asset_recovery_history">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="RecoveryFor" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="RecoveryBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
@@ -62,13 +141,13 @@
     <Property Name="RequestBy1" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="LocalStep1" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="isApprove1" Type="Boolean" />
-    <NavigationProperty Name="asset_detail" Relationship="Self.FK_asset_recovery_history_asset_detail1" FromRole="asset_recovery_history" ToRole="asset_detail" />
+    <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_recovery_history_asset_detail1" FromRole="asset_recovery_history" ToRole="asset_detail" />
   </EntityType>
   <EntityType Name="assets_liquidation_history">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="LiquidationFor" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="LiquidationBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
@@ -78,100 +157,123 @@
     <Property Name="isApprove" Type="Boolean" />
     <Property Name="Price" Type="Double" />
     <Property Name="RecoveryPrice" Type="Double" />
-    <NavigationProperty Name="asset_detail" Relationship="Self.FK_assets_liquidation_history_asset_detail" FromRole="assets_liquidation_history" ToRole="asset_detail" />
+    <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_assets_liquidation_history_asset_detail" FromRole="assets_liquidation_history" ToRole="asset_detail" />
   </EntityType>
   <EntityType Name="Department">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="DepartmentName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="ranks" Relationship="Self.FK_rank_Department" FromRole="Department" ToRole="rank" />
+    <NavigationProperty Name="ranks" Relationship="AMS_DBModel.FK_rank_Department" FromRole="Department" ToRole="rank" />
   </EntityType>
   <EntityType Name="function">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="FunctionName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="FunctionKey" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="role_function" Relationship="Self.FK_role_function_function" FromRole="function" ToRole="role_function" />
+    <NavigationProperty Name="role_function" Relationship="AMS_DBModel.FK_role_function_function" FromRole="function" ToRole="role_function" />
+  </EntityType>
+  <EntityType Name="message_list">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="KeyCode" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="Message_EN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Message_VN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="system_log" Relationship="AMS_DBModel.FK_system_log_message_list" FromRole="message_list" ToRole="system_log" />
   </EntityType>
   <EntityType Name="rank">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="RankName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="RankParent" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
-    <NavigationProperty Name="asset_allocation_history" Relationship="Self.FK_asset_allocation_history_rank" FromRole="rank" ToRole="asset_allocation_history" />
-    <NavigationProperty Name="Department" Relationship="Self.FK_rank_Department" FromRole="rank" ToRole="Department" />
+    <NavigationProperty Name="asset_allocation_history" Relationship="AMS_DBModel.FK_asset_allocation_history_rank" FromRole="rank" ToRole="asset_allocation_history" />
+    <NavigationProperty Name="Department" Relationship="AMS_DBModel.FK_rank_Department" FromRole="rank" ToRole="Department" />
   </EntityType>
   <EntityType Name="role">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="RoleName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
     <Property Name="IsLock" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-    <NavigationProperty Name="role_function" Relationship="Self.FK_role_function_role" FromRole="role" ToRole="role_function" />
-    <NavigationProperty Name="role_view" Relationship="Self.FK_role_view_role" FromRole="role" ToRole="role_view" />
+    <NavigationProperty Name="role_function" Relationship="AMS_DBModel.FK_role_function_role" FromRole="role" ToRole="role_function" />
+    <NavigationProperty Name="role_view" Relationship="AMS_DBModel.FK_role_view_role" FromRole="role" ToRole="role_view" />
   </EntityType>
   <EntityType Name="role_function">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="RoleID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="FunctionID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
     <Property Name="UserID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="function" Relationship="Self.FK_role_function_function" FromRole="role_function" ToRole="function" />
-    <NavigationProperty Name="role" Relationship="Self.FK_role_function_role" FromRole="role_function" ToRole="role" />
-    <NavigationProperty Name="user_identifie" Relationship="Self.FK_role_function_user_identifie" FromRole="role_function" ToRole="user_identifie" />
+    <NavigationProperty Name="function" Relationship="AMS_DBModel.FK_role_function_function" FromRole="role_function" ToRole="function" />
+    <NavigationProperty Name="role" Relationship="AMS_DBModel.FK_role_function_role" FromRole="role_function" ToRole="role" />
+    <NavigationProperty Name="user_identifie" Relationship="AMS_DBModel.FK_role_function_user_identifie" FromRole="role_function" ToRole="user_identifie" />
   </EntityType>
   <EntityType Name="role_view">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="RoleID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="ViewID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="CreateDate" Type="DateTime" Precision="0" />
     <Property Name="UserID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="role" Relationship="Self.FK_role_view_role" FromRole="role_view" ToRole="role" />
-    <NavigationProperty Name="user_identifie" Relationship="Self.FK_role_view_user_identifie" FromRole="role_view" ToRole="user_identifie" />
-    <NavigationProperty Name="view_page" Relationship="Self.FK_role_view_view_page" FromRole="role_view" ToRole="view_page" />
+    <NavigationProperty Name="role" Relationship="AMS_DBModel.FK_role_view_role" FromRole="role_view" ToRole="role" />
+    <NavigationProperty Name="user_identifie" Relationship="AMS_DBModel.FK_role_view_user_identifie" FromRole="role_view" ToRole="user_identifie" />
+    <NavigationProperty Name="view_page" Relationship="AMS_DBModel.FK_role_view_view_page" FromRole="role_view" ToRole="view_page" />
   </EntityType>
   <EntityType Name="store_Identifie">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="StoreName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
     <Property Name="UserID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="Owner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="asset_detail" Relationship="Self.FK_asset_detail_store_Identifie" FromRole="store_Identifie" ToRole="asset_detail" />
+    <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_detail_store_Identifie" FromRole="store_Identifie" ToRole="asset_detail" />
   </EntityType>
   <EntityType Name="sysdiagram">
     <Key>
       <PropertyRef Name="diagram_id" />
     </Key>
-    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="principal_id" Type="Int32" Nullable="false" />
     <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="version" Type="Int32" />
     <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
+  <EntityType Name="system_log">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="MessageID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="Creator" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="Detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="message_list" Relationship="AMS_DBModel.FK_system_log_message_list" FromRole="system_log" ToRole="message_list" />
+    <NavigationProperty Name="user_identifie" Relationship="AMS_DBModel.FK_system_log_user_identifie" FromRole="system_log" ToRole="user_identifie" />
+  </EntityType>
   <EntityType Name="user_identifie">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="UserName" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="UserPassword" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
@@ -180,22 +282,23 @@
     <Property Name="Role" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="UserFullName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="Image" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="role_function" Relationship="Self.FK_role_function_user_identifie" FromRole="user_identifie" ToRole="role_function" />
-    <NavigationProperty Name="role_view" Relationship="Self.FK_role_view_user_identifie" FromRole="user_identifie" ToRole="role_view" />
     <Property Name="Token" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="role_function" Relationship="AMS_DBModel.FK_role_function_user_identifie" FromRole="user_identifie" ToRole="role_function" />
+    <NavigationProperty Name="role_view" Relationship="AMS_DBModel.FK_role_view_user_identifie" FromRole="user_identifie" ToRole="role_view" />
+    <NavigationProperty Name="system_log" Relationship="AMS_DBModel.FK_system_log_user_identifie" FromRole="user_identifie" ToRole="system_log" />
   </EntityType>
   <EntityType Name="view_page">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="ViewName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="ViewKey" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="role_view" Relationship="Self.FK_role_view_view_page" FromRole="view_page" ToRole="role_view" />
+    <NavigationProperty Name="role_view" Relationship="AMS_DBModel.FK_role_view_view_page" FromRole="view_page" ToRole="role_view" />
   </EntityType>
   <Association Name="FK_asset_allocation_history_asset_detail1">
-    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
-    <End Role="asset_allocation_history" Type="Self.asset_allocation_history" Multiplicity="*" />
+    <End Type="AMS_DBModel.asset_detail" Role="asset_detail" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.asset_allocation_history" Role="asset_allocation_history" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="asset_detail">
         <PropertyRef Name="ID" />
@@ -206,8 +309,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_asset_allocation_history_rank">
-    <End Role="rank" Type="Self.rank" Multiplicity="0..1" />
-    <End Role="asset_allocation_history" Type="Self.asset_allocation_history" Multiplicity="*" />
+    <End Type="AMS_DBModel.rank" Role="rank" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.asset_allocation_history" Role="asset_allocation_history" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="rank">
         <PropertyRef Name="ID" />
@@ -218,8 +321,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_asset_detail_asset_classify">
-    <End Role="asset_classify" Type="Self.asset_classify" Multiplicity="0..1" />
-    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+    <End Type="AMS_DBModel.asset_classify" Role="asset_classify" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.asset_detail" Role="asset_detail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="asset_classify">
         <PropertyRef Name="ID" />
@@ -230,8 +333,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_asset_detail_store_Identifie">
-    <End Role="store_Identifie" Type="Self.store_Identifie" Multiplicity="0..1" />
-    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+    <End Type="AMS_DBModel.store_Identifie" Role="store_Identifie" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.asset_detail" Role="asset_detail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="store_Identifie">
         <PropertyRef Name="ID" />
@@ -242,8 +345,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_asset_recovery_history_asset_detail1">
-    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
-    <End Role="asset_recovery_history" Type="Self.asset_recovery_history" Multiplicity="*" />
+    <End Type="AMS_DBModel.asset_detail" Role="asset_detail" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.asset_recovery_history" Role="asset_recovery_history" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="asset_detail">
         <PropertyRef Name="ID" />
@@ -254,8 +357,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_assets_liquidation_history_asset_detail">
-    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
-    <End Role="assets_liquidation_history" Type="Self.assets_liquidation_history" Multiplicity="*" />
+    <End Type="AMS_DBModel.asset_detail" Role="asset_detail" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.assets_liquidation_history" Role="assets_liquidation_history" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="asset_detail">
         <PropertyRef Name="ID" />
@@ -266,8 +369,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_rank_Department">
-    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
-    <End Role="rank" Type="Self.rank" Multiplicity="*" />
+    <End Type="AMS_DBModel.Department" Role="Department" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.rank" Role="rank" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Department">
         <PropertyRef Name="ID" />
@@ -278,8 +381,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_role_function_function">
-    <End Role="function" Type="Self.function" Multiplicity="0..1" />
-    <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+    <End Type="AMS_DBModel.function" Role="function" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.role_function" Role="role_function" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="function">
         <PropertyRef Name="ID" />
@@ -289,9 +392,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_system_log_message_list">
+    <End Type="AMS_DBModel.message_list" Role="message_list" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.system_log" Role="system_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="message_list">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="system_log">
+        <PropertyRef Name="MessageID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_role_function_role">
-    <End Role="role" Type="Self.role" Multiplicity="0..1" />
-    <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+    <End Type="AMS_DBModel.role" Role="role" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.role_function" Role="role_function" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="role">
         <PropertyRef Name="ID" />
@@ -302,8 +417,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_role_view_role">
-    <End Role="role" Type="Self.role" Multiplicity="0..1" />
-    <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+    <End Type="AMS_DBModel.role" Role="role" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.role_view" Role="role_view" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="role">
         <PropertyRef Name="ID" />
@@ -314,8 +429,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_role_function_user_identifie">
-    <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
-    <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+    <End Type="AMS_DBModel.user_identifie" Role="user_identifie" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.role_function" Role="role_function" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="user_identifie">
         <PropertyRef Name="ID" />
@@ -326,8 +441,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_role_view_user_identifie">
-    <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
-    <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+    <End Type="AMS_DBModel.user_identifie" Role="user_identifie" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.role_view" Role="role_view" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="user_identifie">
         <PropertyRef Name="ID" />
@@ -338,8 +453,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_role_view_view_page">
-    <End Role="view_page" Type="Self.view_page" Multiplicity="0..1" />
-    <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+    <End Type="AMS_DBModel.view_page" Role="view_page" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.role_view" Role="role_view" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="view_page">
         <PropertyRef Name="ID" />
@@ -349,73 +464,16 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="AMS_DBEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="asset_allocation_history" EntityType="Self.asset_allocation_history" />
-    <EntitySet Name="asset_classify" EntityType="Self.asset_classify" />
-    <EntitySet Name="asset_detail" EntityType="Self.asset_detail" />
-    <EntitySet Name="asset_recovery_history" EntityType="Self.asset_recovery_history" />
-    <EntitySet Name="assets_liquidation_history" EntityType="Self.assets_liquidation_history" />
-    <EntitySet Name="Departments" EntityType="Self.Department" />
-    <EntitySet Name="functions" EntityType="Self.function" />
-    <EntitySet Name="ranks" EntityType="Self.rank" />
-    <EntitySet Name="roles" EntityType="Self.role" />
-    <EntitySet Name="role_function" EntityType="Self.role_function" />
-    <EntitySet Name="role_view" EntityType="Self.role_view" />
-    <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-    <EntitySet Name="user_identifie" EntityType="Self.user_identifie" />
-    <EntitySet Name="view_page" EntityType="Self.view_page" />
-    <AssociationSet Name="FK_asset_allocation_history_asset_detail1" Association="Self.FK_asset_allocation_history_asset_detail1">
-      <End Role="asset_detail" EntitySet="asset_detail" />
-      <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
-    </AssociationSet>
-    <AssociationSet Name="FK_asset_allocation_history_rank" Association="Self.FK_asset_allocation_history_rank">
-      <End Role="rank" EntitySet="ranks" />
-      <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
-    </AssociationSet>
-    <AssociationSet Name="FK_asset_detail_asset_classify" Association="Self.FK_asset_detail_asset_classify">
-      <End Role="asset_classify" EntitySet="asset_classify" />
-      <End Role="asset_detail" EntitySet="asset_detail" />
-    </AssociationSet>
-    <AssociationSet Name="FK_asset_detail_store_Identifie" Association="Self.FK_asset_detail_store_Identifie">
-      <End Role="store_Identifie" EntitySet="store_Identifie" />
-      <End Role="asset_detail" EntitySet="asset_detail" />
-    </AssociationSet>
-    <AssociationSet Name="FK_asset_recovery_history_asset_detail1" Association="Self.FK_asset_recovery_history_asset_detail1">
-      <End Role="asset_detail" EntitySet="asset_detail" />
-      <End Role="asset_recovery_history" EntitySet="asset_recovery_history" />
-    </AssociationSet>
-    <AssociationSet Name="FK_assets_liquidation_history_asset_detail" Association="Self.FK_assets_liquidation_history_asset_detail">
-      <End Role="asset_detail" EntitySet="asset_detail" />
-      <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
-    </AssociationSet>
-    <AssociationSet Name="FK_rank_Department" Association="Self.FK_rank_Department">
-      <End Role="Department" EntitySet="Departments" />
-      <End Role="rank" EntitySet="ranks" />
-    </AssociationSet>
-    <AssociationSet Name="FK_role_function_function" Association="Self.FK_role_function_function">
-      <End Role="function" EntitySet="functions" />
-      <End Role="role_function" EntitySet="role_function" />
-    </AssociationSet>
-    <AssociationSet Name="FK_role_function_role" Association="Self.FK_role_function_role">
-      <End Role="role" EntitySet="roles" />
-      <End Role="role_function" EntitySet="role_function" />
-    </AssociationSet>
-    <AssociationSet Name="FK_role_view_role" Association="Self.FK_role_view_role">
-      <End Role="role" EntitySet="roles" />
-      <End Role="role_view" EntitySet="role_view" />
-    </AssociationSet>
-    <AssociationSet Name="FK_role_function_user_identifie" Association="Self.FK_role_function_user_identifie">
-      <End Role="user_identifie" EntitySet="user_identifie" />
-      <End Role="role_function" EntitySet="role_function" />
-    </AssociationSet>
-    <AssociationSet Name="FK_role_view_user_identifie" Association="Self.FK_role_view_user_identifie">
-      <End Role="user_identifie" EntitySet="user_identifie" />
-      <End Role="role_view" EntitySet="role_view" />
-    </AssociationSet>
-    <AssociationSet Name="FK_role_view_view_page" Association="Self.FK_role_view_view_page">
-      <End Role="view_page" EntitySet="view_page" />
-      <End Role="role_view" EntitySet="role_view" />
-    </AssociationSet>
-  </EntityContainer>
+  <Association Name="FK_system_log_user_identifie">
+    <End Type="AMS_DBModel.user_identifie" Role="user_identifie" Multiplicity="0..1" />
+    <End Type="AMS_DBModel.system_log" Role="system_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_identifie">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="system_log">
+        <PropertyRef Name="Creator" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

@@ -16,3 +16,6 @@ D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.csprojAsse
 D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.csproj.CoreCompileInputs.cache
 D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.dll
 D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.pdb
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\log4net.config
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\log4net.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.BUS\bin\Debug\log4net.xml

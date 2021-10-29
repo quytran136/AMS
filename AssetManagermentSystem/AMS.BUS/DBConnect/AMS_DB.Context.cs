@@ -32,12 +32,14 @@ namespace AMS.BUS.DBConnect
         public virtual DbSet<assets_liquidation_history> assets_liquidation_history { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<function> functions { get; set; }
+        public virtual DbSet<message_list> message_list { get; set; }
         public virtual DbSet<rank> ranks { get; set; }
         public virtual DbSet<role> roles { get; set; }
         public virtual DbSet<role_function> role_function { get; set; }
         public virtual DbSet<role_view> role_view { get; set; }
         public virtual DbSet<store_Identifie> store_Identifie { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<system_log> system_log { get; set; }
         public virtual DbSet<user_identifie> user_identifie { get; set; }
         public virtual DbSet<view_page> view_page { get; set; }
     }
