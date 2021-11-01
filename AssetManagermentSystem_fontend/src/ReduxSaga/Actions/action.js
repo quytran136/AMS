@@ -70,3 +70,10 @@ export const setShowMenu = (showMenu) => {
         showMenu
     }
 }
+
+export const setTreeORG =(tree) => {
+    return{
+        type: type.TREE_ORG,
+        tree
+    }
+}

@@ -9,4 +9,5 @@ export const COOKIE = "base/cookie"
 export const GET_USER_INFO = "base/get_user_info"
 export const SAVE_USER_INFO = "base/save_user_info"
 export const SHOW_MENU = "base/show_menu"
+export const TREE_ORG = "base/tree_org"
 

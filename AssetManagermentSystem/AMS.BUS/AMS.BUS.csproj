@@ -58,6 +58,7 @@
     <Compile Include="BusinessHandle\Access.cs" />
     <Compile Include="BusinessHandle\AssetClassify.cs" />
     <Compile Include="BusinessHandle\IBaseHandle.cs" />
+    <Compile Include="BusinessHandle\OrganizationalChart.cs" />
     <Compile Include="BusinessHandle\UserInfor.cs" />
     <Compile Include="BusModels\BaseModel.cs" />
     <Compile Include="BusModels\ExceptionHandle.cs" />

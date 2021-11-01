@@ -16,7 +16,6 @@ code {
 .common {
   font-size       : 18px;
   height          : 100vh;
-  background-color: gray;
   position        : static;
   overflow-y      : auto;
 }

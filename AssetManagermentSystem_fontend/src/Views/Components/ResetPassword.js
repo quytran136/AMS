@@ -92,7 +92,6 @@ const ResetPassword = (prop) => {
                 <Button
                     className="button-reset ams-btn"
                     type="primary"
-                    shape="round"
                     onClick={() => {
                         reset();
                     }}>

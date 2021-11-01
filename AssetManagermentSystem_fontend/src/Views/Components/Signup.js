@@ -103,7 +103,6 @@ const Signup = (prop) => {
             <Input
                 className="input"
                 size="middle"
-                shape="round"
                 placeholder="Tên hiển thị"
                 prefix={<UserOutlined />}
                 onChange={(e) => { setUserFullName(e.target.value) }}
@@ -112,7 +111,6 @@ const Signup = (prop) => {
                 <Button
                     className="button-register ams-btn"
                     type="primary"
-                    shape="round"
                     size="middle"
                     onClick={() => {
                         register();

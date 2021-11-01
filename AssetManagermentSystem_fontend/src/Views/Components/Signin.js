@@ -68,7 +68,6 @@ const Signin = () => {
             <Button
                 className="button-login"
                 type="primary"
-                shape="round"
                 size="middle"
                 onClick={() => {
                     login();

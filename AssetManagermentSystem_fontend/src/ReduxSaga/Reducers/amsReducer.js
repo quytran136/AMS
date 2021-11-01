@@ -8,6 +8,40 @@ const initialState = {
     cookie: null,
     userInfo: null,
     showMenu: true,
+    treeORG: {
+        label: "root",
+        key: 1,
+        list: [{
+            label: "123",
+            key: 2,
+            list: [
+                {
+                    label: "dbc",
+                    key: 5,
+                    list: []
+                },
+                {
+                    label: "dbc",
+                    key: 6,
+                    list: []
+                }]
+        },
+        {
+            label: "123",
+            key: 3,
+            list: [
+                {
+                    label: "dbc",
+                    key: 7,
+                    list: []
+                },
+                {
+                    label: "dbc",
+                    key: 8,
+                    list: []
+                }]
+        }]
+    }
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -23,7 +57,7 @@ export const amsReducer = (state = initialState, action) => {
                 token: action.token
             }
         case type.SAVE_USER_LOGIN:
-            return{
+            return {
                 ...state,
                 userName: action.userName
             }
@@ -38,14 +72,19 @@ export const amsReducer = (state = initialState, action) => {
                 tabLogin: action.tab
             }
         case type.SAVE_USER_INFO:
-            return{
+            return {
                 ...state,
                 userInfo: action.userInfo
             }
         case type.SHOW_MENU:
-            return{
+            return {
                 ...state,
                 showMenu: action.showMenu
+            }
+        case type.TREE_ORG:
+            return {
+                ...state,
+                treeORG: action.tree
             }
         default:
             return {
