@@ -4,13 +4,20 @@ import "./Access/Css/Home.scss";
 import { Col, Row } from 'antd';
 import NavigationBar from "./Components/navigationBar";
 import Menu from "../Views/Components/menu";
+import { connect, useDispatch } from "react-redux";
 
-function Home() {
+function Asset() {
   return (
     <div className="main-content">
-      
+      Tài sản
     </div>
   );
 }
 
-export default Home;
+function mapStateToProps(state) {
+    return {
+        amsStore: state.amsReducer,
+    };
+}
+
+export default connect(mapStateToProps)(Asset);

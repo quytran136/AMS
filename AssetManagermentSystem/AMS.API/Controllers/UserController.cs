@@ -15,15 +15,17 @@ namespace AMS.API.Controllers
 {
     public class UserController : ApiController
     {
+        [HttpPost]
         public BaseResponse<UserInformation> UserInformation(BaseRequest<Information> req)
         {
             // validate token
-            if (new Access().CheckToken(req.Token, req.Data.UserName).Result)
+            BaseModel<bool> access = new Access().CheckToken(req.Token, req.Data.UserName);
+            if (!string.IsNullOrEmpty(access.Exception.Message))
             {
                 return new BaseResponse<UserInformation>()
                 {
-                    Code = "201",
-                    Message = MessagesValue.WARNING
+                    Code = access.Exception.Code,
+                    Message = access.Exception.Message
                 };
             }
 
@@ -42,8 +44,6 @@ namespace AMS.API.Controllers
                     }
                     return new BaseResponse<UserInformation>()
                     {
-                        Code = "201",
-                        Message = MessagesValue.SUCCESS,
                         Response = new UserInformation()
                         {
                             UserFullName = user_info1.Result.UserFullName ?? "",
@@ -63,11 +63,7 @@ namespace AMS.API.Controllers
                             Message = user_info2.Exception.Message
                         };
                     }
-                    return new BaseResponse<UserInformation>()
-                    {
-                        Code = "201",
-                        Message = MessagesValue.SUCCESS
-                    };
+                    return new BaseResponse<UserInformation>();
                 case "LOCK_USER":
                     UserInfor user2 = new UserInfor();
                     BaseModel<bool> user_info3 = user2.Lock(req.Data.UserID);
@@ -79,11 +75,7 @@ namespace AMS.API.Controllers
                             Message = user_info3.Exception.Message
                         };
                     }
-                    return new BaseResponse<UserInformation>()
-                    {
-                        Code = "201",
-                        Message = MessagesValue.SUCCESS
-                    };
+                    return new BaseResponse<UserInformation>();
                 case "UNLOCK_USER":
                     UserInfor user4 = new UserInfor();
                     BaseModel<bool> user_info4 = user4.Lock(req.Data.UserID);
@@ -95,11 +87,7 @@ namespace AMS.API.Controllers
                             Message = user_info4.Exception.Message
                         };
                     }
-                    return new BaseResponse<UserInformation>()
-                    {
-                        Code = "201",
-                        Message = MessagesValue.SUCCESS
-                    };
+                    return new BaseResponse<UserInformation>();
                 case "DELETE_USER":
                     UserInfor user5 = new UserInfor();
                     BaseModel<bool> user_info5 = user5.Delete(req.Data.UserID);
@@ -111,17 +99,9 @@ namespace AMS.API.Controllers
                             Message = user_info5.Exception.Message
                         };
                     }
-                    return new BaseResponse<UserInformation>()
-                    {
-                        Code = "201",
-                        Message = MessagesValue.SUCCESS
-                    };
+                    return new BaseResponse<UserInformation>();
                 case "CHANGE_ROLE":
-                    return new BaseResponse<UserInformation>()
-                    {
-                        Code = "201",
-                        Message = MessagesValue.SUCCESS,
-                    };
+                    return new BaseResponse<UserInformation>();
                 case "GET_INFORMATION":
                     UserInfor user6 = new UserInfor();
                     BaseModel<user_identifie> user_info6 = user6.GetUserInfor(req.Data.UserName);
@@ -135,14 +115,13 @@ namespace AMS.API.Controllers
                     }
                     return new BaseResponse<UserInformation>()
                     {
-                        Code = "201",
-                        Message = MessagesValue.SUCCESS,
                         Response = new UserInformation()
                         {
                             UserFullName = user_info6.Result.UserFullName ?? "",
                             IsDelete = user_info6.Result.IsDelete ?? true,
                             IsLock = user_info6.Result.IsLock ?? true,
-                            UserName = user_info6.Result.UserFullName ?? ""
+                            UserName = user_info6.Result.UserName ?? "",
+                            ID = user_info6.Result.ID ?? ""
                         }
                     };
                 default:

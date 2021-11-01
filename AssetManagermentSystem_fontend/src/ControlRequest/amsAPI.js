@@ -10,7 +10,7 @@ const AMS_API = {
         return request.post(url, body);
     },
     userInformation: (body) => {
-        const url = "User"
+        const url = "User/UserInformation"
         return request.post(url, body);
     }
 }

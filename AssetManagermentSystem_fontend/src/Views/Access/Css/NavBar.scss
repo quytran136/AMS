@@ -4,7 +4,6 @@
     width           : 100%;
     padding-left    : 1vh;
     padding-right   : 2vh;
-    position        : fixed;
 
     .nav-bar-right {
         text-align: end;
@@ -22,16 +21,16 @@
     }
 
     .number-noti {
-        font-size       : 0.9vh;
+        font-size       : 8px;
         text-align      : center;
-        position        : fixed;
+        position        : absolute;
         top             : 1vh;
         border-radius   : 40px;
         padding         : 3px;
         width           : max-content;
         height          : max-content;
-        min-width       : 2vh;
-        min-height      : 2vh;
+        min-width       : 18px;
+        min-height      : 18px;
         margin-left     : -8px;
         background-color: red;
         color           : white;
@@ -39,30 +38,31 @@
 }
 
 .board-info {
-    width           : 30vh;
+    width           : 200px;
     height          : max-content;
     position        : absolute;
     background-color: white;
     color           : black;
-    font-size       : 1.5vh;
+    font-size       : 14px;
     padding         : 10px;
-    top             : 7vh;
+    top             : 50px;
     right           : 0;
+    z-index         : 1;
     box-shadow      : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
     .menu-item {
-        cursor: pointer;
+        cursor    : pointer;
         text-align: start;
-        width: auto;
-        height: auto;
+        width     : auto;
+        height    : auto;
 
         &:hover {
             background-color: rgb(233, 248, 198);
         }
 
-        .menu-label{
-            margin: auto;
-            padding-left: 10px;
+        .menu-label {
+            margin      : auto;
+            padding-left: 20px;
         }
     }
 

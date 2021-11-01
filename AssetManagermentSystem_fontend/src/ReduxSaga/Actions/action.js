@@ -21,6 +21,13 @@ export const saveToken = (token) => {
     }
 }
 
+export const saveUserLogin = (userName) => {
+    return {
+        type: type.SAVE_USER_LOGIN,
+        userName,
+    }
+}
+
 export const setTabLogin = (tab) => {
     return {
         type: type.SET_TAB_LOGIN,
@@ -39,6 +46,27 @@ export const signup = (body) => {
 export const saveCookie = (cookie) => {
     return {
         type: type.COOKIE,
-        cookie: cookie
+        cookie
+    }
+}
+
+export const getUserInfo = (body) => {
+    return{
+        type: type.GET_USER_INFO,
+        body
+    }
+}
+
+export const saveUserInfo = (userInfo) => {
+    return {
+        type: type.SAVE_USER_INFO,
+        userInfo
+    }
+}
+
+export const setShowMenu = (showMenu) => {
+    return{
+        type: type.SHOW_MENU,
+        showMenu
     }
 }

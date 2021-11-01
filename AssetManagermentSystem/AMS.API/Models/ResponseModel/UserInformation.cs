@@ -9,6 +9,7 @@ namespace AMS.API.Models.ResponseModel
 {
     public class UserInformation
     {
+        public string ID { get; set; }
         public string UserName { get; set; }
         public string UserFullName { get; set; }
         public bool IsLock { get; set; }

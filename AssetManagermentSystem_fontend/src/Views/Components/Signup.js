@@ -76,14 +76,16 @@ const Signup = (prop) => {
             </div>
             <Input
                 className="input"
-                size="large"
+                size="middle"
+                shape="round"
                 placeholder="Tài khoản"
                 prefix={<UserOutlined />}
                 onChange={(e) => { setUserName(e.target.value) }}
             />
             <Input.Password
                 className="input"
-                size="large"
+                size="middle"
+                shape="round"
                 placeholder="Mật khẩu"
                 prefix={<LockOutlined />}
                 iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
@@ -91,7 +93,8 @@ const Signup = (prop) => {
             />
             <Input.Password
                 className="input"
-                size="large"
+                size="middle"
+                shape="round"
                 placeholder="Nhập lại mật khẩu"
                 prefix={<LockOutlined />}
                 iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
@@ -99,7 +102,8 @@ const Signup = (prop) => {
             />
             <Input
                 className="input"
-                size="large"
+                size="middle"
+                shape="round"
                 placeholder="Tên hiển thị"
                 prefix={<UserOutlined />}
                 onChange={(e) => { setUserFullName(e.target.value) }}
@@ -109,6 +113,7 @@ const Signup = (prop) => {
                     className="button-register ams-btn"
                     type="primary"
                     shape="round"
+                    size="middle"
                     onClick={() => {
                         register();
                     }}>

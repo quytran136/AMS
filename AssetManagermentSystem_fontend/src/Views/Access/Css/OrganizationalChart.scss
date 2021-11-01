@@ -1,0 +1,21 @@
+.organizational-chart{
+    overflow-y: auto;
+    min-height: 80vh;
+    max-height: 80vh;
+
+    .tool{
+        position: absolute;
+        text-align: end;
+        right: 6vh;
+        z-index: 9;
+    }
+}
+
+.node{
+    width: 20vh;
+    display: inline-block;
+
+    .header{
+        color: white;
+    }
+}

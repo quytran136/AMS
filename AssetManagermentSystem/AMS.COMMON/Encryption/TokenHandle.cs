@@ -20,7 +20,7 @@ namespace AMS.COMMON.Encryption
                 byte[] saltBytes = new byte[24];
                 saltBytes = Encoding.UTF8.GetBytes(salt);
 
-                using (var pbkdf2 = new Rfc2898DeriveBytes(key + salt + value, saltBytes, 10000))
+                using (var pbkdf2 = new Rfc2898DeriveBytes(key + salt + value + DateTime.Now.ToLongTimeString(), saltBytes, 10000))
                 {
                     derived = Convert.ToBase64String(pbkdf2.GetBytes(24));
                 }

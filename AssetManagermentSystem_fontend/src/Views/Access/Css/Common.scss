@@ -1,24 +1,24 @@
 .warnign-message {
-    color: orange;
+    color: orange !important;
 }
 
 .error-message {
-    color: red;
+    color: red !important;
 }
 
 .success-message {
-    color: green;
+    color: green !important;
 }
 
-.label{
-    width: 100vh;
-    height: 100vh;
+.label {
+    width     : 100vh;
+    height    : 100vh;
     text-align: start;
 }
 
 .input {
     margin-bottom: 1vh;
-    border-radius: 25px;
+    border-radius: 25px !important;
     font-size    : 2rem;
 }
 
@@ -33,10 +33,15 @@
 
 .ams-btn {
     margin-bottom: 1vh;
-    cursor: pointer;
-    color: white;
+    cursor       : pointer;
+    color        : white;
 
-    &:hover{
+    &:hover {
         color: rgb(192, 192, 192) !important;
     }
+}
+
+.body-content {
+    width  : auto;
+    background-color: azure;
 }

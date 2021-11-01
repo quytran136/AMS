@@ -101,7 +101,7 @@ namespace AMS.BUS.BusinessHandle
                 }
                 else
                 {
-                    if (userName == user.UserName)
+                    if (userName != user.UserName)
                     {
                         return new BaseModel<bool>()
                         {

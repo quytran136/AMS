@@ -26,7 +26,7 @@ const Signin = () => {
     const [userName, setUserName] = useState("");
     const [userPassword, setUserPassword] = useState("");
 
-    const Login = () => {
+    const login = () => {
         if (userName === "" || userPassword === "") {
             openNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu trống", <WarningOutlined className="warnign-message" />);
             return;
@@ -47,21 +47,21 @@ const Signin = () => {
             </div>
             <Input
                 className="input"
-                size="large"
+                size="middle"
                 placeholder="User name"
                 prefix={<UserOutlined />}
                 onPressEnter={() => {
-                    Login();
+                    login();
                 }}
                 onChange={(e) => setUserName(e.target.value)} />
             <Input.Password
                 className="input"
-                size="large"
+                size="middle"
                 prefix={<LockOutlined />}
                 placeholder="Password"
                 iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                 onPressEnter={() => {
-                    Login();
+                    login();
                 }}
                 onChange={(e) => setUserPassword(e.target.value)}
             />
@@ -69,8 +69,9 @@ const Signin = () => {
                 className="button-login"
                 type="primary"
                 shape="round"
+                size="middle"
                 onClick={() => {
-                    Login();
+                    login();
                 }}>
                 Đăng nhập
             </Button>
