@@ -58,6 +58,7 @@
     <Compile Include="BusinessHandle\Access.cs" />
     <Compile Include="BusinessHandle\AssetClassify.cs" />
     <Compile Include="BusinessHandle\IBaseHandle.cs" />
+    <Compile Include="BusinessHandle\DepartmentChart.cs" />
     <Compile Include="BusinessHandle\OrganizationalChart.cs" />
     <Compile Include="BusinessHandle\UserInformation.cs" />
     <Compile Include="BusModels\BaseModel.cs" />
@@ -100,6 +101,12 @@
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\message_list.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\Organizational.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\Process.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\rank.cs">

@@ -11,34 +11,34 @@ namespace AMS.BUS.BusinessHandle
 {
     public class OrganizationalChart : IBaseHandle
     {
-        public BaseModel<Department> AddNew(string parentID, List<string> DepartmentName)
+        public BaseModel<Organizational> AddNew(string parentID, List<string> OrganizationalName)
         {
             try
             {
                 var db = DBC.Init;
                 if (string.IsNullOrEmpty(parentID))
                 {
-                    List<Department> departments = new List<Department>();
-                    foreach (string item in DepartmentName)
+                    List<Organizational> Organizationals = new List<Organizational>();
+                    foreach (string item in OrganizationalName)
                     {
-                        Department department = new Department()
+                        Organizational Organizational = new Organizational()
                         {
                             ParentID = null,
-                            DepartmentName = item,
+                            OrganizationalName = item,
                             ID = Guid.NewGuid().ToString(),
                         };
 
-                        departments.Add(department);
+                        Organizationals.Add(Organizational);
                     }
-                    db.Departments.AddRange(departments);
+                    db.Organizationals.AddRange(Organizationals);
                     db.SaveChanges();
                 }
                 else
                 {
-                    Department departmentParent = db.Departments.Where(ptr => ptr.ID == parentID).ToList().FirstOrDefault();
-                    if (departmentParent == null)
+                    Organizational OrganizationalParent = db.Organizationals.Where(ptr => ptr.ID == parentID).ToList().FirstOrDefault();
+                    if (OrganizationalParent == null)
                     {
-                        return new BaseModel<Department>()
+                        return new BaseModel<Organizational>()
                         {
                             Exception = new ExceptionHandle()
                             {
@@ -46,26 +46,26 @@ namespace AMS.BUS.BusinessHandle
                             }
                         };
                     }
-                    List<Department> departments = new List<Department>();
-                    foreach (string item in DepartmentName)
+                    List<Organizational> Organizationals = new List<Organizational>();
+                    foreach (string item in OrganizationalName)
                     {
-                        Department department = new Department()
+                        Organizational Organizational = new Organizational()
                         {
-                            ParentID = departmentParent.ID,
-                            DepartmentName = item,
+                            ParentID = OrganizationalParent.ID,
+                            OrganizationalName = item,
                             ID = Guid.NewGuid().ToString(),
                         };
 
-                        departments.Add(department);
+                        Organizationals.Add(Organizational);
                     }
-                    db.Departments.AddRange(departments);
+                    db.Organizationals.AddRange(Organizationals);
                     db.SaveChanges();
                 }
-                return new BaseModel<Department>();
+                return new BaseModel<Organizational>();
             }
             catch (Exception ex)
             {
-                return new BaseModel<Department>()
+                return new BaseModel<Organizational>()
                 {
                     Exception = new ExceptionHandle
                     {
@@ -76,15 +76,15 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Department> Remove(string departmentID)
+        public BaseModel<Organizational> Remove(string OrganizationalID)
         {
             try
             {
                 var db = DBC.Init;
-                List<Department> departments = db.Departments.Where(ptr => ptr.ID == departmentID || ptr.ParentID == departmentID).ToList();
-                if (departments == null)
+                List<Organizational> Organizationals = db.Organizationals.Where(ptr => ptr.ID == OrganizationalID || ptr.ParentID == OrganizationalID).ToList();
+                if (Organizationals == null)
                 {
-                    return new BaseModel<Department>()
+                    return new BaseModel<Organizational>()
                     {
                         Exception = new ExceptionHandle()
                         {
@@ -92,13 +92,13 @@ namespace AMS.BUS.BusinessHandle
                         }
                     };
                 }
-                db.Departments.RemoveRange(departments);
+                db.Organizationals.RemoveRange(Organizationals);
                 db.SaveChanges();
-                return new BaseModel<Department>();
+                return new BaseModel<Organizational>();
             }
             catch (Exception ex)
             {
-                return new BaseModel<Department>()
+                return new BaseModel<Organizational>()
                 {
                     Exception = new ExceptionHandle
                     {
@@ -109,17 +109,46 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Department> Edit()
+        public BaseModel<Organizational> Edit(string OrganizationalID, string OrganizationalName)
         {
-
+            try
+            {
+                var db = DBC.Init;
+                Organizational Organizational = db.Organizationals.Where(ptr => ptr.ID == OrganizationalID).ToList().FirstOrDefault();
+                if (Organizational == null)
+                {
+                    return new BaseModel<Organizational>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(3),
+                        }
+                    };
+                }
+                Organizational.OrganizationalName = OrganizationalName;
+                db.SaveChanges();
+                return new BaseModel<Organizational>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<Organizational>()
+                {
+                    Exception = new ExceptionHandle
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
         }
+
 
         public string BUSMessageCode(int id)
         {
             return string.Format("{0}{1}{2}{3}",
                 FunctionCode.BUS_EX,
                 FunctionCode.API,
-                FunctionCode.DEPARTMENT,
+                FunctionCode.ORG,
                 id);
         }
 
@@ -128,7 +157,7 @@ namespace AMS.BUS.BusinessHandle
             return string.Format("{0}{1}{2}{3}",
                 FunctionCode.SYS_EX,
                 FunctionCode.API,
-                FunctionCode.DEPARTMENT,
+                FunctionCode.ORG,
                 id);
         }
     }

@@ -17,5 +17,6 @@ namespace AMS.COMMON
         public static string ROLE = "C";
         public static string ASSET = "D";
         public static string DEPARTMENT = "E";
+        public static string ORG = "F";
     }
 }

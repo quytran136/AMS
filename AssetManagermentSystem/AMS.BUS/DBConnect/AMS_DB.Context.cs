@@ -33,6 +33,8 @@ namespace AMS.BUS.DBConnect
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<function> functions { get; set; }
         public virtual DbSet<message_list> message_list { get; set; }
+        public virtual DbSet<Organizational> Organizationals { get; set; }
+        public virtual DbSet<Process> Processes { get; set; }
         public virtual DbSet<rank> ranks { get; set; }
         public virtual DbSet<role> roles { get; set; }
         public virtual DbSet<role_function> role_function { get; set; }

@@ -101,6 +101,23 @@
           <Property Name="Message_EN" Type="nvarchar(max)" />
           <Property Name="Message_VN" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="Organizational">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="OrganizationalName" Type="nvarchar" MaxLength="128" />
+          <Property Name="ParentID" Type="varchar" MaxLength="64" />
+          <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+        </EntityType>
+        <EntityType Name="Process">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="OrganizationalID" Type="nvarchar" MaxLength="64" />
+          <Property Name="ParentStepID" Type="nvarchar" MaxLength="64" />
+        </EntityType>
         <EntityType Name="rank">
           <Key>
             <PropertyRef Name="ID" />
@@ -147,7 +164,6 @@
           <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="StoreName" Type="nchar" MaxLength="10" />
           <Property Name="CreateDate" Type="datetime" />
-          <Property Name="UserID" Type="varchar" MaxLength="64" />
           <Property Name="Owner" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="sysdiagrams">
@@ -265,15 +281,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Department_Department">
+        <Association Name="FK_Organizational_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
-          <End Role="Department1" Type="Self.Department" Multiplicity="*" />
+          <End Role="Organizational" Type="Self.Organizational" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Department">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Department1">
-              <PropertyRef Name="ParentID" />
+            <Dependent Role="Organizational">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Process_Organizational">
+          <End Role="Organizational" Type="Self.Organizational" Multiplicity="0..1" />
+          <End Role="Process" Type="Self.Process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organizational">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Process">
+              <PropertyRef Name="OrganizationalID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -394,6 +422,8 @@
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="function" EntityType="Self.function" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="message_list" EntityType="Self.message_list" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Organizational" EntityType="Self.Organizational" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Process" EntityType="Self.Process" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="rank" EntityType="Self.rank" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role_function" EntityType="Self.role_function" Schema="dbo" store:Type="Tables" />
@@ -427,9 +457,13 @@
             <End Role="asset_detail" EntitySet="asset_detail" />
             <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
           </AssociationSet>
-          <AssociationSet Name="FK_Department_Department" Association="Self.FK_Department_Department">
+          <AssociationSet Name="FK_Organizational_Department" Association="Self.FK_Organizational_Department">
             <End Role="Department" EntitySet="Department" />
-            <End Role="Department1" EntitySet="Department" />
+            <End Role="Organizational" EntitySet="Organizational" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Process_Organizational" Association="Self.FK_Process_Organizational">
+            <End Role="Organizational" EntitySet="Organizational" />
+            <End Role="Process" EntitySet="Process" />
           </AssociationSet>
           <AssociationSet Name="FK_rank_Department" Association="Self.FK_rank_Department">
             <End Role="Department" EntitySet="Department" />
@@ -481,6 +515,8 @@
           <EntitySet Name="Departments" EntityType="AMS_DBModel.Department" />
           <EntitySet Name="functions" EntityType="AMS_DBModel.function" />
           <EntitySet Name="message_list" EntityType="AMS_DBModel.message_list" />
+          <EntitySet Name="Organizationals" EntityType="AMS_DBModel.Organizational" />
+          <EntitySet Name="Processes" EntityType="AMS_DBModel.Process" />
           <EntitySet Name="ranks" EntityType="AMS_DBModel.rank" />
           <EntitySet Name="roles" EntityType="AMS_DBModel.role" />
           <EntitySet Name="role_function" EntityType="AMS_DBModel.role_function" />
@@ -514,6 +550,10 @@
             <End Role="asset_detail" EntitySet="asset_detail" />
             <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
           </AssociationSet>
+          <AssociationSet Name="FK_Organizational_Department" Association="AMS_DBModel.FK_Organizational_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Organizational" EntitySet="Organizationals" />
+          </AssociationSet>
           <AssociationSet Name="FK_rank_Department" Association="AMS_DBModel.FK_rank_Department">
             <End Role="Department" EntitySet="Departments" />
             <End Role="rank" EntitySet="ranks" />
@@ -525,6 +565,10 @@
           <AssociationSet Name="FK_system_log_message_list" Association="AMS_DBModel.FK_system_log_message_list">
             <End Role="message_list" EntitySet="message_list" />
             <End Role="system_log" EntitySet="system_log" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Process_Organizational" Association="AMS_DBModel.FK_Process_Organizational">
+            <End Role="Organizational" EntitySet="Organizationals" />
+            <End Role="Process" EntitySet="Processes" />
           </AssociationSet>
           <AssociationSet Name="FK_role_function_role" Association="AMS_DBModel.FK_role_function_role">
             <End Role="role" EntitySet="roles" />
@@ -549,10 +593,6 @@
           <AssociationSet Name="FK_system_log_user_identifie" Association="AMS_DBModel.FK_system_log_user_identifie">
             <End Role="user_identifie" EntitySet="user_identifie" />
             <End Role="system_log" EntitySet="system_log" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Department_Department" Association="AMS_DBModel.FK_Department_Department">
-            <End Role="Department" EntitySet="Departments" />
-            <End Role="Department1" EntitySet="Departments" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="asset_allocation_history">
@@ -641,10 +681,9 @@
           </Key>
           <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="DepartmentName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ranks" Relationship="AMS_DBModel.FK_rank_Department" FromRole="Department" ToRole="rank" />
           <Property Name="ParentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Department1" Relationship="AMS_DBModel.FK_Department_Department" FromRole="Department" ToRole="Department1" />
-          <NavigationProperty Name="Department2" Relationship="AMS_DBModel.FK_Department_Department" FromRole="Department1" ToRole="Department" />
+          <NavigationProperty Name="Organizationals" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Department" ToRole="Organizational" />
+          <NavigationProperty Name="ranks" Relationship="AMS_DBModel.FK_rank_Department" FromRole="Department" ToRole="rank" />
         </EntityType>
         <EntityType Name="function">
           <Key>
@@ -665,6 +704,26 @@
           <Property Name="Message_EN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Message_VN" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="system_log" Relationship="AMS_DBModel.FK_system_log_message_list" FromRole="message_list" ToRole="system_log" />
+        </EntityType>
+        <EntityType Name="Organizational">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationalName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ParentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Department" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Organizational" ToRole="Department" />
+          <NavigationProperty Name="Processes" Relationship="AMS_DBModel.FK_Process_Organizational" FromRole="Organizational" ToRole="Process" />
+        </EntityType>
+        <EntityType Name="Process">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="OrganizationalID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ParentStepID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Organizational" Relationship="AMS_DBModel.FK_Process_Organizational" FromRole="Process" ToRole="Organizational" />
         </EntityType>
         <EntityType Name="rank">
           <Key>
@@ -722,7 +781,6 @@
           <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="StoreName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="UserID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="Owner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_detail_store_Identifie" FromRole="store_Identifie" ToRole="asset_detail" />
         </EntityType>
@@ -847,6 +905,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Organizational_Department">
+          <End Type="AMS_DBModel.Department" Role="Department" Multiplicity="0..1" />
+          <End Type="AMS_DBModel.Organizational" Role="Organizational" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Organizational">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_rank_Department">
           <End Type="AMS_DBModel.Department" Role="Department" Multiplicity="0..1" />
           <End Type="AMS_DBModel.rank" Role="rank" Multiplicity="*" />
@@ -880,6 +950,18 @@
             </Principal>
             <Dependent Role="system_log">
               <PropertyRef Name="MessageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Process_Organizational">
+          <End Type="AMS_DBModel.Organizational" Role="Organizational" Multiplicity="0..1" />
+          <End Type="AMS_DBModel.Process" Role="Process" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organizational">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Process">
+              <PropertyRef Name="OrganizationalID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -952,18 +1034,6 @@
             </Principal>
             <Dependent Role="system_log">
               <PropertyRef Name="Creator" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Department_Department">
-          <End Type="AMS_DBModel.Department" Role="Department" Multiplicity="0..1" />
-          <End Type="AMS_DBModel.Department" Role="Department1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Department1">
-              <PropertyRef Name="ParentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1077,6 +1147,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Organizationals">
+            <EntityTypeMapping TypeName="AMS_DBModel.Organizational">
+              <MappingFragment StoreEntitySet="Organizational">
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="OrganizationalName" ColumnName="OrganizationalName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Processes">
+            <EntityTypeMapping TypeName="AMS_DBModel.Process">
+              <MappingFragment StoreEntitySet="Process">
+                <ScalarProperty Name="ParentStepID" ColumnName="ParentStepID" />
+                <ScalarProperty Name="OrganizationalID" ColumnName="OrganizationalID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ranks">
             <EntityTypeMapping TypeName="AMS_DBModel.rank">
               <MappingFragment StoreEntitySet="rank">
@@ -1124,7 +1213,6 @@
             <EntityTypeMapping TypeName="AMS_DBModel.store_Identifie">
               <MappingFragment StoreEntitySet="store_Identifie">
                 <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="StoreName" ColumnName="StoreName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

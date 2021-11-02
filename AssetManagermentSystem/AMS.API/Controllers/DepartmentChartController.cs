@@ -11,16 +11,16 @@ using System.Web.Http;
 
 namespace AMS.API.Controllers
 {
-    public class OrganizationalChartController : ApiController
+    public class DepartmentChartController : ApiController
     {
         [HttpPost]
-        public BaseResponse<Res_OrganizationalChart> OrganizationalControl(BaseRequest<Req_OrganizationalChart> req)
+        public BaseResponse<Res_DepartmentChart> OrganizationalControl(BaseRequest<Req_DepartmentChart> req)
         {
             // validate token
             BaseModel<bool> access = new Access().CheckToken(req.Token, req.Data.UserName);
             if (!string.IsNullOrEmpty(access.Exception.Message))
             {
-                return new BaseResponse<Res_OrganizationalChart>()
+                return new BaseResponse<Res_DepartmentChart>()
                 {
                     Code = access.Exception.Code,
                     Message = access.Exception.Message
@@ -29,20 +29,26 @@ namespace AMS.API.Controllers
 
             switch (req.Key)
             {
-                case "UPDATE_ORG":
-                    return new BaseResponse<Res_OrganizationalChart>()
+                case "ADD_DEPARTMENT":
+                    return new BaseResponse<Res_DepartmentChart>()
                     {
                         Code = "404",
                         Message = "Not found function",
                     };
-                case "RESTORE_ORG":
-                    return new BaseResponse<Res_OrganizationalChart>()
+                case "EDIT_DEPARTMENT":
+                    return new BaseResponse<Res_DepartmentChart>()
+                    {
+                        Code = "404",
+                        Message = "Not found function",
+                    };
+                case "DELETE_DEPARTMENT":
+                    return new BaseResponse<Res_DepartmentChart>()
                     {
                         Code = "404",
                         Message = "Not found function",
                     };
                 default:
-                    return new BaseResponse<Res_OrganizationalChart>()
+                    return new BaseResponse<Res_DepartmentChart>()
                     {
                         Code = "404",
                         Message = "Not found function",

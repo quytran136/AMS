@@ -12,22 +12,21 @@ namespace AMS.BUS.DBConnect
     using System;
     using System.Collections.Generic;
     
-    public partial class Department
+    public partial class Organizational
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Department()
+        public Organizational()
         {
-            this.Organizationals = new HashSet<Organizational>();
-            this.ranks = new HashSet<rank>();
+            this.Processes = new HashSet<Process>();
         }
     
         public string ID { get; set; }
-        public string DepartmentName { get; set; }
+        public string OrganizationalName { get; set; }
         public string ParentID { get; set; }
+        public string DepartmentID { get; set; }
     
+        public virtual Department Department { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Organizational> Organizationals { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<rank> ranks { get; set; }
+        public virtual ICollection<Process> Processes { get; set; }
     }
 }

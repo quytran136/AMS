@@ -170,17 +170,19 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\OrganizationalChartController.cs" />
+    <Compile Include="Controllers\DepartmentChartController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\RequestModel\Access\GetToken.cs" />
     <Compile Include="Models\RequestModel\BaseRequest.cs" />
-    <Compile Include="Models\RequestModel\Req_UserInformation.cs" />
     <Compile Include="Models\RequestModel\Req_OrganizationalChart.cs" />
+    <Compile Include="Models\RequestModel\Req_UserInformation.cs" />
+    <Compile Include="Models\RequestModel\Req_DepartmentChart.cs" />
     <Compile Include="Models\ResponseModel\Access\Token.cs" />
     <Compile Include="Models\ResponseModel\BaseResponse.cs" />
+    <Compile Include="Models\ResponseModel\Res_DepartmentChart.cs" />
     <Compile Include="Models\ResponseModel\Res_OrganizationalChart.cs" />
     <Compile Include="Models\ResponseModel\Res_UserInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

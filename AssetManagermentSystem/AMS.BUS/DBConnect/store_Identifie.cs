@@ -23,7 +23,6 @@ namespace AMS.BUS.DBConnect
         public string ID { get; set; }
         public string StoreName { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
-        public string UserID { get; set; }
         public string Owner { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

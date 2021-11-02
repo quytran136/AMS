@@ -5,7 +5,8 @@ using System.Web;
 
 namespace AMS.API.Models.RequestModel
 {
-    public class Req_OrganizationalChart
+    public class Req_DepartmentChart
     {
+        public string UserName { get; set; }
     }
 }

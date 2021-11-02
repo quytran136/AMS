@@ -76,6 +76,7 @@
     </Key>
     <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
     <Property Name="DepartmentName" Type="nvarchar" MaxLength="128" />
+    <Property Name="ParentID" Type="varchar" MaxLength="64" />
   </EntityType>
   <EntityType Name="function">
     <Key>
@@ -94,6 +95,23 @@
     <Property Name="Code" Type="varchar" MaxLength="64" />
     <Property Name="Message_EN" Type="nvarchar(max)" />
     <Property Name="Message_VN" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Organizational">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
+    <Property Name="OrganizationalName" Type="nvarchar" MaxLength="128" />
+    <Property Name="ParentID" Type="varchar" MaxLength="64" />
+    <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+  </EntityType>
+  <EntityType Name="Process">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
+    <Property Name="OrganizationalID" Type="nvarchar" MaxLength="64" />
+    <Property Name="ParentStepID" Type="nvarchar" MaxLength="64" />
   </EntityType>
   <EntityType Name="rank">
     <Key>
@@ -141,7 +159,6 @@
     <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
     <Property Name="StoreName" Type="nchar" MaxLength="10" />
     <Property Name="CreateDate" Type="datetime" />
-    <Property Name="UserID" Type="varchar" MaxLength="64" />
     <Property Name="Owner" Type="nvarchar" MaxLength="128" />
   </EntityType>
   <EntityType Name="sysdiagrams">
@@ -256,6 +273,30 @@
       </Principal>
       <Dependent Role="assets_liquidation_history">
         <PropertyRef Name="AssetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Organizational_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Organizational" Type="Self.Organizational" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Organizational">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Process_Organizational">
+    <End Role="Organizational" Type="Self.Organizational" Multiplicity="0..1" />
+    <End Role="Process" Type="Self.Process" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Organizational">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Process">
+        <PropertyRef Name="OrganizationalID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -376,6 +417,8 @@
     <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="function" EntityType="Self.function" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="message_list" EntityType="Self.message_list" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Organizational" EntityType="Self.Organizational" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Process" EntityType="Self.Process" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="rank" EntityType="Self.rank" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="role_function" EntityType="Self.role_function" Schema="dbo" store:Type="Tables" />
@@ -408,6 +451,14 @@
     <AssociationSet Name="FK_assets_liquidation_history_asset_detail" Association="Self.FK_assets_liquidation_history_asset_detail">
       <End Role="asset_detail" EntitySet="asset_detail" />
       <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Organizational_Department" Association="Self.FK_Organizational_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Organizational" EntitySet="Organizational" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Process_Organizational" Association="Self.FK_Process_Organizational">
+      <End Role="Organizational" EntitySet="Organizational" />
+      <End Role="Process" EntitySet="Process" />
     </AssociationSet>
     <AssociationSet Name="FK_rank_Department" Association="Self.FK_rank_Department">
       <End Role="Department" EntitySet="Department" />
