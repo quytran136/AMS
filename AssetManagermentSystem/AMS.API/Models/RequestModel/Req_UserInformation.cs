@@ -6,7 +6,7 @@ using System.Web;
 
 namespace AMS.API.Models.RequestModel
 {
-    public class Information
+    public class Req_UserInformation
     {
         public string UserID { get; set; }
         [Required]

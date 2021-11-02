@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AMS.BUS.BusinessHandle
 {
-    public class UserInfor : IBaseHandle
+    public class UserInformation : IBaseHandle
     {
         public BaseModel<user_identifie> GetUserInfor(string userName)
         {
@@ -75,7 +75,6 @@ namespace AMS.BUS.BusinessHandle
                 {
                     Exception = new ExceptionHandle()
                     {
-                        // Đã tồn tại tài khoản
                         Code = BUSMessageCode(2)
                     }
                 };

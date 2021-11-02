@@ -37,6 +37,7 @@
         <AssociationConnector Association="AMS_DBModel.FK_role_view_user_identifie" />
         <AssociationConnector Association="AMS_DBModel.FK_role_view_view_page" />
         <AssociationConnector Association="AMS_DBModel.FK_system_log_user_identifie" />
+        <AssociationConnector Association="AMS_DBModel.FK_Department_Department" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

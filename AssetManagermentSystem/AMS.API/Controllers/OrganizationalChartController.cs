@@ -14,13 +14,13 @@ namespace AMS.API.Controllers
     public class OrganizationalChartController : ApiController
     {
         [HttpPost]
-        public BaseResponse<OrganizationalChart> OrganizationalControl(BaseRequest<Organizational> req)
+        public BaseResponse<Res_OrganizationalChart> OrganizationalControl(BaseRequest<Req_OrganizationalChart> req)
         {
             // validate token
             BaseModel<bool> access = new Access().CheckToken(req.Token, req.Data.UserName);
             if (!string.IsNullOrEmpty(access.Exception.Message))
             {
-                return new BaseResponse<OrganizationalChart>()
+                return new BaseResponse<Res_OrganizationalChart>()
                 {
                     Code = access.Exception.Code,
                     Message = access.Exception.Message
@@ -30,19 +30,19 @@ namespace AMS.API.Controllers
             switch (req.Key)
             {
                 case "UPDATE_ORG":
-                    return new BaseResponse<OrganizationalChart>()
+                    return new BaseResponse<Res_OrganizationalChart>()
                     {
                         Code = "404",
                         Message = "Not found function",
                     };
                 case "RESTORE_ORG":
-                    return new BaseResponse<OrganizationalChart>()
+                    return new BaseResponse<Res_OrganizationalChart>()
                     {
                         Code = "404",
                         Message = "Not found function",
                     };
                 default:
-                    return new BaseResponse<OrganizationalChart>()
+                    return new BaseResponse<Res_OrganizationalChart>()
                     {
                         Code = "404",
                         Message = "Not found function",

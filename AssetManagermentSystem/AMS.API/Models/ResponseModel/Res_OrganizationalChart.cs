@@ -5,18 +5,18 @@ using System.Web;
 
 namespace AMS.API.Models.ResponseModel
 {
-    public class OrganizationalChart
+    public class Res_OrganizationalChart
     {
-        private List<OrganizationalChart> list;
+        private List<Res_OrganizationalChart> list;
         public string Label { get; set; }
         public string key { get; set; }
-        public List<OrganizationalChart> List
+        public List<Res_OrganizationalChart> List
         {
             get
             {
                 if (list == null)
                 {
-                    list = new List<OrganizationalChart>();
+                    list = new List<Res_OrganizationalChart>();
                 }
                 return list;
             }

@@ -18,12 +18,17 @@ namespace AMS.BUS.DBConnect
         public Department()
         {
             this.ranks = new HashSet<rank>();
+            this.Department1 = new HashSet<Department>();
         }
     
         public string ID { get; set; }
         public string DepartmentName { get; set; }
+        public string ParentID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<rank> ranks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Department> Department1 { get; set; }
+        public virtual Department Department2 { get; set; }
     }
 }

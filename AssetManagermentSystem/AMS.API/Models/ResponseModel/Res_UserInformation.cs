@@ -7,7 +7,7 @@ using System.Web;
 
 namespace AMS.API.Models.ResponseModel
 {
-    public class UserInformation
+    public class Res_UserInformation
     {
         public string ID { get; set; }
         public string UserName { get; set; }

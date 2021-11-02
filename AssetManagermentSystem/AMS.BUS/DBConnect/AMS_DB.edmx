@@ -81,6 +81,7 @@
           </Key>
           <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="DepartmentName" Type="nvarchar" MaxLength="128" />
+          <Property Name="ParentID" Type="varchar" MaxLength="64" />
         </EntityType>
         <EntityType Name="function">
           <Key>
@@ -264,6 +265,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Department_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Department1" Type="Self.Department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Department1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_rank_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
           <End Role="rank" Type="Self.rank" Multiplicity="*" />
@@ -414,6 +427,10 @@
             <End Role="asset_detail" EntitySet="asset_detail" />
             <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
           </AssociationSet>
+          <AssociationSet Name="FK_Department_Department" Association="Self.FK_Department_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Department1" EntitySet="Department" />
+          </AssociationSet>
           <AssociationSet Name="FK_rank_Department" Association="Self.FK_rank_Department">
             <End Role="Department" EntitySet="Department" />
             <End Role="rank" EntitySet="rank" />
@@ -533,6 +550,10 @@
             <End Role="user_identifie" EntitySet="user_identifie" />
             <End Role="system_log" EntitySet="system_log" />
           </AssociationSet>
+          <AssociationSet Name="FK_Department_Department" Association="AMS_DBModel.FK_Department_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Department1" EntitySet="Departments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="asset_allocation_history">
           <Key>
@@ -621,6 +642,9 @@
           <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="DepartmentName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ranks" Relationship="AMS_DBModel.FK_rank_Department" FromRole="Department" ToRole="rank" />
+          <Property Name="ParentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Department1" Relationship="AMS_DBModel.FK_Department_Department" FromRole="Department" ToRole="Department1" />
+          <NavigationProperty Name="Department2" Relationship="AMS_DBModel.FK_Department_Department" FromRole="Department1" ToRole="Department" />
         </EntityType>
         <EntityType Name="function">
           <Key>
@@ -931,6 +955,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Department_Department">
+          <End Type="AMS_DBModel.Department" Role="Department" Multiplicity="0..1" />
+          <End Type="AMS_DBModel.Department" Role="Department1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Department1">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1015,6 +1051,7 @@
           <EntitySetMapping Name="Departments">
             <EntityTypeMapping TypeName="AMS_DBModel.Department">
               <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

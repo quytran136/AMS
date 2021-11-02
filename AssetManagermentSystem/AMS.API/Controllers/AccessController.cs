@@ -65,7 +65,7 @@ namespace AMS.API.Controllers
         }
 
         [HttpPost]
-        public BaseResponse<Token> Signup(BaseRequest<Information> req)
+        public BaseResponse<Token> Signup(BaseRequest<Req_UserInformation> req)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace AMS.API.Controllers
                         Message = "Dữ liệu sai định dạng",
                     };
                 }
-                UserInfor user = new UserInfor();
+                UserInformation user = new UserInformation();
                 BaseModel<user_identifie> user_infor = user.CreateUserInfor(req.Data.UserName, req.Data.UserPassword, req.Data.UserFullName);
                 if (!string.IsNullOrEmpty(user_infor.Exception.Code))
                 {

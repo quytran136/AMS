@@ -177,12 +177,12 @@
     </Compile>
     <Compile Include="Models\RequestModel\Access\GetToken.cs" />
     <Compile Include="Models\RequestModel\BaseRequest.cs" />
-    <Compile Include="Models\RequestModel\Information.cs" />
-    <Compile Include="Models\RequestModel\Organizational.cs" />
+    <Compile Include="Models\RequestModel\Req_UserInformation.cs" />
+    <Compile Include="Models\RequestModel\Req_OrganizationalChart.cs" />
     <Compile Include="Models\ResponseModel\Access\Token.cs" />
     <Compile Include="Models\ResponseModel\BaseResponse.cs" />
-    <Compile Include="Models\ResponseModel\OrganizationalChart.cs" />
-    <Compile Include="Models\ResponseModel\UserInformation.cs" />
+    <Compile Include="Models\ResponseModel\Res_OrganizationalChart.cs" />
+    <Compile Include="Models\ResponseModel\Res_UserInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

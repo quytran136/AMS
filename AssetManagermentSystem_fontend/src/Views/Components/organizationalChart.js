@@ -28,6 +28,10 @@ const OrganizationalChart = (prop) => {
         treeORG
     } = prop.amsStore;
 
+    function getOrg(params) {
+        dispatch(getORG())
+    }
+
     const Node = (propA) => {
         const { data } = propA
         const [name, setName] = useState(data?.label)
