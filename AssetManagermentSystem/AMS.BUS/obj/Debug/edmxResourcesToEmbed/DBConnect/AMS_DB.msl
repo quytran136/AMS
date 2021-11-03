@@ -79,6 +79,7 @@
     <EntitySetMapping Name="Departments">
       <EntityTypeMapping TypeName="AMS_DBModel.Department">
         <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="ParentID" ColumnName="ParentID" />
           <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
           <ScalarProperty Name="ID" ColumnName="ID" />

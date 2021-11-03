@@ -82,6 +82,7 @@
           <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="DepartmentName" Type="nvarchar" MaxLength="128" />
           <Property Name="ParentID" Type="varchar" MaxLength="64" />
+          <Property Name="IsDelete" Type="bit" />
         </EntityType>
         <EntityType Name="function">
           <Key>
@@ -684,6 +685,7 @@
           <Property Name="ParentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Organizationals" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Department" ToRole="Organizational" />
           <NavigationProperty Name="ranks" Relationship="AMS_DBModel.FK_rank_Department" FromRole="Department" ToRole="rank" />
+          <Property Name="IsDelete" Type="Boolean" />
         </EntityType>
         <EntityType Name="function">
           <Key>
@@ -1121,6 +1123,7 @@
           <EntitySetMapping Name="Departments">
             <EntityTypeMapping TypeName="AMS_DBModel.Department">
               <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />

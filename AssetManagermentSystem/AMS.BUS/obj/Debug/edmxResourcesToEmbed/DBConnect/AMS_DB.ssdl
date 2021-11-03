@@ -77,6 +77,7 @@
     <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
     <Property Name="DepartmentName" Type="nvarchar" MaxLength="128" />
     <Property Name="ParentID" Type="varchar" MaxLength="64" />
+    <Property Name="IsDelete" Type="bit" />
   </EntityType>
   <EntityType Name="function">
     <Key>

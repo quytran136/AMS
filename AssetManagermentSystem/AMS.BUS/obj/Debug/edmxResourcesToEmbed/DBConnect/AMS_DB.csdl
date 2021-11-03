@@ -178,6 +178,7 @@
     <Property Name="ParentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Organizationals" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Department" ToRole="Organizational" />
     <NavigationProperty Name="ranks" Relationship="AMS_DBModel.FK_rank_Department" FromRole="Department" ToRole="rank" />
+    <Property Name="IsDelete" Type="Boolean" />
   </EntityType>
   <EntityType Name="function">
     <Key>

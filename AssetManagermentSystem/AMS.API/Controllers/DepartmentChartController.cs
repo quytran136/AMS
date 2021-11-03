@@ -14,7 +14,7 @@ namespace AMS.API.Controllers
     public class DepartmentChartController : ApiController
     {
         [HttpPost]
-        public BaseResponse<Res_DepartmentChart> OrganizationalControl(BaseRequest<Req_DepartmentChart> req)
+        public BaseResponse<Res_DepartmentChart> DepartmentControl(BaseRequest<Req_DepartmentChart> req)
         {
             // validate token
             BaseModel<bool> access = new Access().CheckToken(req.Token, req.Data.UserName);
@@ -29,23 +29,39 @@ namespace AMS.API.Controllers
 
             switch (req.Key)
             {
-                case "ADD_DEPARTMENT":
+                case "DEPARTMENT_CHART":
+                    BaseModel<DepartmentChart> departmentChart = new DepartmentChart().GetChart();
+                    if (!string.IsNullOrEmpty(departmentChart.Exception.Code))
+                    {
+                        return new BaseResponse<Res_DepartmentChart>()
+                        {
+                            Code = departmentChart.Exception.Code,
+                            Message = departmentChart.Exception.Message
+                        };
+                    }
                     return new BaseResponse<Res_DepartmentChart>()
                     {
-                        Code = "404",
-                        Message = "Not found function",
+                        Response = new Res_DepartmentChart()
+                        {
+                            departmentChart = departmentChart.Result
+                        }
                     };
-                case "EDIT_DEPARTMENT":
+                case "UPDATE_DEPARTMENT":
+                    BaseModel<string> department = new DepartmentChart().UpdateChart(req.Data.Department);
+                    if (!string.IsNullOrEmpty(department.Exception.Code))
+                    {
+                        return new BaseResponse<Res_DepartmentChart>()
+                        {
+                            Code = department.Exception.Code,
+                            Message = department.Exception.Message
+                        };
+                    }
                     return new BaseResponse<Res_DepartmentChart>()
                     {
-                        Code = "404",
-                        Message = "Not found function",
-                    };
-                case "DELETE_DEPARTMENT":
-                    return new BaseResponse<Res_DepartmentChart>()
-                    {
-                        Code = "404",
-                        Message = "Not found function",
+                        Response = new Res_DepartmentChart()
+                        {
+                            departmentChart = new DepartmentChart()
+                        }
                     };
                 default:
                     return new BaseResponse<Res_DepartmentChart>()
