@@ -8,40 +8,8 @@ const initialState = {
     cookie: null,
     userInfo: null,
     showMenu: true,
-    treeORG: {
-        label: "root",
-        key: 1,
-        list: [{
-            label: "123",
-            key: 2,
-            list: [
-                {
-                    label: "dbc",
-                    key: 5,
-                    list: []
-                },
-                {
-                    label: "dbc",
-                    key: 6,
-                    list: []
-                }]
-        },
-        {
-            label: "123",
-            key: 3,
-            list: [
-                {
-                    label: "dbc",
-                    key: 7,
-                    list: []
-                },
-                {
-                    label: "dbc",
-                    key: 8,
-                    list: []
-                }]
-        }]
-    }
+    organizationalChart: null,
+    departmentChart: null,
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -81,10 +49,15 @@ export const amsReducer = (state = initialState, action) => {
                 ...state,
                 showMenu: action.showMenu
             }
-        case type.TREE_ORG:
+        case type.SAVE_DEPARTMENT:
             return {
                 ...state,
-                treeORG: action.tree
+                departmentChart: action.departmentChart
+            }
+        case type.SAVE_ORGANIZATIONAL:
+            return {
+                ...state,
+                organizationalChart: action.organizationalChart
             }
         default:
             return {

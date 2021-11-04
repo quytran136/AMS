@@ -24,6 +24,7 @@ namespace AMS.BUS.DBConnect
         public string OrganizationalName { get; set; }
         public string ParentID { get; set; }
         public string DepartmentID { get; set; }
+        public Nullable<bool> IsDelete { get; set; }
     
         public virtual Department Department { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

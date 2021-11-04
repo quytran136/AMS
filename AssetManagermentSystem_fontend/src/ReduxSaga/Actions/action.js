@@ -51,7 +51,7 @@ export const saveCookie = (cookie) => {
 }
 
 export const getUserInfo = (body) => {
-    return{
+    return {
         type: type.GET_USER_INFO,
         body
     }
@@ -65,15 +65,36 @@ export const saveUserInfo = (userInfo) => {
 }
 
 export const setShowMenu = (showMenu) => {
-    return{
+    return {
         type: type.SHOW_MENU,
         showMenu
     }
 }
 
-export const setTreeORG =(tree) => {
+export const getDepartmentChart = (body) => {
     return{
-        type: type.TREE_ORG,
-        tree
+        type: type.GET_DEPARTMENT,
+        body
+    }
+}
+
+export const saveDepartmentChart = (departmentChart) => {
+    return{
+        type: type.SAVE_DEPARTMENT,
+        departmentChart
+    }
+}
+
+export const getOrganizational = (body) => {
+    return{
+        type: type.GET_ORGANIZATIONAL,
+        body
+    }
+}
+
+export const saveOrganizational = (organizationalChart) => {
+    return{
+        type: type.SAVE_ORGANIZATIONAL,
+        organizationalChart
     }
 }

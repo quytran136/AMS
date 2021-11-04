@@ -8,6 +8,6 @@ namespace AMS.API.Models.ResponseModel
 {
     public class Res_DepartmentChart
     {
-        public DepartmentChart departmentChart { get; set; }
+        public DepartmentChart Department { get; set; }
     }
 }

@@ -109,6 +109,7 @@
     <EntitySetMapping Name="Organizationals">
       <EntityTypeMapping TypeName="AMS_DBModel.Organizational">
         <MappingFragment StoreEntitySet="Organizational">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
           <ScalarProperty Name="ParentID" ColumnName="ParentID" />
           <ScalarProperty Name="OrganizationalName" ColumnName="OrganizationalName" />

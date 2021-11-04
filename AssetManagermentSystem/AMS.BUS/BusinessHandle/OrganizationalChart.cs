@@ -1,6 +1,7 @@
 ﻿using AMS.BUS.BusModels;
 using AMS.BUS.DBConnect;
 using AMS.COMMON;
+using AMS.COMMON.Constands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,127 +12,217 @@ namespace AMS.BUS.BusinessHandle
 {
     public class OrganizationalChart : IBaseHandle
     {
-        public BaseModel<Organizational> AddNew(string parentID, List<string> OrganizationalName)
+        public Organizational Node { get; set; }
+        public List<OrganizationalChart> Childs { get; set; }
+        private List<Organizational> ListOrganizationalUpdate = new List<Organizational>();
+        private List<Organizational> ListOrganizationalUpdateData = new List<Organizational>();
+
+
+        public BaseModel<OrganizationalChart> GetChart(string DepartmentID)
         {
             try
             {
                 var db = DBC.Init;
-                if (string.IsNullOrEmpty(parentID))
-                {
-                    List<Organizational> Organizationals = new List<Organizational>();
-                    foreach (string item in OrganizationalName)
-                    {
-                        Organizational Organizational = new Organizational()
-                        {
-                            ParentID = null,
-                            OrganizationalName = item,
-                            ID = Guid.NewGuid().ToString(),
-                        };
+                List<Organizational> Organizationals = db.Organizationals.Where(ptr => ptr.DepartmentID == DepartmentID && ptr.IsDelete == false).ToList();
+                Organizational Organizational = db.Organizationals.Where(ptr => ptr.ParentID == string.Empty && 
+                                                ptr.DepartmentID == DepartmentID && 
+                                                ptr.IsDelete == false).ToList().FirstOrDefault();
 
-                        Organizationals.Add(Organizational);
+                if (Organizational == null)
+                {
+                    return new BaseModel<OrganizationalChart>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(4)
+                        }
+                    };
+                }
+
+                // get all chart
+                return new BaseModel<OrganizationalChart>()
+                {
+                    Result = new OrganizationalChart()
+                    {
+                        Node = Organizational,
+                        Childs = this.BuildChart(Organizational, Organizationals)
                     }
-                    db.Organizationals.AddRange(Organizationals);
-                    db.SaveChanges();
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<OrganizationalChart>()
+                {
+                    Exception = new ExceptionHandle
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        private List<OrganizationalChart> BuildChart(Organizational node, List<Organizational> OrganizationalsT)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<Organizational> Organizationals = OrganizationalsT.Where(ptr => ptr.ParentID == node.ID).ToList();
+                if (Organizationals == null || Organizationals.Count == 0)
+                {
+                    return new List<OrganizationalChart>();
                 }
                 else
                 {
-                    Organizational OrganizationalParent = db.Organizationals.Where(ptr => ptr.ID == parentID).ToList().FirstOrDefault();
-                    if (OrganizationalParent == null)
+                    List<OrganizationalChart> OrganizationalCharts = new List<OrganizationalChart>();
+                    foreach (Organizational item in Organizationals)
                     {
-                        return new BaseModel<Organizational>()
+                        OrganizationalCharts.Add(new OrganizationalChart()
                         {
-                            Exception = new ExceptionHandle()
-                            {
-                                Code = BUSMessageCode(1),
-                            }
-                        };
+                            Node = item,
+                            Childs = this.BuildChart(item, OrganizationalsT)
+                        });
                     }
-                    List<Organizational> Organizationals = new List<Organizational>();
-                    foreach (string item in OrganizationalName)
-                    {
-                        Organizational Organizational = new Organizational()
-                        {
-                            ParentID = OrganizationalParent.ID,
-                            OrganizationalName = item,
-                            ID = Guid.NewGuid().ToString(),
-                        };
-
-                        Organizationals.Add(Organizational);
-                    }
-                    db.Organizationals.AddRange(Organizationals);
-                    db.SaveChanges();
+                    return OrganizationalCharts;
                 }
-                return new BaseModel<Organizational>();
             }
             catch (Exception ex)
             {
-                return new BaseModel<Organizational>()
-                {
-                    Exception = new ExceptionHandle
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
+                throw ex;
             }
         }
 
-        public BaseModel<Organizational> Remove(string OrganizationalID)
+        private BaseModel<string> UpdateChart(string departmentID, string parentID, OrganizationalChart OrganizationalNew, List<Organizational> Organizationals)
+        {
+            try
+            {
+                if (OrganizationalNew == null)
+                {
+                    return new BaseModel<string>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(5)
+                        }
+                    };
+                }
+                else
+                {
+                    foreach (OrganizationalChart item in OrganizationalNew.Childs)
+                    {
+                        string ID = Guid.NewGuid().ToString();
+                        if (string.IsNullOrEmpty(item.Node.ID))
+                        {
+                            Organizational org = new Organizational()
+                            {
+                                ID = ID,
+                                OrganizationalName = item.Node.OrganizationalName,
+                                ParentID = parentID,
+                                DepartmentID = departmentID,
+                                IsDelete = false
+                            };
+                            ListOrganizationalUpdate.Add(org);
+                        }
+                        else
+                        {
+                            Organizational node = Organizationals.Where(ptr => ptr.ID == item.Node.ID).ToList().FirstOrDefault();
+                            if (node != null)
+                            {
+                                if (item.Node.OrganizationalName != node.OrganizationalName &&
+                                    item.Node.IsDelete == false &&
+                                    !string.IsNullOrEmpty(item.Node.ID))
+                                {
+                                    ListOrganizationalUpdateData.Add(new Organizational()
+                                    {
+                                        ID = item.Node.ID,
+                                        OrganizationalName = item.Node.OrganizationalName,
+                                        ParentID = item.Node.ParentID,
+                                        DepartmentID = item.Node.DepartmentID,
+                                        IsDelete = false
+                                    });
+                                }
+
+                                if (item.Node.IsDelete == true)
+                                {
+                                    ListOrganizationalUpdateData.Add(new Organizational()
+                                    {
+                                        ID = item.Node.ID,
+                                        OrganizationalName = item.Node.OrganizationalName,
+                                        ParentID = item.Node.ParentID,
+                                        DepartmentID = item.Node.DepartmentID,
+                                        IsDelete = true
+                                    });
+                                }
+                            }
+                        }
+
+                        UpdateChart(departmentID, ID, item, Organizationals);
+                    }
+
+                    return new BaseModel<string>()
+                    {
+                        Result = MessagesValue.SUCCESS
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public BaseModel<string> UpdateChart(string departmentID, OrganizationalChart OrganizationalChartNew)
         {
             try
             {
                 var db = DBC.Init;
-                List<Organizational> Organizationals = db.Organizationals.Where(ptr => ptr.ID == OrganizationalID || ptr.ParentID == OrganizationalID).ToList();
+                List<Organizational> Organizationals = db.Organizationals.ToList();
                 if (Organizationals == null)
                 {
-                    return new BaseModel<Organizational>()
+                    return new BaseModel<string>()
                     {
                         Exception = new ExceptionHandle()
                         {
-                            Code = BUSMessageCode(2),
+                            Code = BUSMessageCode(1),
                         }
                     };
                 }
-                db.Organizationals.RemoveRange(Organizationals);
-                db.SaveChanges();
-                return new BaseModel<Organizational>();
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Organizational>()
+                else
                 {
-                    Exception = new ExceptionHandle
+                    List<OrganizationalChart> listT = new List<OrganizationalChart>();
+                    listT.Add(OrganizationalChartNew);
+                    BaseModel<string> data = UpdateChart(departmentID, string.Empty, new OrganizationalChart()
                     {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
+                        Node = new Organizational(),
+                        Childs = listT
+                    }, Organizationals);
+                    if (!string.IsNullOrEmpty(data.Exception.Code))
+                    {
+                        return new BaseModel<string>()
+                        {
+                            Exception = data.Exception
+                        };
                     }
-                };
-            }
-        }
 
-        public BaseModel<Organizational> Edit(string OrganizationalID, string OrganizationalName)
-        {
-            try
-            {
-                var db = DBC.Init;
-                Organizational Organizational = db.Organizationals.Where(ptr => ptr.ID == OrganizationalID).ToList().FirstOrDefault();
-                if (Organizational == null)
-                {
-                    return new BaseModel<Organizational>()
+                    db.Organizationals.AddRange(ListOrganizationalUpdate);
+                    foreach (Organizational item in ListOrganizationalUpdateData)
                     {
-                        Exception = new ExceptionHandle()
-                        {
-                            Code = BUSMessageCode(3),
-                        }
+                        Organizational org = db.Organizationals.Where(ptr => ptr.ID == item.ID).ToList().FirstOrDefault();
+                        org.OrganizationalName = item.OrganizationalName;
+                        org.IsDelete = item.IsDelete;
+                        org.ParentID = item.ParentID;
+                        org.DepartmentID = item.DepartmentID;
+                    }
+                    db.SaveChanges();
+                    return new BaseModel<string>()
+                    {
+                        Result = MessagesValue.SUCCESS
                     };
                 }
-                Organizational.OrganizationalName = OrganizationalName;
-                db.SaveChanges();
-                return new BaseModel<Organizational>();
             }
             catch (Exception ex)
             {
-                return new BaseModel<Organizational>()
+                return new BaseModel<string>()
                 {
                     Exception = new ExceptionHandle
                     {
@@ -148,7 +239,7 @@ namespace AMS.BUS.BusinessHandle
             return string.Format("{0}{1}{2}{3}",
                 FunctionCode.BUS_EX,
                 FunctionCode.API,
-                FunctionCode.ORG,
+                FunctionCode.ORGANIZATIONAL,
                 id);
         }
 
@@ -157,7 +248,7 @@ namespace AMS.BUS.BusinessHandle
             return string.Format("{0}{1}{2}{3}",
                 FunctionCode.SYS_EX,
                 FunctionCode.API,
-                FunctionCode.ORG,
+                FunctionCode.ORGANIZATIONAL,
                 id);
         }
     }

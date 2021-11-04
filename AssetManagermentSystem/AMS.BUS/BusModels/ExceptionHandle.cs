@@ -58,7 +58,7 @@ namespace AMS.BUS.BusModels
                     return string.Empty;
                 }
                 var db = DBC.Init;
-                var result = db.message_list.Where(ptr => ptr.Code == this.code).ToList().FirstOrDefault();
+                var result = db.message_list.Where(ptr => ptr.Code == this.code).ToList()?.FirstOrDefault();
                 if (result == null)
                 {
                     return "Có lỗi";

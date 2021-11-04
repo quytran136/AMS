@@ -37,27 +37,25 @@ const DepartmentChart = (prop) => {
         const { data } = propA
         const [name, setName] = useState(data?.label)
 
-        function changeValue(departmentChart, key, value) {
-            if(departmentChart){
-                if (departmentChart.key === key) {
-                    departmentChart.list.push({
-                        label: value,
-                        key: Date.now(),
-                        list: []
-                    })
-                    return departmentChart;
-                }
-                if (departmentChart && departmentChart.list != null) {
-                    departmentChart.list.forEach(element => {
-                        if (element.key === key) {
-                            element.label = value
-                            return departmentChart;
-                        } else {
-                            return changeValue(element, key, value)
-                        }
-                    })
-                    return departmentChart;
-                }
+        function changeValue(treeT, key, value) {
+            if (treeT.key === key) {
+                treeT.list.push({
+                    label: value,
+                    key: Date.now(),
+                    list: []
+                })
+                return treeT;
+            }
+            if (treeT && treeT.list != null) {
+                treeT.list.forEach(element => {
+                    if (element.key === key) {
+                        element.label = value
+                        return treeT;
+                    } else {
+                        return changeValue(element, key, value)
+                    }
+                })
+                return treeT;
             }
         }
 
@@ -103,51 +101,51 @@ const DepartmentChart = (prop) => {
 
 
 
-    function addNode(departmentChart, key) {
-        if (departmentChart.key === key) {
-            departmentChart.list.push({
+    function addNode(treeT, key) {
+        if (treeT.key === key) {
+            treeT.list.push({
                 label: "new one",
                 key: Date.now(),
                 list: []
             })
-            return departmentChart;
+            return treeT;
         }
-        if (departmentChart && departmentChart.list != null) {
-            departmentChart.list.forEach(element => {
+        if (treeT && treeT.list != null) {
+            treeT.list.forEach(element => {
                 if (element.key === key) {
                     element.list.push({
                         label: "new one",
                         key: Date.now(),
                         list: []
                     })
-                    return departmentChart;
+                    return treeT;
                 } else {
                     return addNode(element, key)
                 }
             })
-            return departmentChart;
+            return treeT;
         }
     }
 
-    function removeNode(departmentChart, key) {
-        if (departmentChart.key === key) {
+    function removeNode(treeT, key) {
+        if (treeT.key === key) {
             return {
                 label: "new one",
                 key: Date.now(),
                 list: []
             };
         }
-        if (departmentChart && departmentChart.list != null) {
-            departmentChart.list.forEach(element => {
+        if (treeT && treeT.list != null) {
+            treeT.list.forEach(element => {
                 if (element.key === key) {
-                    const index = departmentChart.list.indexOf(element)
-                    departmentChart.list.splice(index, 1)
-                    return departmentChart;
+                    const index = treeT.list.indexOf(element)
+                    treeT.list.splice(index, 1)
+                    return treeT;
                 } else {
                     return removeNode(element, key)
                 }
             })
-            return departmentChart;
+            return treeT;
         }
     }
 

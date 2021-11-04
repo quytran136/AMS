@@ -110,6 +110,7 @@
           <Property Name="OrganizationalName" Type="nvarchar" MaxLength="128" />
           <Property Name="ParentID" Type="varchar" MaxLength="64" />
           <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+          <Property Name="IsDelete" Type="bit" />
         </EntityType>
         <EntityType Name="Process">
           <Key>
@@ -717,6 +718,7 @@
           <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Department" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Organizational" ToRole="Department" />
           <NavigationProperty Name="Processes" Relationship="AMS_DBModel.FK_Process_Organizational" FromRole="Organizational" ToRole="Process" />
+          <Property Name="IsDelete" Type="Boolean" />
         </EntityType>
         <EntityType Name="Process">
           <Key>
@@ -1153,6 +1155,7 @@
           <EntitySetMapping Name="Organizationals">
             <EntityTypeMapping TypeName="AMS_DBModel.Organizational">
               <MappingFragment StoreEntitySet="Organizational">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="OrganizationalName" ColumnName="OrganizationalName" />

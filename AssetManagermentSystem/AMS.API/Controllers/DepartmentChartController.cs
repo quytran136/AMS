@@ -43,7 +43,7 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_DepartmentChart()
                         {
-                            departmentChart = departmentChart.Result
+                            Department = departmentChart.Result
                         }
                     };
                 case "UPDATE_DEPARTMENT":
@@ -60,7 +60,7 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_DepartmentChart()
                         {
-                            departmentChart = new DepartmentChart()
+                            Department = new DepartmentChart(),
                         }
                     };
                 default:

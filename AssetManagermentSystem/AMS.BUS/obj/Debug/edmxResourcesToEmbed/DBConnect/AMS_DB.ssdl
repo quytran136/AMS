@@ -105,6 +105,7 @@
     <Property Name="OrganizationalName" Type="nvarchar" MaxLength="128" />
     <Property Name="ParentID" Type="varchar" MaxLength="64" />
     <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+    <Property Name="IsDelete" Type="bit" />
   </EntityType>
   <EntityType Name="Process">
     <Key>

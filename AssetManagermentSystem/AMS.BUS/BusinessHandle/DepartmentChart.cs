@@ -23,8 +23,8 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                List<Department> departments = db.Departments.ToList();
-                Department department = db.Departments.Where(ptr => ptr.ParentID == null).ToList().FirstOrDefault();
+                List<Department> departments = db.Departments.Where(ptr => ptr.IsDelete == false).ToList();
+                Department department = db.Departments.Where(ptr => ptr.ParentID == string.Empty && ptr.IsDelete == false).ToList().FirstOrDefault();
 
                 if (department == null)
                 {
@@ -90,7 +90,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        private BaseModel<string> UpdateChart(DepartmentChart departmentNew, List<Department> departments)
+        private BaseModel<string> UpdateChart(string nodeParent, DepartmentChart departmentNew, List<Department> departments)
         {
             try
             {
@@ -108,42 +108,50 @@ namespace AMS.BUS.BusinessHandle
                 {
                     foreach (DepartmentChart item in departmentNew.Childs)
                     {
+                        string ID = Guid.NewGuid().ToString();
                         if (string.IsNullOrEmpty(item.Node.ID))
                         {
-                            ListDepartmentUpdate.Add(new Department()
+                            Department dep = new Department()
                             {
-                                ID = Guid.NewGuid().ToString(),
+                                ID = ID,
                                 DepartmentName = item.Node.DepartmentName,
-                                ParentID = item.Node.ParentID,
+                                ParentID = nodeParent,
                                 IsDelete = false
-                            });
+                            };
+                            ListDepartmentUpdate.Add(dep);
                         }
-                        if (item.Node.IsDelete == true)
+                        else
                         {
-                            ListDepartmentUpdate.Add(new Department()
+                            Department node = departments.Where(ptr => ptr.ID == item.Node.ID).ToList().FirstOrDefault();
+                            if (node != null)
                             {
-                                ID = item.Node.ID,
-                                DepartmentName = item.Node.DepartmentName,
-                                ParentID = item.Node.ParentID,
-                                IsDelete = true
-                            });
+                                if (item.Node.DepartmentName != node.DepartmentName &&
+                                    item.Node.IsDelete == false &&
+                                    !string.IsNullOrEmpty(item.Node.ID))
+                                {
+                                    ListDepartmentUpdateData.Add(new Department()
+                                    {
+                                        ID = item.Node.ID,
+                                        DepartmentName = item.Node.DepartmentName,
+                                        ParentID = item.Node.ParentID,
+                                        IsDelete = false
+                                    });
+                                }
+
+                                if (item.Node.IsDelete == true)
+                                {
+                                    ListDepartmentUpdateData.Add(new Department()
+                                    {
+                                        ID = item.Node.ID,
+                                        DepartmentName = item.Node.DepartmentName,
+                                        ParentID = item.Node.ParentID,
+                                        IsDelete = true
+                                    });
+                                }
+                            }
                         }
 
-                        Department node = departments.Where(ptr => ptr.ID == item.Node.ID).ToList().FirstOrDefault();
-
-                        if (item.Node.DepartmentName != node.DepartmentName &&
-                            item.Node.IsDelete == false &&
-                            !string.IsNullOrEmpty(item.Node.ID))
-                        {
-                            ListDepartmentUpdateData.Add(new Department()
-                            {
-                                ID = item.Node.ID,
-                                DepartmentName = item.Node.DepartmentName,
-                                ParentID = item.Node.ParentID,
-                                IsDelete = false
-                            });
-                        }
-                        UpdateChart(item, departments);
+                        UpdateChart(ID, item, departments);
                     }
 
                     return new BaseModel<string>()
@@ -178,24 +186,26 @@ namespace AMS.BUS.BusinessHandle
                 {
                     List<DepartmentChart> listT = new List<DepartmentChart>();
                     listT.Add(DepartmentChartNew);
-                    BaseModel<string> data = UpdateChart(new DepartmentChart()
+                    BaseModel<string> data = UpdateChart(string.Empty, new DepartmentChart()
                     {
                         Node = new Department(),
                         Childs = listT
                     }, departments);
-                    if (string.IsNullOrEmpty(data.Exception.Code))
+                    if (!string.IsNullOrEmpty(data.Exception.Code))
                     {
                         return new BaseModel<string>()
                         {
                             Exception = data.Exception
                         };
                     }
-                    db.Departments.RemoveRange(ListDepartmentUpdate.Where(ptr => ptr.IsDelete == true));
-                    db.Departments.AddRange(ListDepartmentUpdate.Where(ptr => string.IsNullOrEmpty(ptr.ID) == true));
+
+                    db.Departments.AddRange(ListDepartmentUpdate);
                     foreach (Department item in ListDepartmentUpdateData)
                     {
                         Department dep = db.Departments.Where(ptr => ptr.ID == item.ID).ToList().FirstOrDefault();
                         dep.DepartmentName = item.DepartmentName;
+                        dep.IsDelete = item.IsDelete;
+                        dep.ParentID = item.ParentID;
                     }
                     db.SaveChanges();
                     return new BaseModel<string>()

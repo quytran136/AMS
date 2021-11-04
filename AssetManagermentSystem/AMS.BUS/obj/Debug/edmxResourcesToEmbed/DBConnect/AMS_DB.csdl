@@ -210,6 +210,7 @@
     <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Department" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Organizational" ToRole="Department" />
     <NavigationProperty Name="Processes" Relationship="AMS_DBModel.FK_Process_Organizational" FromRole="Organizational" ToRole="Process" />
+    <Property Name="IsDelete" Type="Boolean" />
   </EntityType>
   <EntityType Name="Process">
     <Key>
