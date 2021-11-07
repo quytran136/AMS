@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import '../Access/Css/Signup.scss';
 import '../Access/Css/Common.scss';
 import { Button, Input, Row } from 'antd';
-import openNotification from '../Components/openNotification';
+import openNotification from './OpenNotification';
 import {
     UserOutlined,
     LockOutlined,

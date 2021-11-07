@@ -1,38 +1,32 @@
 import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
-import * as amsAction from "../ReduxSaga/Actions/action";
+import { connect } from "react-redux";
+// import * as amsAction from "../ReduxSaga/Actions/action";
 import "./Access/Css/Common.scss";
 import "./Access/Css/Config.scss";
-import { Col, Row, Menu, Card } from 'antd';
+import { Menu, Card } from 'antd';
 import {
   ClusterOutlined,
   NodeIndexOutlined,
   PartitionOutlined
 } from '@ant-design/icons';
-import OrganizationalChart from "./Components/organizationalChart";
+import DepartmentChart from "./Components/DepartmentChart";
 
-function Config(prop) {
+function Config() {
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const [currentMenu, setCurrentMenu] = useState("A1");
-
-  const {
-
-  } = prop.amsStore;
-
-  const {
-
-  } = amsAction;
 
   const renderTab = () => {
     switch (currentMenu) {
       case "A1":
-        return (<OrganizationalChart />)
+        return (<DepartmentChart />)
       case "A2":
         return (<>A2</>)
       case "A3":
         return (<>A3</>)
+      default:
+        return (<></>)
     }
   }
 

@@ -13,13 +13,13 @@ namespace AMS.BUS.DBConnect
         {
             get
             {
-                if (DB == null)
-                {
-                    DB = new AMS_DBEntities();
-                    return DB; 
-                }
+                //if (DB == null)
+                //{
+                //    DB = new AMS_DBEntities();
+                //    return DB; 
+                //}
 
-                return DB;
+                return new AMS_DBEntities();
             }
         }
     }

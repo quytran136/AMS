@@ -1,6 +1,6 @@
 import {notification } from 'antd';
 
-const openNotification = (code, title, description, icon) => {
+const OpenNotification = (code, title, description, icon) => {
     notification.open({
         message: title,
         description: code + ' ' + description,
@@ -10,4 +10,4 @@ const openNotification = (code, title, description, icon) => {
     });
 };
 
-export default openNotification;
+export default OpenNotification;

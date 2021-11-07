@@ -1,13 +1,13 @@
 .warnign-message {
-    color: orange !important;
+    color: #874d00 !important;
 }
 
 .error-message {
-    color: red !important;
+    color: #820014 !important;
 }
 
 .success-message {
-    color: green !important;
+    color: #135200 !important;
 }
 
 .label {
@@ -21,7 +21,7 @@
     font-size    : 2rem;
 }
 
-.select{
+.select {
     width: 100%;
 }
 
@@ -35,16 +35,30 @@
 }
 
 .ams-btn {
-    margin-bottom: 1vh;
-    cursor       : pointer;
-    color        : white;
+    color : white !important;
+    margin: 0.3vh
+}
 
-    &:hover {
-        color: rgb(192, 192, 192) !important;
-    }
+.ams-btn-default {
+    @extend .ams-btn;
+}
+
+.ams-btn-success {
+    @extend .ams-btn-default;
+    background-color: #135200 !important;
+}
+
+.ams-btn-cancel {
+    @extend .ams-btn-default;
+    background-color: #ff4d4f !important;
+}
+
+.ams-btn-warning {
+    @extend .ams-btn-default;
+    background-color: #874d00 !important;
 }
 
 .body-content {
-    width  : auto;
+    width           : auto;
     background-color: azure;
 }

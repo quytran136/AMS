@@ -5,6 +5,9 @@ import {
     getUserInfoWatcher,
     getOrganizationalChartWatcher,
     getDepartmentChartWatcher,
+    saveChangeDepartmentChartWatcher,
+    saveChangeOrganizationalChartWatcher,
+    getDepartmentDetailWatcher
 } from "./amsSaga";
 
 export default function* sagas() {
@@ -14,5 +17,8 @@ export default function* sagas() {
         getUserInfoWatcher(),
         getOrganizationalChartWatcher(),
         getDepartmentChartWatcher(),
+        saveChangeDepartmentChartWatcher(),
+        saveChangeOrganizationalChartWatcher(),
+        getDepartmentDetailWatcher()
     ]);
 }

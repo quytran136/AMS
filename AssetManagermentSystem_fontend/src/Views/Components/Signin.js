@@ -4,7 +4,7 @@ import '../Access/Css/Login.scss';
 import 'antd/dist/antd.css';
 import '../Access/Css/Common.scss';
 import { Button, Input } from 'antd';
-import openNotification from './openNotification';
+import OpenNotification from './OpenNotification';
 import {
     UserOutlined,
     LockOutlined,
@@ -28,7 +28,7 @@ const Signin = () => {
 
     const login = () => {
         if (userName === "" || userPassword === "") {
-            openNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu trống", <WarningOutlined className="warnign-message" />);
+            OpenNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu trống", <WarningOutlined className="warnign-message" />);
             return;
         }
         const body = {
@@ -75,20 +75,31 @@ const Signin = () => {
                 Đăng nhập
             </Button>
             <div className="register-form">
-                <div
+                {/* <div
                     className="register-link link"
                     onClick={() => {
                         dispatch(setTabLogin("Signup"));
                     }}>
                     Đăng ký
-                </div>
-                <div
-                    className="forget-password-link link"
+                </div> */}
+                <Button
+                    type="link"
+                    block
+                    // className="register-link link"
+                    onClick={() => {
+                        dispatch(setTabLogin("Signup"));
+                    }}>
+                    Đăng ký
+                </Button>
+                <Button
+                    type="link"
+                    block
+                    // className="forget-password-link link"
                     onClick={() => {
                         dispatch(setTabLogin("ResetPassword"));
                     }}>
                     Lấy lại mật khẩu
-                </div>
+                </Button>
             </div>
         </div>
     )

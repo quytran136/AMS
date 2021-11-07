@@ -32,10 +32,8 @@ request.interceptors.response.use(
     },
     (error) => {
         if (error.response?.status === 401) {
-            console.log(error)
             return Promise.reject(error)
         }
-        console.log(error)
         return Promise.reject(error)
     }
 )

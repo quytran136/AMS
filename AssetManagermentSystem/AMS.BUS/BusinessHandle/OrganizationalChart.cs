@@ -23,20 +23,39 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                List<Organizational> Organizationals = db.Organizationals.Where(ptr => ptr.DepartmentID == DepartmentID && ptr.IsDelete == false).ToList();
-                Organizational Organizational = db.Organizationals.Where(ptr => ptr.ParentID == string.Empty && 
-                                                ptr.DepartmentID == DepartmentID && 
-                                                ptr.IsDelete == false).ToList().FirstOrDefault();
+                List<Organizational> Organizationals = db.Organizationals.Where(ptr => ptr.DepartmentID == DepartmentID && ptr.IsDelete == false).ToList().Select(ptr => new Organizational()
+                {
+                    DepartmentID = ptr.DepartmentID,
+                    ID = ptr.ID,
+                    IsDelete = ptr.IsDelete,
+                    ParentID = ptr.ParentID,
+                    OrganizationalName = ptr.OrganizationalName,
+                }).ToList();
+                Organizational Organizational = db.Organizationals.Where(ptr => ptr.ParentID == string.Empty &&
+                                                ptr.DepartmentID == DepartmentID &&
+                                                ptr.IsDelete == false).ToList().Select(ptr => new Organizational()
+                                                {
+                                                    DepartmentID = ptr.DepartmentID,
+                                                    ID = ptr.ID,
+                                                    IsDelete = ptr.IsDelete,
+                                                    ParentID = ptr.ParentID,
+                                                    OrganizationalName = ptr.OrganizationalName,
+                                                }).FirstOrDefault();
 
                 if (Organizational == null)
                 {
-                    return new BaseModel<OrganizationalChart>()
+
+                    Organizational org = new Organizational()
                     {
-                        Exception = new ExceptionHandle()
-                        {
-                            Code = BUSMessageCode(4)
-                        }
+                        OrganizationalName = "new node",
+                        ID = Guid.NewGuid().ToString(),
+                        DepartmentID = DepartmentID,
+                        IsDelete = false,
+                        ParentID = string.Empty
                     };
+                    db.Organizationals.Add(org);
+                    db.SaveChanges();
+                    return GetChart(DepartmentID);
                 }
 
                 // get all chart
@@ -156,7 +175,7 @@ namespace AMS.BUS.BusinessHandle
                             }
                         }
 
-                        UpdateChart(departmentID, ID, item, Organizationals);
+                        UpdateChart(departmentID, string.IsNullOrEmpty(item.Node.ID) ? ID : item.Node.ID, item, Organizationals);
                     }
 
                     return new BaseModel<string>()
@@ -176,16 +195,19 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                List<Organizational> Organizationals = db.Organizationals.ToList();
+                List<Organizational> Organizationals = db.Organizationals.Where(ptr => ptr.DepartmentID == departmentID && ptr.IsDelete == false).ToList();
                 if (Organizationals == null)
                 {
-                    return new BaseModel<string>()
+                    db.Organizationals.Add(new Organizational()
                     {
-                        Exception = new ExceptionHandle()
-                        {
-                            Code = BUSMessageCode(1),
-                        }
-                    };
+                        ID = Guid.NewGuid().ToString(),
+                        OrganizationalName = "New one",
+                        DepartmentID = departmentID,
+                        IsDelete = false,
+                        ParentID = string.Empty,
+                    });
+                    db.SaveChanges();
+                    return UpdateChart(departmentID, OrganizationalChartNew);
                 }
                 else
                 {

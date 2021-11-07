@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import '../Access/Css/Signup.scss';
 import '../Access/Css/Common.scss';
 import { Button, Input } from 'antd';
-import openNotification from '../Components/openNotification';
+import OpenNotification from '../Components/OpenNotification';
 import {
     UserOutlined,
     LockOutlined,
@@ -34,20 +34,20 @@ const Signup = (prop) => {
             userRePassword === "" ||
             userFullName === ""
         ) {
-            openNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu trống", <WarningOutlined className="warnign-message" />);
+            OpenNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu trống", <WarningOutlined className="warnign-message" />);
             return;
         }
         if (userName?.includes(' ') || userPassword.includes(' ') || userRePassword.includes(' ')) {
-            openNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu không đúng định dạng", <WarningOutlined className="warnign-message" />);
+            OpenNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu không đúng định dạng", <WarningOutlined className="warnign-message" />);
             return;
         }
         if (userFullName.length > 64 || userName.length > 64 || userPassword.length > 64) {
-            openNotification("", messageType.WARNING, "Độ dài tên lớn hơn 50 ký tự", <WarningOutlined className="warnign-message" />);
+            OpenNotification("", messageType.WARNING, "Độ dài tên lớn hơn 50 ký tự", <WarningOutlined className="warnign-message" />);
             return;
         }
 
         if(userPassword !== userRePassword){
-            openNotification("", messageType.WARNING, "Mật khẩu không giống nhau", <WarningOutlined className="warnign-message" />);
+            OpenNotification("", messageType.WARNING, "Mật khẩu không giống nhau", <WarningOutlined className="warnign-message" />);
             return;
         }
 
@@ -109,7 +109,7 @@ const Signup = (prop) => {
             />
             <div className="register-footer">
                 <Button
-                    className="button-register ams-btn"
+                    className="button-register"
                     type="primary"
                     size="middle"
                     onClick={() => {

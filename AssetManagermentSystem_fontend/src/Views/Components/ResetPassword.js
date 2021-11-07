@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import '../Access/Css/ResetPassword.scss';
 import '../Access/Css/Common.scss';
 import { Button, Input } from 'antd';
-import openNotification from './openNotification';
+import OpenNotification from './OpenNotification';
 import {
     UserOutlined,
     LockOutlined,
@@ -33,15 +33,15 @@ const ResetPassword = (prop) => {
         if (userName === "" ||
             userPassword === ""
         ) {
-            openNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu trống", <WarningOutlined className="warnign-message" />);
+            OpenNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu trống", <WarningOutlined className="warnign-message" />);
             return;
         }
         if (userName?.includes(' ') || userPassword.includes(' ')) {
-            openNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu không đúng định dạng", <WarningOutlined className="warnign-message" />);
+            OpenNotification("", messageType.WARNING, "Tài khoản hoặc mật khẩu không đúng định dạng", <WarningOutlined className="warnign-message" />);
             return;
         }
         if (userName.length > 64 || userPassword.length > 64) {
-            openNotification("", messageType.WARNING, "Độ dài tên lớn hơn 50 ký tự", <WarningOutlined className="warnign-message" />);
+            OpenNotification("", messageType.WARNING, "Độ dài tên lớn hơn 50 ký tự", <WarningOutlined className="warnign-message" />);
             return;
         }
 
@@ -58,7 +58,7 @@ const ResetPassword = (prop) => {
 
     useEffect(() => {
         if (error?.Message) {
-            openNotification(error.Code, messageType.WARNING, error.Message, <WarningOutlined className="warnign-message" />);
+            OpenNotification(error.Code, messageType.WARNING, error.Message, <WarningOutlined className="warnign-message" />);
         }
     }, [error])
 

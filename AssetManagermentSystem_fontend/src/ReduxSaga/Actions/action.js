@@ -1,9 +1,16 @@
 import * as type from "../Type";
 
-export const getError = (error) => {
+export const setError = (error) => {
     return {
         type: type.ERROR_API,
         error,
+    };
+}
+
+export const setMessage = (message) => {
+    return {
+        type: type.MESSAGE,
+        message,
     };
 }
 
@@ -72,29 +79,65 @@ export const setShowMenu = (showMenu) => {
 }
 
 export const getDepartmentChart = (body) => {
-    return{
+    return {
         type: type.GET_DEPARTMENT,
         body
     }
 }
 
 export const saveDepartmentChart = (departmentChart) => {
-    return{
+    return {
         type: type.SAVE_DEPARTMENT,
         departmentChart
     }
 }
 
-export const getOrganizational = (body) => {
-    return{
+export const saveChangeDepartmentChart = (body) => {
+    return {
+        type: type.SAVE_CHANGE_DEPARTMENT,
+        body
+    }
+}
+
+export const setDepartmentData = (department) => {
+    return {
+        type: type.DEPARTMENT_DATA,
+        department
+    }
+}
+
+export const getDepartmentDetail = (body) => {
+    return {
+        type: type.GET_DEPARTMENT_DETAIL,
+        body
+    }
+}
+
+export const saveDepartmentDetail = (department) => {
+    console.log(department)
+    return {
+        type: type.DEPARTMENT_DETAIL,
+        department
+    }
+}
+
+export const getOrganizationalChart = (body) => {
+    return {
         type: type.GET_ORGANIZATIONAL,
         body
     }
 }
 
-export const saveOrganizational = (organizationalChart) => {
-    return{
+export const saveOrganizationalChart = (organizationalChart) => {
+    return {
         type: type.SAVE_ORGANIZATIONAL,
         organizationalChart
+    }
+}
+
+export const saveChangeOrganizationalChart = (body) => {
+    return {
+        type: type.SAVE_CHANGE_ORGANIZATIONAL,
+        body
     }
 }

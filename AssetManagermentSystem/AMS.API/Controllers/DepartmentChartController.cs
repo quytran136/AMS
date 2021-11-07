@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace AMS.API.Controllers
 {
+
     public class DepartmentChartController : ApiController
     {
         [HttpPost]
@@ -61,6 +62,23 @@ namespace AMS.API.Controllers
                         Response = new Res_DepartmentChart()
                         {
                             Department = new DepartmentChart(),
+                        }
+                    };
+                case "DEPARTMENT_DETAIL":
+                    BaseModel<DepartmentChart> departmentDetail = new DepartmentChart().GetDepartmentDetailByID(req.Data.DepartmentID);
+                    if (!string.IsNullOrEmpty(departmentDetail.Exception.Code))
+                    {
+                        return new BaseResponse<Res_DepartmentChart>()
+                        {
+                            Code = departmentDetail.Exception.Code,
+                            Message = departmentDetail.Exception.Message
+                        };
+                    }
+                    return new BaseResponse<Res_DepartmentChart>()
+                    {
+                        Response = new Res_DepartmentChart()
+                        {
+                            Department = departmentDetail.Result
                         }
                     };
                 default:

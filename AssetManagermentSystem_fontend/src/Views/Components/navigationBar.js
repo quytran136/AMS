@@ -38,7 +38,11 @@ const NavigationBar = (prop) => {
     }
 
     const UserBoard = () => {
-        return (<span className="board-info">
+        return (<span
+            className="board-info"
+            onMouseLeave={() => {
+                setShowUserInfo(false);
+            }}>
             <Row
                 className="menu-item"
                 onClick={() => {
@@ -100,21 +104,28 @@ const NavigationBar = (prop) => {
 
     const NotificationBoard = () => {
         return (
-            <span className="board-info">
+            <span
+                className="board-info"
+                onMouseLeave={() => {
+                    setShowNotiInfo(false)
+                }}>
             </span>
         )
     }
 
     const MessageBoard = () => {
         return (
-            <span className="board-info">
+            <span 
+            className="board-info"
+            onMouseLeave={() =>{
+                setShowMessage(false)
+            }}>
             </span>
         )
     }
 
     function getUser() {
         if (userName) {
-            // console.log(userName)
             const body = {
                 Token: token,
                 Key: "GET_INFORMATION",
@@ -152,9 +163,7 @@ const NavigationBar = (prop) => {
             <Col span={10} className="nav-bar-right">
                 <span className="nav-bar-item ams-btn"
                     onClick={() => {
-                        setShowNotiInfo(!showNotiInfo)
-                        setShowUserInfo(false)
-                        setShowMessage(false)
+                        setShowNotiInfo(true)
                     }}>
                     <BellOutlined />
                     <span className="number-noti">
@@ -163,9 +172,7 @@ const NavigationBar = (prop) => {
                 </span>
                 <span className="nav-bar-item ams-btn"
                     onClick={() => {
-                        setShowMessage(!showMessage)
-                        setShowUserInfo(false)
-                        setShowNotiInfo(false)
+                        setShowMessage(true)
                     }}>
                     <MessageOutlined />
                     <span className="number-noti">
@@ -174,11 +181,8 @@ const NavigationBar = (prop) => {
                 </span>
                 <span className="nav-bar-item ams-btn"
                     onClick={() => {
-                        setShowUserInfo(!showUserInfo)
-                        setShowNotiInfo(false)
-                        setShowMessage(false)
-                    }}
-                >
+                        setShowUserInfo(true)
+                    }}>
                     <UserOutlined />
                 </span>
                 {showUserInfo ? <UserBoard /> : ""}

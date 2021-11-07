@@ -4,187 +4,369 @@ import { Tree, TreeNode } from "react-organizational-chart";
 import '../Access/Css/Login.scss';
 import 'antd/dist/antd.css';
 import '../Access/Css/Common.scss';
-import '../Access/Css/DepartmentChart.scss'
-import { Button, Input, Card, Select } from 'antd';
-import openNotification from './openNotification';
+import '../Access/Css/OrganizationalChart.scss'
+import { Button, Input, Card, Row, Col } from 'antd';
 import {
     UserOutlined,
-    CloseCircleOutlined,
     PlusOutlined,
-    MinusOutlined,
-    CloseOutlined
+    CloseOutlined,
+    FolderOpenOutlined
 } from '@ant-design/icons';
 import * as amsAction from '../../ReduxSaga/Actions/action';
-import * as messageType from '../../Common/messageCode';
 
-
-const DepartmentChart = (prop) => {
+const OrganizationalChart = (prop) => {
     const dispatch = useDispatch();
     const {
-        saveDepartmentChart,
-        getDepartmentChart,
+        saveOrganizationalChart,
+        getOrganizationalChart,
+        saveChangeOrganizationalChart,
+        setDepartmentData,
+        setOrganizationData,
+        getDepartmentDetail
     } = amsAction;
+    const [listNodeChange, setListNodeChange] = useState([])
 
     const {
-        departmentChart
+        organizationalChart,
+        token,
+        userName,
+        departmentData,
+        departmentDetail,
     } = prop.amsStore;
 
-    function getDepartment(params) {
-        dispatch(getDepartmentChart())
+    function getOrganizational() {
+        const body = {
+            Token: token,
+            Key: "ORGANIZATIONAL_CHART",
+            Data: {
+                UserName: userName,
+                DepartmentID: departmentData.ID
+            }
+        }
+        dispatch(getOrganizationalChart(body))
+        getDepartment()
+    }
+
+    function getDepartment() {
+        const body = {
+            Token: token,
+            Key: "DEPARTMENT_DETAIL",
+            Data: {
+                UserName: userName,
+                DepartmentID: departmentData.ID
+            }
+        }
+        dispatch(getDepartmentDetail(body))
+    }
+
+    useEffect(getOrganizational, []);
+
+    function formatDepartment(nodeModel) {
+        if (nodeModel?.Node?.IsNew === true) {
+            nodeModel.Node.ID = ""
+        }
+
+        nodeModel.Childs.forEach(element => {
+            element = formatDepartment(element)
+        })
+        return nodeModel
+    }
+
+    function saveOrganizational() {
+        var tree;
+        listNodeChange.forEach(element => {
+            tree = changeNodeData(organizationalChart, element.ID, element.Value)
+        })
+        var treeFormat = formatDepartment(tree || organizationalChart)
+        const body = {
+            Token: token,
+            Key: "UPDATE_ORGANIZATIONAL",
+            Data: {
+                UserName: userName,
+                DepartmentID: departmentData.ID,
+                Organizational: treeFormat
+            }
+        }
+        dispatch(saveChangeOrganizationalChart(body))
+        console.log(departmentDetail)
+    }
+
+    function changeNodeData(organizational, nodeID, value) {
+        if (organizational) {
+            if (organizational?.Node?.ID === nodeID) {
+                organizational.Node.OrganizationalName = value
+                return organizational
+            }
+            if (organizational && organizational?.Childs != null) {
+                organizational.Childs.forEach(element => {
+                    if (element?.Node?.ID === nodeID) {
+                        element.Node.OrganizationalName = value
+                        return organizational
+                    } else {
+                        changeNodeData(element, nodeID, value)
+                    }
+                })
+                return organizational;
+            }
+        }
     }
 
     const Node = (propA) => {
         const { data } = propA
-        const [name, setName] = useState(data?.label)
+        const [node, setNode] = useState()
+        const [orgName, setOrganizationalName] = useState()
 
-        function changeValue(departmentChart, key, value) {
-            if(departmentChart){
-                if (departmentChart.key === key) {
-                    departmentChart.list.push({
-                        label: value,
-                        key: Date.now(),
-                        list: []
-                    })
-                    return departmentChart;
-                }
-                if (departmentChart && departmentChart.list != null) {
-                    departmentChart.list.forEach(element => {
-                        if (element.key === key) {
-                            element.label = value
-                            return departmentChart;
-                        } else {
-                            return changeValue(element, key, value)
-                        }
-                    })
-                    return departmentChart;
-                }
+        function setDepartment() {
+            if (data && data?.Node) {
+                setNode(data?.Node)
             }
         }
 
+        function saveListNodeChange(value) {
+            var listChange = listNodeChange
+            if (listChange.length === 0) {
+                listChange.push({
+                    ID: node?.ID,
+                    Value: value,
+                })
+                setListNodeChange(listChange)
+            }
+            listChange.forEach(element => {
+                if (element.ID === node?.ID) {
+                    element.Value = value
+                    setListNodeChange(listChange)
+                    return;
+                }
+            });
+            listChange.push({
+                ID: node?.ID,
+                Value: value,
+            })
+            setListNodeChange(listChange)
+        }
+
+        useEffect(setDepartment, [])
+
         return (
-            <Card bordered={true} className="node">
+            <Card
+                bordered={true}
+                className="node">
                 <div className="header">
                     <Input
-                        value={name}
+                        value={orgName ? orgName : node?.OrganizationalName}
                         className="input"
                         size="middle"
                         placeholder="New node"
                         prefix={<UserOutlined />}
-                        onChange={(e) => setName(e.target.value)} />
-                    <Select
-                        defaultValue=""
-                        className="input select"
-                        size="middle"
-                        prefix={<UserOutlined />}
-                        data={[]}
-                    />
+                        onChange={(e) => {
+                            setOrganizationalName(e.target.value)
+                            saveListNodeChange(e.target.value)
+                        }} />
                     <Button
                         type="primary"
                         shape="circle"
                         className="add-node"
                         icon={<PlusOutlined />}
                         onClick={() => {
-                            var tree = addNode(departmentChart, data?.key)
-                            dispatch(saveDepartmentChart(tree))
+                            var treeChange;
+                            listNodeChange.forEach(element => {
+                                treeChange = changeNodeData(organizationalChart, element.ID, element.Value)
+                            })
+                            var tree = addNode(treeChange ? treeChange : organizationalChart, node?.ID)
+                            dispatch(saveOrganizationalChart(tree))
                         }}
                     />
                     <Button
                         shape="circle"
                         icon={<CloseOutlined />}
-                        className="delete-node"
+                        className="delete-node ams-btn-cancel"
                         onClick={() => {
-                            var tree = removeNode(departmentChart, data?.key)
-                            dispatch(saveDepartmentChart(tree))
+                            var tree = removeNode(organizationalChart, node?.ID)
+                            dispatch(saveOrganizationalChart(tree))
                         }}
                     />
                 </div>
             </Card>)
     }
 
-
-
-    function addNode(departmentChart, key) {
-        if (departmentChart.key === key) {
-            departmentChart.list.push({
-                label: "new one",
-                key: Date.now(),
-                list: []
-            })
-            return departmentChart;
+    function addNode(organizational, nodeID) {
+        if (!organizational.Node) {
+            return {
+                Node: {
+                    ID: new Date().getTime(),
+                    IsDelete: false,
+                    OrganizationalName: "",
+                    ParentID: nodeID,
+                    IsNew: true
+                },
+                Childs: []
+            }
         }
-        if (departmentChart && departmentChart.list != null) {
-            departmentChart.list.forEach(element => {
-                if (element.key === key) {
-                    element.list.push({
-                        label: "new one",
-                        key: Date.now(),
-                        list: []
+
+        if (organizational?.Node?.ID === nodeID) {
+            organizational.Childs.push({
+                Node: {
+                    ID: new Date().getTime(),
+                    IsDelete: false,
+                    OrganizationalName: "",
+                    ParentID: nodeID,
+                    IsNew: true
+                },
+                Childs: []
+            })
+            return organizational;
+        }
+        if (organizational && organizational?.Childs != null) {
+            organizational.Childs.forEach(element => {
+                if (element?.key === nodeID) {
+                    element.Childs.push({
+                        Node: {
+                            ID: new Date().getTime(),
+                            IsDelete: false,
+                            OrganizationalName: "",
+                            ParentID: nodeID,
+                            IsNew: true
+                        },
+                        Childs: []
                     })
-                    return departmentChart;
+                    return organizational;
                 } else {
-                    return addNode(element, key)
+                    return addNode(element, nodeID)
                 }
             })
-            return departmentChart;
+            return organizational;
         }
     }
 
-    function removeNode(departmentChart, key) {
-        if (departmentChart.key === key) {
+    function removeNode(organization, nodeID) {
+        if (organization?.Node?.ID === nodeID) {
+            organization.Node.IsDelete = true
+            if (organization && organization?.Childs != null) {
+                organization.Childs.forEach(element => {
+                    if (element?.Node?.ID === nodeID) {
+                        element.Node.IsDelete = true
+                        removeNode(element, element?.Node?.ID);
+                    } else {
+                        removeNode(element, nodeID)
+                    }
+                })
+            }
+
             return {
-                label: "new one",
-                key: Date.now(),
-                list: []
+                Node: {
+                    ID: new Date().getTime(),
+                    IsDelete: false,
+                    OrganizationalName: "new one",
+                    ParentID: ""
+                },
+                Childs: [organization]
             };
         }
-        if (departmentChart && departmentChart.list != null) {
-            departmentChart.list.forEach(element => {
-                if (element.key === key) {
-                    const index = departmentChart.list.indexOf(element)
-                    departmentChart.list.splice(index, 1)
-                    return departmentChart;
+
+        if (organization && organization?.Childs != null) {
+            organization.Childs.forEach(element => {
+                if (element?.Node?.ID === nodeID) {
+                    element.Node.IsDelete = true
+                    removeNode(element, element?.Node?.ID);
                 } else {
-                    return removeNode(element, key)
+                    removeNode(element, nodeID)
                 }
             })
-            return departmentChart;
+            return organization;
         }
     }
 
     function RenderTree(item) {
         var node = [];
-        if (item && (item.list !== null || item.list !== undefined)) {
-            item.list.forEach(element => {
-                if (element.list.length === 0) {
-                    node.push(<TreeNode key={element.key} label={<Node
-                        data={element}
-                    />} />)
-                } else {
-                    node.push(<TreeNode key={element.key} label={<Node
-                        data={element}
-                    />}> {RenderTree(element)}
-                    </TreeNode>)
+        if (item && item.Childs) {
+            item.Childs.forEach(element => {
+                if (element.Node.IsDelete !== true) {
+                    if (element.Childs && element.Childs.length > 0) {
+                        var count = 0
+                        element.Childs.forEach(item => {
+                            if (item.Node.IsDelete) {
+                                count++
+                            }
+                        })
+                        if (count === element.Childs.length) {
+                            node.push(<TreeNode key={element.Node.ID} label={<Node
+                                data={element}
+                            />} />)
+                        } else {
+                            node.push(<TreeNode key={element.Node.ID} label={<Node
+                                data={element}
+                            />}> {RenderTree(element)}
+                            </TreeNode>)
+                        }
+                    } else {
+                        node.push(<TreeNode key={element.Node.ID} label={<Node
+                            data={element}
+                        />} />)
+                    }
                 }
             });
         }
-
         return node;
     }
 
-    return (
-        <div className="department-chart">
+    const ORGTree = () => {
+        return (<div className="organization">
             <div className="tool">
-                <Button>Save</Button>
+                <Button
+                    className="ams-btn-default"
+                    type="primary"
+                    onClick={() => saveOrganizational()}
+                >Save</Button>
+                <Button
+                    className="ams-btn-default"
+                    type="primary"
+                    danger
+                    onClick={() => getOrganizational()}
+                >Cancel</Button>
+                <Button
+                    className="ams-btn-default"
+                    type="primary"
+                    onClick={() => dispatch(setDepartmentData(null))}
+                >Back</Button>
             </div>
-            <Tree
-                lineWidth={"1px"}
-                lineColor={"black"}
-                lineBorderRadius={"10px"}
-                label={<Node data={departmentChart} />}
-            >
-                {RenderTree(departmentChart)}
-            </Tree>
-        </div>
+            <span className="organization-chart">
+                <h3>
+                    Sơ đồ tổ chức
+                </h3>
+                <Tree
+                    lineWidth={"1px"}
+                    lineColor={"black"}
+                    lineBorderRadius={"10px"}
+                    label={<Node data={organizationalChart} />}
+                >
+                    {RenderTree(organizationalChart)}
+                </Tree>
+            </span>
+        </div>)
+    }
+
+    const DepartmentDetail = () => {
+        return (
+            <div className="deparment-detail">
+                <div className="department-detail-header">
+                    <h3>Bộ phận: {departmentDetail?.Node?.DepartmentName}</h3>
+                </div>
+                <div className="department-detail-body">
+
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <Row >
+            <Col span={4}>
+                <DepartmentDetail />
+            </Col>
+            <Col span={20}>
+                <ORGTree />
+            </Col>
+        </Row>
     )
 }
 
@@ -194,4 +376,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(DepartmentChart);
+export default connect(mapStateToProps)(OrganizationalChart);

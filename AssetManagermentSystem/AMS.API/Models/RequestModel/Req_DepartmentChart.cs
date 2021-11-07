@@ -9,6 +9,7 @@ namespace AMS.API.Models.RequestModel
     public class Req_DepartmentChart
     {
         public string UserName { get; set; }
+        public string DepartmentID { get; set; }
         public DepartmentChart Department { get; set; }
     }
 }

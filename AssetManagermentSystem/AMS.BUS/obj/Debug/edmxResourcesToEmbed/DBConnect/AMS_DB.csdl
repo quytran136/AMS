@@ -176,9 +176,9 @@
     <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="DepartmentName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="ParentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="IsDelete" Type="Boolean" />
     <NavigationProperty Name="Organizationals" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Department" ToRole="Organizational" />
     <NavigationProperty Name="ranks" Relationship="AMS_DBModel.FK_rank_Department" FromRole="Department" ToRole="rank" />
-    <Property Name="IsDelete" Type="Boolean" />
   </EntityType>
   <EntityType Name="function">
     <Key>
@@ -208,9 +208,9 @@
     <Property Name="OrganizationalName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <Property Name="ParentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="IsDelete" Type="Boolean" />
     <NavigationProperty Name="Department" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Organizational" ToRole="Department" />
     <NavigationProperty Name="Processes" Relationship="AMS_DBModel.FK_Process_Organizational" FromRole="Organizational" ToRole="Process" />
-    <Property Name="IsDelete" Type="Boolean" />
   </EntityType>
   <EntityType Name="Process">
     <Key>

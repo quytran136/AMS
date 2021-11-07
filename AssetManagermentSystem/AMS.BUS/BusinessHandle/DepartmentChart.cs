@@ -17,24 +17,77 @@ namespace AMS.BUS.BusinessHandle
         private List<Department> ListDepartmentUpdate = new List<Department>();
         private List<Department> ListDepartmentUpdateData = new List<Department>();
 
+        // Thông tin tổng hợp
+        public string Owner { get; set; }
+        public string NumberOfMember { get; set; }
+
+        public BaseModel<DepartmentChart> GetDepartmentDetailByID(string departmentID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                Department department = db.Departments.Where(ptr => ptr.ID == departmentID).ToList().Select(ptr => new Department()
+                {
+                    ID = ptr.ID,
+                    IsDelete = ptr.IsDelete,
+                    DepartmentName = ptr.DepartmentName,
+                    ParentID = ptr.ParentID
+                }).FirstOrDefault();
+
+                // tổng hợp thông tin của bộ phận.
+                return new BaseModel<DepartmentChart>()
+                {
+                    Result = new DepartmentChart()
+                    {
+                        Node = department
+                    }
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<DepartmentChart>()
+                {
+                    Exception = new ExceptionHandle
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
 
         public BaseModel<DepartmentChart> GetChart()
         {
             try
             {
                 var db = DBC.Init;
-                List<Department> departments = db.Departments.Where(ptr => ptr.IsDelete == false).ToList();
-                Department department = db.Departments.Where(ptr => ptr.ParentID == string.Empty && ptr.IsDelete == false).ToList().FirstOrDefault();
+                List<Department> departments = db.Departments.Where(ptr => ptr.IsDelete == false).ToList().Select(ptr => new Department()
+                {
+                    ID = ptr.ID,
+                    DepartmentName = ptr.DepartmentName,
+                    ParentID = ptr.ParentID,
+                    IsDelete = ptr.IsDelete
+                }).ToList();
+                Department department = db.Departments.Where(ptr => ptr.ParentID == string.Empty && ptr.IsDelete == false).ToList().Select(ptr => new Department()
+                {
+                    ID = ptr.ID,
+                    DepartmentName = ptr.DepartmentName,
+                    ParentID = ptr.ParentID,
+                    IsDelete = ptr.IsDelete
+                }).FirstOrDefault();
 
                 if (department == null)
                 {
-                    return new BaseModel<DepartmentChart>()
+                    db.Departments.Add(new Department()
                     {
-                        Exception = new ExceptionHandle()
-                        {
-                            Code = BUSMessageCode(4)
-                        }
-                    };
+                        ID = Guid.NewGuid().ToString(),
+                        DepartmentName = "New one",
+                        IsDelete = false,
+                        ParentID = string.Empty
+                    });
+                    db.SaveChanges();
+                    return GetChart();
                 }
 
                 // get all chart
@@ -151,7 +204,7 @@ namespace AMS.BUS.BusinessHandle
                             }
                         }
 
-                        UpdateChart(ID, item, departments);
+                        UpdateChart(string.IsNullOrEmpty(item.Node.ID) ? ID : item.Node.ID, item, departments);
                     }
 
                     return new BaseModel<string>()

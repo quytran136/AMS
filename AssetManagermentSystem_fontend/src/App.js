@@ -20,12 +20,12 @@ import {
   WarningOutlined,
   CheckCircleOutlined
 } from '@ant-design/icons';
-import openNotification from "./Views/Components/openNotification";
+import OpenNotification from "./Views/Components/OpenNotification";
 import * as messageType from './Common/messageCode';
 import { connect, useDispatch } from "react-redux";
 import * as amsAction from './ReduxSaga/Actions/action';
-import NavigationBar from './Views/Components/navigationBar';
-import AMSMenu from "./Views/Components/menu";
+import NavigationBar from './Views/Components/NavigationBar';
+import AMSMenu from "./Views/Components/Menu";
 import { Row, Col } from 'antd';
 
 function App(prop) {
@@ -40,7 +40,9 @@ function App(prop) {
   const {
     saveCookie,
     saveUserLogin,
-    saveToken
+    saveToken,
+    setMessage,
+    setError
   } = amsAction;
 
   function load() {
@@ -57,23 +59,24 @@ function App(prop) {
 
   function checkError() {
     if (error) {
-      openNotification(error.Code ?? "", messageType.ERROR, error.Message ?? "Có lỗi bất thường xảy ra", <CloseCircleOutlined className="error-message" />);
+      OpenNotification(error.Code ?? "", messageType.ERROR, error.Message ?? "Có lỗi bất thường xảy ra", <CloseCircleOutlined className="error-message" />);
+      dispatch(setError(null))
     }
   }
 
   function showMessage() {
     if (message) {
-      openNotification("", messageType.SUCCESS, message.Message, <CheckCircleOutlined className="success-message" />);
+      OpenNotification("", messageType.SUCCESS, message, <CheckCircleOutlined className="success-message" />);
+      dispatch(setMessage(null))
     }
   }
 
   function checkToken() {
     if (token) {
       if (token?.Response?.TokenString !== "" && token) {
-        openNotification("", messageType.SUCCESS, "Đăng nhập thành công", <CheckCircleOutlined className="success-message" />);
-
+        OpenNotification("", messageType.SUCCESS, "Đăng nhập thành công", <CheckCircleOutlined className="success-message" />);
       } else {
-        openNotification(token.Code, messageType.WARNING, token.Message, <WarningOutlined className="warnign-message" />);
+        OpenNotification(token.Code, messageType.WARNING, token.Message, <WarningOutlined className="warnign-message" />);
       }
     }
   }
@@ -92,48 +95,48 @@ function App(prop) {
           <NavigationBar />
           <div className="body-content">
             <Row>
-              <Col span={showMenu ? 2 : 4}>
-                <AMSMenu />
-              </Col>
-              <Col span={showMenu ? 22 : 20}>
-                <Switch >
-                  <Route exact path="/Home">
-                    <Home />
-                  </Route>
-                  <Route exact path="/User">
-                    <User />
-                  </Route>
-                  <Route exact path="/Config">
-                    <Config />
-                  </Route>
-                  <Route exact path="/Warehousing">
-                    <Warehousing />
-                  </Route>
-                  <Route exact path="/Asset">
-                    <Asset />
-                  </Route>
-                  <Route exact path="/Report">
-                    <Report />
-                  </Route>
-                  <Route exact path="/404Notfound">
-                    <Home />
-                  </Route>
-                  <Route path="/">
-                    <Home />
-                  </Route>
-                </Switch>
-              </Col>
-            </Row>
-          </div>
+              <Col span={showMenu ? 1 : 3}>
+              <AMSMenu />
+            </Col>
+            <Col span={showMenu ? 23 : 21}>
+              <Switch >
+                <Route exact path="/Home">
+                  <Home />
+                </Route>
+                <Route exact path="/User">
+                  <User />
+                </Route>
+                <Route exact path="/Config">
+                  <Config />
+                </Route>
+                <Route exact path="/Warehousing">
+                  <Warehousing />
+                </Route>
+                <Route exact path="/Asset">
+                  <Asset />
+                </Route>
+                <Route exact path="/Report">
+                  <Report />
+                </Route>
+                <Route exact path="/404Notfound">
+                  <Home />
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>
+              </Switch>
+            </Col>
+          </Row>
+        </div>
         </>
-          : <><Redirect to='/Login' />
-            <Switch>
-              <Route exact path="/Login">
-                <Login />
-              </Route>
-            </Switch></>}
-      </div>
-    </Router>
+      : <><Redirect to='/Login' />
+        <Switch>
+          <Route exact path="/Login">
+            <Login />
+          </Route>
+        </Switch></>}
+    </div>
+    </Router >
   )
 }
 

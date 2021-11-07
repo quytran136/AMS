@@ -10,6 +10,10 @@ const initialState = {
     showMenu: true,
     organizationalChart: null,
     departmentChart: null,
+    message: null,
+    departmentData: null,
+    organizationData: null,
+    departmentDetail: null
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -18,6 +22,11 @@ export const amsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: action.error
+            }
+        case type.MESSAGE:
+            return {
+                ...state,
+                message: action.message
             }
         case type.SAVE_TOKEN:
             return {
@@ -54,10 +63,25 @@ export const amsReducer = (state = initialState, action) => {
                 ...state,
                 departmentChart: action.departmentChart
             }
+        case type.DEPARTMENT_DATA:
+            return {
+                ...state,
+                departmentData: action.department
+            }
+        case type.DEPARTMENT_DETAIL:
+            return {
+                ...state,
+                departmentDetail: action.department
+            }
         case type.SAVE_ORGANIZATIONAL:
             return {
                 ...state,
                 organizationalChart: action.organizationalChart
+            }
+        case type.ORGANIZATION_DATA:
+            return {
+                ...state,
+                organizationData: action.organizational
             }
         default:
             return {
