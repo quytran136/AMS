@@ -1,0 +1,17 @@
+.employee{
+    .employee-header{
+        text-align: start;
+    }
+    .employee-body{
+        width: 100%;
+        height: 70vh;
+    }
+    .employee-tool{
+        .tool-left{
+            text-align: start;
+        }
+        .tool-right{
+            text-align: end;
+        }
+    }
+}

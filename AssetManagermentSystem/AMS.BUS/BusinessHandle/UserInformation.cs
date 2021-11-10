@@ -3,12 +3,29 @@ using AMS.BUS.DBConnect;
 using AMS.COMMON;
 using AMS.COMMON.Encryption;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AMS.BUS.BusinessHandle
 {
     public class UserInformation : IBaseHandle
     {
+        private string validData(string data, bool isSpace = true)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                return string.Format("data can not be empty");
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(data) && isSpace)
+                {
+                    return string.Format("data can not be empty or have white space");
+                }
+            }
+
+            return string.Empty;
+        }
         public BaseModel<user_identifie> GetUserInfor(string userName)
         {
             try
@@ -44,24 +61,45 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<user_identifie> CreateUserInfor(string userName, string userPassword, string userFullName)
+        public BaseModel<user_identifie> CreateUserInfor(user_identifie userId)
         {
             try
             {
                 var db = DBC.Init;
-                var passwordEncode = SecuritiesHandle.Encode(userPassword);
-                var user = db.user_identifie.Where(ptr => ptr.UserName == userName).ToList().LastOrDefault();
+                string validResult = this.validData(userId.UserFullName, false);
+                validResult = this.validData(userId.UserName);
+                validResult = this.validData(userId.UserPassword);
+                validResult = this.validData(userId.DepartmentID);
+                validResult = this.validData(userId.OrganizationID);
+                validResult = this.validData(userId.DOB.ToString(), false);
+
+                if (!string.IsNullOrEmpty(validResult))
+                {
+                    return new BaseModel<user_identifie>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(4)
+                        }
+                    };
+                }
+
+                var passwordEncode = SecuritiesHandle.Encode(userId.UserPassword);
+                var user = db.user_identifie.Where(ptr => ptr.UserName == userId.UserName).ToList().LastOrDefault();
                 if (user == null)
                 {
                     user_identifie user1 = new user_identifie()
                     {
                         ID = Guid.NewGuid().ToString(),
-                        UserName = userName,
-                        UserPassword = passwordEncode,
+                        UserName = userId.UserName,
+                        UserPassword = userId.UserPassword,
                         CreateDate = DateTime.Now,
                         IsLock = false,
                         IsDelete = false,
-                        UserFullName = userFullName,
+                        UserFullName = userId.UserFullName,
+                        DepartmentID = userId.DepartmentID,
+                        OrganizationID = userId.OrganizationID,
+                        DOB = userId.DOB
                     };
                     db.user_identifie.Add(user1);
                     db.SaveChanges();

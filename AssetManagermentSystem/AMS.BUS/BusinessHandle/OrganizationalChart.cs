@@ -130,7 +130,7 @@ namespace AMS.BUS.BusinessHandle
                     foreach (OrganizationalChart item in OrganizationalNew.Childs)
                     {
                         string ID = Guid.NewGuid().ToString();
-                        if (string.IsNullOrEmpty(item.Node.ID))
+                        if (string.IsNullOrEmpty(item.Node.ID) && item.Node.IsDelete == false)
                         {
                             Organizational org = new Organizational()
                             {
@@ -161,7 +161,7 @@ namespace AMS.BUS.BusinessHandle
                                     });
                                 }
 
-                                if (item.Node.IsDelete == true)
+                                if (item.Node.IsDelete == true && string.IsNullOrEmpty(item.Node.ID) == false)
                                 {
                                     ListOrganizationalUpdateData.Add(new Organizational()
                                     {

@@ -202,6 +202,9 @@
           <Property Name="UserFullName" Type="nvarchar" MaxLength="128" />
           <Property Name="Image" Type="nvarchar" MaxLength="128" />
           <Property Name="Token" Type="nvarchar" MaxLength="128" />
+          <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+          <Property Name="OrganizationID" Type="varchar" MaxLength="64" />
+          <Property Name="DOB" Type="date" />
         </EntityType>
         <EntityType Name="view_page">
           <Key>
@@ -827,6 +830,9 @@
           <NavigationProperty Name="role_function" Relationship="AMS_DBModel.FK_role_function_user_identifie" FromRole="user_identifie" ToRole="role_function" />
           <NavigationProperty Name="role_view" Relationship="AMS_DBModel.FK_role_view_user_identifie" FromRole="user_identifie" ToRole="role_view" />
           <NavigationProperty Name="system_log" Relationship="AMS_DBModel.FK_system_log_user_identifie" FromRole="user_identifie" ToRole="system_log" />
+          <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="OrganizationID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="view_page">
           <Key>
@@ -1250,6 +1256,9 @@
           <EntitySetMapping Name="user_identifie">
             <EntityTypeMapping TypeName="AMS_DBModel.user_identifie">
               <MappingFragment StoreEntitySet="user_identifie">
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
                 <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />

@@ -14,6 +14,9 @@ namespace AMS.API.Models.RequestModel
         public string UserPassword { get; set; }
         public string NewPassword { get; set; }
         public string UserFullName { get; set; }
+        public string DepartmentID { get; set; }
+        public string OrganizationID { get; set; }
+        public DateTime DOB { get; set; }
         public bool IsLock { get; set; }
         public bool IsDelete { get; set; }
         public string Role { get; set; }

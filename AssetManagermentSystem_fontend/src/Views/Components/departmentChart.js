@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import { Tree, TreeNode } from "react-organizational-chart";
-import '../Access/Css/Login.scss';
 import 'antd/dist/antd.css';
 import '../Access/Css/Common.scss';
 import '../Access/Css/DepartmentChart.scss'
@@ -149,7 +148,7 @@ const DepartmentChart = (prop) => {
                         </Col>
                         <Col span={4}>
                             <Button
-                                disabled={ node?.IsNew ? true : false }
+                                disabled={node?.IsNew ? true : false}
                                 type="primary"
                                 shape="link"
                                 className="detail-node"
@@ -319,19 +318,21 @@ const DepartmentChart = (prop) => {
                     onClick={() => getDepartment()}
                 >Cancel</Button>
             </div>
-            <Tree
-                lineWidth={"1px"}
-                lineColor={"black"}
-                lineBorderRadius={"10px"}
-                label={<Node data={departmentChart} />}
-            >
-                {RenderTree(departmentChart)}
-            </Tree>
+            <div>
+                <Tree
+                    lineWidth={"1px"}
+                    lineColor={"black"}
+                    lineBorderRadius={"10px"}
+                    label={<Node data={departmentChart} />}
+                >
+                    {RenderTree(departmentChart)}
+                </Tree>
+            </div>
         </>)
     }
 
     return (
-        <div className="department">
+        <div>
             {!departmentData ? <div className="department-chart"><DepartmentTree /></div> : <OrganizationalChart />}
         </div>
     )

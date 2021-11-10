@@ -162,7 +162,7 @@ namespace AMS.BUS.BusinessHandle
                     foreach (DepartmentChart item in departmentNew.Childs)
                     {
                         string ID = Guid.NewGuid().ToString();
-                        if (string.IsNullOrEmpty(item.Node.ID))
+                        if (string.IsNullOrEmpty(item.Node.ID) && item.Node.IsDelete == false)
                         {
                             Department dep = new Department()
                             {
@@ -191,7 +191,7 @@ namespace AMS.BUS.BusinessHandle
                                     });
                                 }
 
-                                if (item.Node.IsDelete == true)
+                                if (item.Node.IsDelete == true && string.IsNullOrEmpty(item.Node.ID) == false)
                                 {
                                     ListDepartmentUpdateData.Add(new Department()
                                     {

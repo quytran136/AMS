@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import { Tree, TreeNode } from "react-organizational-chart";
-import '../Access/Css/Login.scss';
 import 'antd/dist/antd.css';
 import '../Access/Css/Common.scss';
 import '../Access/Css/OrganizationalChart.scss'

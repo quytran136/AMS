@@ -7,27 +7,73 @@ import { Menu, Card } from 'antd';
 import {
   ClusterOutlined,
   NodeIndexOutlined,
-  PartitionOutlined
+  PartitionOutlined,
+  TeamOutlined,
+  SettingOutlined
 } from '@ant-design/icons';
 import DepartmentChart from "./Components/DepartmentChart";
+import Employee from "./Components/Employee";
 
 function Config() {
 
   // const dispatch = useDispatch();
 
-  const [currentMenu, setCurrentMenu] = useState("A1");
+  const tabList = [
+    {
+      key: "Department",
+      value: "Cơ cấu phòng ban",
+      component: <DepartmentChart />,
+      icon: <ClusterOutlined />
+    },
+    {
+      key: "FlowConfig",
+      value: "Cấu hình luồng duyệt",
+      component: "NodeIndexOutlined",
+      icon: <NodeIndexOutlined />
+    },
+    {
+      key: "Employee",
+      value: "Quản lý nhân sự",
+      component: <Employee />,
+      icon: <TeamOutlined />
+    },
+    {
+      key: "Authorization",
+      value: "Phân quyền",
+      component: "PartitionOutlined",
+      icon: <PartitionOutlined />
+    },
+    {
+      key: "CommonConfig",
+      value: "Cấu hình chung",
+      component: "SettingOutlined",
+      icon: <SettingOutlined />
+    },
+  ]
+  const [currentMenu, setCurrentMenu] = useState(tabList[0].key);
 
   const renderTab = () => {
-    switch (currentMenu) {
-      case "A1":
-        return (<DepartmentChart />)
-      case "A2":
-        return (<>A2</>)
-      case "A3":
-        return (<>A3</>)
-      default:
-        return (<></>)
-    }
+    var tab
+    tabList.forEach(element => {
+      if (currentMenu === element.key) {
+        tab = element.component
+      }
+    });
+    return tab
+  }
+
+  const renderMenu = () => {
+    var result = []
+    tabList.forEach((element) => {
+      result.push(
+        <Menu.Item
+          key={element.key}
+          icon={element.icon}
+        >
+          {element.value}
+        </Menu.Item>)
+    })
+    return result
   }
 
   return (
@@ -37,27 +83,9 @@ function Config() {
         selectedKeys={[currentMenu]}
         mode="horizontal"
       >
-        <Menu.Item
-          key="A1"
-          icon={<ClusterOutlined />}
-        >
-          Cơ cấu tổ chức
-        </Menu.Item>
-        <Menu.Item
-          key="A2"
-          icon={<NodeIndexOutlined />}
-        >
-          Quy trình phê duyệt
-        </Menu.Item>
-        <Menu.Item
-          key="A3"
-          icon={<PartitionOutlined />}
-        >
-          Phân quyền
-        </Menu.Item>
+        {renderMenu()}
       </Menu>
-
-      <Card>
+      <Card className="config-container">
         {renderTab()}
       </Card>
     </div>

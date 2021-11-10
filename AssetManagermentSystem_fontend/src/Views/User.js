@@ -1,6 +1,5 @@
 import React from "react";
 import "./Access/Css/Common.scss";
-import "./Access/Css/Home.scss";
 import { Col, Row } from 'antd';
 import { connect, useDispatch } from "react-redux";
 

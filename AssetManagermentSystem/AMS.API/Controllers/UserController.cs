@@ -33,7 +33,14 @@ namespace AMS.API.Controllers
             {
                 case "CREATE_USER":
                     UserInformation user = new UserInformation();
-                    BaseModel<user_identifie> user_info1 = user.CreateUserInfor(req.Data.UserName, req.Data.UserPassword, req.Data.UserFullName);
+                    BaseModel<user_identifie> user_info1 = user.CreateUserInfor(new user_identifie {
+                        UserFullName = req.Data.UserFullName,
+                        UserName = req.Data.UserName,
+                        UserPassword = req.Data.UserPassword,
+                        DepartmentID = req.Data.DepartmentID,
+                        OrganizationID = req.Data.OrganizationID,
+                        DOB = req.Data.DOB,
+                    });
                     if (!string.IsNullOrEmpty(user_info1.Exception.Code))
                     {
                         return new BaseResponse<Res_UserInformation>()
@@ -132,6 +139,5 @@ namespace AMS.API.Controllers
                     };
             }
         }
-
     }
 }
