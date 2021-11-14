@@ -55,7 +55,7 @@ const Signup = (prop) => {
             Token: "",
             Key: "",
             Data: {
-                UserName: userName,
+                UserLoginName: userName,
                 UserPassword: userPassword,
                 UserFullName: userFullName
             }

@@ -205,6 +205,8 @@
           <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
           <Property Name="OrganizationID" Type="varchar" MaxLength="64" />
           <Property Name="DOB" Type="date" />
+          <Property Name="Phone" Type="varchar" MaxLength="64" />
+          <Property Name="Email" Type="varchar" MaxLength="64" />
         </EntityType>
         <EntityType Name="view_page">
           <Key>
@@ -833,6 +835,8 @@
           <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="OrganizationID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="Phone" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="view_page">
           <Key>
@@ -1256,6 +1260,8 @@
           <EntitySetMapping Name="user_identifie">
             <EntityTypeMapping TypeName="AMS_DBModel.user_identifie">
               <MappingFragment StoreEntitySet="user_identifie">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />

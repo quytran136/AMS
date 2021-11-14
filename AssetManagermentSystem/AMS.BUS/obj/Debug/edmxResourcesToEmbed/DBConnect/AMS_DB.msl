@@ -204,6 +204,11 @@
     <EntitySetMapping Name="user_identifie">
       <EntityTypeMapping TypeName="AMS_DBModel.user_identifie">
         <MappingFragment StoreEntitySet="user_identifie">
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
           <ScalarProperty Name="Token" ColumnName="Token" />
           <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />

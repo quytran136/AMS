@@ -42,9 +42,17 @@ export function* signinWatcher() {
 
 function* signupSaga(action) {
     try {
+        yield put(amsAction.signupSuccess(false))
         const user = yield call(AMS_API.signup, action.body);
         if (user.Message) {
             yield put(amsAction.setError(user))
+        }else{
+            yield put(amsAction.signupSuccess(true))
+            if(action.body.Key.includes('UPDATE')){
+                yield put(amsAction.setMessage("Cập nhật thành công"))
+            }else{
+                yield put(amsAction.setMessage("Đăng ký thành công"))
+            }
         }
     } catch (ex) {
         yield put(amsAction.setError({
@@ -56,26 +64,6 @@ function* signupSaga(action) {
 
 export function* signupWatcher() {
     yield takeLatest(type.SIGNUP, signupSaga);
-}
-
-function* getUserInfoSaga(action) {
-    try {
-        const user = yield call(AMS_API.userInformation, action.body);
-        if (user.Message) {
-            yield put(amsAction.setError(user.Message))
-        } else {
-            yield put(amsAction.saveUserInfo(user))
-        }
-    } catch (ex) {
-        yield put(amsAction.setError({
-            Code: "AMS_01",
-            Message: ex.message
-        }))
-    }
-}
-
-export function* getUserInfoWatcher() {
-    yield takeLatest(type.GET_USER_INFO, getUserInfoSaga);
 }
 
 function* getDepartmentChartSaga(action) {
@@ -125,7 +113,7 @@ function* saveChangeDepartmentChartSaga(action) {
                 Token: reducer?.amsReducer?.token,
                 Key: "DEPARTMENT_CHART",
                 Data: {
-                    UserName: reducer?.amsReducer?.userName
+                    UserNameRequest: reducer?.amsReducer?.userName
                 }
             }
             yield call(getDepartmentChartSaga, {
@@ -147,7 +135,6 @@ export function* saveChangeDepartmentChartWatcher() {
 function* getOrganizationalChartSaga(action) {
     try {
         const organizationalChart = yield call(AMS_API.organizationalChart, action.body)
-
         if (organizationalChart === null || organizationalChart === undefined) {
             throw new Error("Không lưu được sơ đồ phòng ban")
         }
@@ -191,7 +178,7 @@ function* saveChangeOrganizationalChartSaga(action) {
                 Token: reducer?.amsReducer?.token,
                 Key: "ORGANIZATIONAL_CHART",
                 Data: {
-                    UserName: reducer?.amsReducer?.userName,
+                    UserNameRequest: reducer?.amsReducer?.userName,
                     DepartmentID: reducer?.amsReducer?.departmentData.ID
                 }
             }
@@ -238,4 +225,175 @@ function* getDepartmentDetailSaga(action) {
 
 export function* getDepartmentDetailWatcher() {
     yield takeLatest(type.GET_DEPARTMENT_DETAIL, getDepartmentDetailSaga);
+}
+
+function* getUsersSaga(action){
+    try{
+        const users = yield call(AMS_API.userInformation, action.body)
+
+        if(!users){
+            throw new Error("Không lấy được danh sách nhân viên")
+        }
+
+        if(!users.Message){
+            yield put(amsAction.getUserSuccess(users.Response.Users))
+        }else{
+            yield put(amsAction.setError(users))
+        }
+    }catch(ex){
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* getUsersWatcher() {
+    yield takeLatest(type.GET_USERS, getUsersSaga);
+}
+
+function* getUserInfoSaga(action){
+    try{
+        const userinfo = yield call(AMS_API.userInformation, action.body)
+
+        if(!userinfo){
+            throw new Error("Không lấy được thông tin nhân viên")
+        }
+
+        if(userinfo.Message){
+            yield put(amsAction.setError(userinfo))
+        }else{
+            if(!userinfo.Response){
+                throw new Error("Không lấy được thông tin nhân viên")
+            }else{
+                yield put(amsAction.getUserInfoSuccess(userinfo.Response))
+            }
+        }
+    }catch(ex){
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* getUserInfoWatcher() {
+    yield takeLatest(type.GET_USER_INFO, getUserInfoSaga);
+}
+
+function* getUserInfoLoginSaga(action){
+    try{
+        const userinfo = yield call(AMS_API.userInformation, action.body)
+
+        if(!userinfo){
+            throw new Error("Không lấy được thông tin nhân viên")
+        }
+
+        if(userinfo.Message){
+            yield put(amsAction.setError(userinfo))
+        }else{
+            if(!userinfo.Response){
+                throw new Error("Không lấy được thông tin nhân viên")
+            }else{
+                yield put(amsAction.getUserInfoLoginSuccess(userinfo.Response))
+            }
+        }
+    }catch(ex){
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* getUserInfoLoginWatcher() {
+    yield takeLatest(type.GET_USER_INFO_LOGIN, getUserInfoLoginSaga);
+}
+
+function* getUsersByDepartmentSaga(action){
+    try{
+        const users = yield call(AMS_API.userInformation, action.body)
+
+        if(!users){
+            throw new Error("Không lấy được danh sách nhân viên")
+        }
+
+        if(!users.Message){
+            yield put(amsAction.getUserSuccess(users.Response.Users))
+        }else{
+            if(!users.Response){
+                throw new Error("Không lấy được danh sách nhân viên")
+            }
+            yield put(amsAction.setError(users))
+        }
+    }catch(ex){
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* getUsersByDepartmentWatcher() {
+    yield takeLatest(type.GET_USERS_BY_DEPARTMENT, getUsersByDepartmentSaga);
+}
+
+function* deleteUserSaga(action){
+    try{
+        const user = yield call(AMS_API.userInformation, action.body)
+
+        if(!user){
+            throw new Error("Xóa không thành công")
+        }
+
+        if(!user.Message){
+            yield put(amsAction.setMessage("Xóa thành công"))
+        }else{
+            if(!user.Response){
+                throw new Error("Xóa không thành công")
+            }
+            yield put(amsAction.setError(user))
+        }
+    }catch(ex){
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* deleteUserWatcher() {
+    yield takeLatest(type.DELETE_USER, deleteUserSaga);
+}
+
+function* lockOrUnlockUserSaga(action){
+    try{
+        const user = yield call(AMS_API.userInformation, action.body)
+
+        if(!user){
+            throw new Error("Thao tác thành công")
+        }
+
+        if(!user.Message){
+            if(action.body.Key.includes('UNLOCK')){
+                yield put(amsAction.setMessage("Mở khóa thành công"))
+            }else{
+                yield put(amsAction.setMessage("Khóa thành công"))
+            }
+        }else{
+            if(!user.Response){
+                throw new Error("Thao tác thành công")
+            }
+            yield put(amsAction.setError(user))
+        }
+    }catch(ex){
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* lockOrUnlockUserWatcher() {
+    yield takeLatest(type.LOCK_UNLOCK_USER, lockOrUnlockUserSaga);
 }

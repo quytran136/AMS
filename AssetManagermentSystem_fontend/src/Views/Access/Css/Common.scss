@@ -12,7 +12,7 @@
 
 .main-content {
     padding: 20px 10px 0px 10px;
-    width: 100%;
+    width  : 100%;
 }
 
 .label {
@@ -49,18 +49,21 @@
 }
 
 .ams-btn-success {
-    @extend .ams-btn-default;
-    background-color: #135200 !important;
+    // @extend .ams-btn-default;
+    border-color    : #135200 !important;
+    background-color: #135200!important;
 }
 
 .ams-btn-cancel {
-    @extend .ams-btn-default;
+    // @extend .ams-btn-default;
+    border-color    : #ff4d4f !important;
     background-color: #ff4d4f !important;
 }
 
 .ams-btn-warning {
-    @extend .ams-btn-default;
-    background-color: #874d00 !important;
+    // @extend .ams-btn-default;
+    border-color    : #faad14 !important;
+    background-color: #faad14!important;
 }
 
 .body-content {

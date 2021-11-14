@@ -6,7 +6,7 @@ const AMS_API = {
         return request.post(url, body);
     },
     signup: (body) =>{
-        const url = "Access/Signup"
+        const url = "User/UserInformation"
         return request.post(url, body);
     },
     userInformation: (body) => {

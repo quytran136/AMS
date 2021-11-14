@@ -197,6 +197,11 @@
     <Property Name="UserFullName" Type="nvarchar" MaxLength="128" />
     <Property Name="Image" Type="nvarchar" MaxLength="128" />
     <Property Name="Token" Type="nvarchar" MaxLength="128" />
+    <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+    <Property Name="OrganizationID" Type="varchar" MaxLength="64" />
+    <Property Name="DOB" Type="date" />
+    <Property Name="Phone" Type="varchar" MaxLength="64" />
+    <Property Name="Email" Type="varchar" MaxLength="64" />
   </EntityType>
   <EntityType Name="view_page">
     <Key>

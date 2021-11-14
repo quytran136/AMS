@@ -17,7 +17,7 @@ namespace AMS.API.Controllers
         public BaseResponse<Res_OrganizationalChart> OrganizationalControl(BaseRequest<Req_OrganizationalChart> req)
         {
             // validate token
-            BaseModel<bool> access = new Access().CheckToken(req.Token, req.Data.UserName);
+            BaseModel<bool> access = new Access().CheckToken(req.Token, req.Data.UserNameRequest);
             if (!string.IsNullOrEmpty(access.Exception.Message))
             {
                 return new BaseResponse<Res_OrganizationalChart>()

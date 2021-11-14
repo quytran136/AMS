@@ -8,17 +8,17 @@ namespace AMS.API.Models.RequestModel
 {
     public class Req_UserInformation
     {
+        public string UserNameRequest { get; set; }
         public string UserID { get; set; }
-        [Required]
-        public string UserName { get; set; }
+        public string UserLoginName { get; set; }
         public string UserPassword { get; set; }
         public string NewPassword { get; set; }
         public string UserFullName { get; set; }
         public string DepartmentID { get; set; }
         public string OrganizationID { get; set; }
         public DateTime DOB { get; set; }
-        public bool IsLock { get; set; }
-        public bool IsDelete { get; set; }
-        public string Role { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string SearchContent { get; set; }
     }
 }

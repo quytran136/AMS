@@ -1,9 +1,9 @@
 .department-chart {
     overflow-y : auto;
     padding-top: 1vh;
-    min-height: 80vh;
-    max-height: 80vh;
-    font-size: 1vh;
+    min-height : 80vh;
+    max-height : 80vh;
+    font-size  : 1vh;
 
     .tool {
         position  : absolute;
@@ -38,11 +38,12 @@
     }
 }
 
-.department-detail{
-    .department-detail-header{
+.department-detail {
+    .department-detail-header {
         padding-bottom: 10px;
     }
-    .department-detail-body{
+
+    .department-detail-body {
         width: 100%;
     }
 }

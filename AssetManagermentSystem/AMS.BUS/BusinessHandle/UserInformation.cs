@@ -10,6 +10,9 @@ namespace AMS.BUS.BusinessHandle
 {
     public class UserInformation : IBaseHandle
     {
+        public user_identifie User_Identifie { get; set; }
+        public string DepartmentName { get; set; }
+        public string OrganizationName { get; set; }
         private string validData(string data, bool isSpace = true)
         {
             if (string.IsNullOrEmpty(data))
@@ -26,6 +29,92 @@ namespace AMS.BUS.BusinessHandle
 
             return string.Empty;
         }
+
+        public BaseModel<List<UserInformation>> Users(string searchContent = "")
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<UserInformation> users = (from u in db.user_identifie
+                                               join d in db.Departments on u.DepartmentID equals d.ID
+                                               join o in db.Organizationals on u.OrganizationID equals o.ID
+                                               where u.IsDelete == false &&
+                                               (u.UserName.Contains(searchContent) ||
+                                               u.UserFullName.Contains(searchContent) ||
+                                               u.Phone.Contains(searchContent) ||
+                                               u.Email.Contains(searchContent) ||
+                                               d.DepartmentName.Contains(searchContent) ||
+                                               o.OrganizationalName.Contains(searchContent))
+                                               select new UserInformation
+                                               {
+                                                   User_Identifie = u,
+                                                   DepartmentName = d.DepartmentName,
+                                                   OrganizationName = o.OrganizationalName
+                                               }).ToList<UserInformation>();
+                if (users == null)
+                {
+                    return new BaseModel<List<UserInformation>>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(1)
+                        }
+                    };
+                }
+
+                return new BaseModel<List<UserInformation>>()
+                {
+                    Result = users
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<List<UserInformation>>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public BaseModel<List<user_identifie>> UsersByDepartmentID(string departmentID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                var users = db.user_identifie.Where(ptr => ptr.DepartmentID == departmentID).ToList();
+                if (users == null || users.Count == 0)
+                {
+                    return new BaseModel<List<user_identifie>>
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(1)
+                        }
+                    };
+                }
+
+                return new BaseModel<List<user_identifie>>
+                {
+                    Result = users
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<List<user_identifie>>
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
         public BaseModel<user_identifie> GetUserInfor(string userName)
         {
             try
@@ -72,6 +161,8 @@ namespace AMS.BUS.BusinessHandle
                 validResult = this.validData(userId.DepartmentID);
                 validResult = this.validData(userId.OrganizationID);
                 validResult = this.validData(userId.DOB.ToString(), false);
+                validResult = this.validData(userId.Phone.ToString(), false);
+                validResult = this.validData(userId.Email.ToString(), false);
 
                 if (!string.IsNullOrEmpty(validResult))
                 {
@@ -92,16 +183,91 @@ namespace AMS.BUS.BusinessHandle
                     {
                         ID = Guid.NewGuid().ToString(),
                         UserName = userId.UserName,
-                        UserPassword = userId.UserPassword,
+                        UserPassword = SecuritiesHandle.Encode(userId.UserPassword),
                         CreateDate = DateTime.Now,
                         IsLock = false,
                         IsDelete = false,
                         UserFullName = userId.UserFullName,
                         DepartmentID = userId.DepartmentID,
                         OrganizationID = userId.OrganizationID,
-                        DOB = userId.DOB
+                        DOB = userId.DOB,
+                        Phone = userId.Phone,
+                        Email = userId.Email,
                     };
                     db.user_identifie.Add(user1);
+                    db.SaveChanges();
+                    return new BaseModel<user_identifie>()
+                    {
+                        Result = user1
+                    };
+                }
+
+                return new BaseModel<user_identifie>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = BUSMessageCode(2)
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<user_identifie>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public BaseModel<user_identifie> UpdateUserInfor(user_identifie userId)
+        {
+            try
+            {
+                var db = DBC.Init;
+                string validResult = this.validData(userId.UserFullName, false);
+                validResult = this.validData(userId.UserName);
+                validResult = this.validData(userId.UserPassword);
+                validResult = this.validData(userId.DepartmentID);
+                validResult = this.validData(userId.OrganizationID);
+                validResult = this.validData(userId.DOB.ToString(), false);
+                validResult = this.validData(userId.Phone.ToString(), false);
+                validResult = this.validData(userId.Email.ToString(), false);
+
+                if (!string.IsNullOrEmpty(validResult))
+                {
+                    return new BaseModel<user_identifie>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(4)
+                        }
+                    };
+                }
+                string passwordEncode = string.Empty;
+                if (!string.IsNullOrEmpty(userId.UserPassword))
+                {
+                    passwordEncode = SecuritiesHandle.Encode(userId.UserPassword);
+                }
+                var user = db.user_identifie.Where(ptr => ptr.UserName == userId.UserName).ToList().LastOrDefault();
+                if (user != null)
+                {
+                    if (!string.IsNullOrEmpty(userId.UserPassword))
+                    {
+                        user.UserPassword = SecuritiesHandle.Encode(userId.UserPassword);
+                    }
+                    user.CreateDate = DateTime.Now;
+                    user.IsLock = false;
+                    user.IsDelete = false;
+                    user.UserFullName = userId.UserFullName;
+                    user.DepartmentID = userId.DepartmentID;
+                    user.OrganizationID = userId.OrganizationID;
+                    user.DOB = userId.DOB;
+                    user.Phone = userId.Phone;
+                    user.Email = userId.Email;
                     db.SaveChanges();
                     return new BaseModel<user_identifie>()
                     {
@@ -113,7 +279,7 @@ namespace AMS.BUS.BusinessHandle
                 {
                     Exception = new ExceptionHandle()
                     {
-                        Code = BUSMessageCode(2)
+                        Code = BUSMessageCode(10)
                     }
                 };
             }

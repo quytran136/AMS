@@ -63,55 +63,5 @@ namespace AMS.API.Controllers
                 };
             }
         }
-
-        [HttpPost]
-        public BaseResponse<Token> Signup(BaseRequest<Req_UserInformation> req)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(req.Data.UserName) ||
-                    string.IsNullOrEmpty(req.Data.UserPassword) ||
-                    string.IsNullOrEmpty(req.Data.UserFullName))
-                {
-                    return new BaseResponse<Token>()
-                    {
-                        Code = "201",
-                        Message = "Dữ liệu trống",
-                    };
-                }
-                if (string.IsNullOrWhiteSpace(req.Data.UserName) ||
-                    string.IsNullOrWhiteSpace(req.Data.UserPassword))
-                {
-                    return new BaseResponse<Token>()
-                    {
-                        Code = "201",
-                        Message = "Dữ liệu sai định dạng",
-                    };
-                }
-                UserInformation user = new UserInformation();
-                BaseModel<user_identifie> user_infor = user.CreateUserInfor(req.Data.UserName, req.Data.UserPassword, req.Data.UserFullName);
-                if (!string.IsNullOrEmpty(user_infor.Exception.Code))
-                {
-                    return new BaseResponse<Token>()
-                    {
-                        Code = user_infor.Exception.Code,
-                        Message = user_infor.Exception.Message
-                    };
-                }
-                return new BaseResponse<Token>()
-                {
-                    Code = "201",
-                    Message = MessagesValue.SUCCESS
-                };
-            }
-            catch
-            {
-                return new BaseResponse<Token>()
-                {
-                    Code = "501",
-                    Message = "An unusual error has occurred",
-                };
-            }
-        }
     }
 }

@@ -22,13 +22,13 @@ const NavigationBar = (prop) => {
     const [showMessage, setShowMessage] = useState(false);
     const {
         saveCookie,
-        getUserInfo,
+        getUserInfoLogin,
         setShowMenu
     } = amsAction;
     const {
         token,
         userName,
-        userInfo,
+        userInfoLogin,
         showMenu
     } = prop.amsStore;
 
@@ -52,7 +52,7 @@ const NavigationBar = (prop) => {
                     <Avatar size={32} icon={<UserOutlined />} />
                 </Col>
                 <Col className="menu-label" span={21} align="top" justify="center">
-                    {userInfo?.Response?.UserFullName}
+                    {userInfoLogin?.UserFullName}
                 </Col>
             </Row>
             <hr />
@@ -128,12 +128,13 @@ const NavigationBar = (prop) => {
         if (userName) {
             const body = {
                 Token: token,
-                Key: "GET_INFORMATION",
+                Key: "USER_INFORMATION",
                 Data: {
-                    UserName: userName
+                    UserNameRequest: userName,
+                    userLoginName: userName
                 }
             }
-            dispatch(getUserInfo(body))
+            dispatch(getUserInfoLogin(body))
         }
     }
 

@@ -38,7 +38,7 @@ const OrganizationalChart = (prop) => {
             Token: token,
             Key: "ORGANIZATIONAL_CHART",
             Data: {
-                UserName: userName,
+                UserNameRequest: userName,
                 DepartmentID: departmentData.ID
             }
         }
@@ -51,7 +51,7 @@ const OrganizationalChart = (prop) => {
             Token: token,
             Key: "DEPARTMENT_DETAIL",
             Data: {
-                UserName: userName,
+                UserNameRequest: userName,
                 DepartmentID: departmentData.ID
             }
         }
@@ -81,7 +81,7 @@ const OrganizationalChart = (prop) => {
             Token: token,
             Key: "UPDATE_ORGANIZATIONAL",
             Data: {
-                UserName: userName,
+                UserNameRequest: userName,
                 DepartmentID: departmentData.ID,
                 Organizational: treeFormat
             }
@@ -176,9 +176,11 @@ const OrganizationalChart = (prop) => {
                         }}
                     />
                     <Button
+                        type="primary"
+                        danger
                         shape="circle"
                         icon={<CloseOutlined />}
-                        className="delete-node ams-btn-cancel"
+                        className="delete-node"
                         onClick={() => {
                             var tree = removeNode(organizationalChart, node?.ID)
                             dispatch(saveOrganizationalChart(tree))

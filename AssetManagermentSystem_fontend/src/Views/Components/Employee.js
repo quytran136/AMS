@@ -1,26 +1,161 @@
 import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
-import { Tree, TreeNode } from "react-organizational-chart";
 import 'antd/dist/antd.css';
 import '../Access/Css/Common.scss';
 import '../Access/Css/Employee.scss'
-import { Button, Input, Table, Row, Col, Modal, Select, DatePicker } from 'antd';
+import { Button, Input, Row, Col, Table } from 'antd';
 import {
-    UserOutlined,
-    MailOutlined,
-    PhoneOutlined
+    EditOutlined,
+    DeleteOutlined,
+    LockOutlined,
+    UnlockOutlined
 } from '@ant-design/icons';
 import * as amsAction from '../../ReduxSaga/Actions/action';
-import OrganizationalChart from '../Components/OrganizationalChart';
+import UpdateEmployee from "./UpdateEmployee";
 
 const Employee = (prop) => {
-
+    const dispatch = useDispatch();
     const [showAddNew, setShowAddNew] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [itemSelected, setEmployeeSelected] = useState();
+    const [searchContent, setSearchContent] = useState();
+    const {
+        getUsers,
+        deleteUser,
+        lockOrUnlock
+    } = amsAction;
 
-    const renderDataTable = () => {
-        var comlumn = []
+    const {
+        userName,
+        token,
+        users
+    } = prop.amsStore;
+
+    const columns = [
+        {
+            title: 'Họ tên',
+            dataIndex: 'UserFullName',
+            key: 'UserFullName',
+        },
+        {
+            title: 'Tài khoản',
+            dataIndex: 'UserName',
+            key: 'UserName',
+        },
+        {
+            title: 'Điện thoại',
+            dataIndex: 'Phone',
+            key: 'Phone',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'Email',
+            key: 'Email',
+        },
+        {
+            title: 'Phòng ban',
+            dataIndex: 'DepartmentName',
+            key: 'DepartmentName',
+        },
+        {
+            title: 'Chức vụ',
+            dataIndex: 'OrganizationName',
+            key: 'OrganizationName',
+        },
+        {
+            title: 'Hành động',
+            key: 'action',
+            fixed: 'right',
+            width: 150,
+            render: (text, record, index) => {
+                return (<span>
+                    <Button
+                        type="primary"
+                        shape="circle"
+                        icon={<EditOutlined />}
+                        onClick={() => {
+                            setShowEdit(true)
+                            setEmployeeSelected(record)
+                        }}
+                    />
+                    <Button
+                        danger
+                        type="primary"
+                        shape="circle"
+                        icon={<DeleteOutlined />}
+                        onClick={() => deleteSelected(record)}
+                    />
+                    <Button
+                        danger
+                        className={record.IsLock ? "ams-btn-warning" : "ams-btn-success"}
+                        type="primary"
+                        shape="circle"
+                        icon={record.IsLock ? <LockOutlined /> : <UnlockOutlined />}
+                        onClick={() => record.IsLock ? unlockSelected(record) : lockSelected(record)}
+                    />
+                </span>)
+            }
+        }
+    ]
+
+    function deleteSelected(record) {
+        const body = {
+            Token: token,
+            Key: "DELETE_USER",
+            Data: {
+                UserNameRequest: userName,
+                UserID: record.ID
+            }
+        }
+        dispatch(deleteUser(body))
+        setTimeout(() => {
+            getListUser()
+        }, 300);
     }
 
+    function unlockSelected(record) {
+        const body = {
+            Token: token,
+            Key: "UNLOCK_USER",
+            Data: {
+                UserNameRequest: userName,
+                UserID: record.ID
+            }
+        }
+        dispatch(lockOrUnlock(body))
+        setTimeout(() => {
+            getListUser()
+        }, 300);
+    }
+
+    function lockSelected(record) {
+        const body = {
+            Token: token,
+            Key: "LOCK_USER",
+            Data: {
+                UserNameRequest: userName,
+                UserID: record.ID
+            }
+        }
+        dispatch(lockOrUnlock(body))
+        setTimeout(() => {
+            getListUser()
+        }, 300);
+    }
+
+    const getListUser = () => {
+        const body = {
+            Token: token,
+            Key: "USERS",
+            Data: {
+                UserNameRequest: userName,
+                SearchContent: searchContent || null
+            }
+        }
+        dispatch(getUsers(body))
+    }
+
+    useEffect(getListUser, [])
 
     return (<div className="employee">
         <div className="employee-header">
@@ -31,6 +166,8 @@ const Employee = (prop) => {
                 <Input.Group>
                     <Input.Search
                         placeholder="Search..."
+                        onPressEnter={(e) => getListUser()}
+                        onChange={(e) => setSearchContent(e.target.value)}
                     />
                 </Input.Group >
             </Col>
@@ -43,67 +180,33 @@ const Employee = (prop) => {
             </Col>
         </Row>
         <Row className="employee-body">
-
+            <Col span={24}>
+                <Table
+                    scroll={users ? {
+                        y: 550,
+                        x: '100vw',
+                    } : {}}
+                    dataSource={users}
+                    columns={columns}
+                    pagination={20} />
+            </Col>
         </Row>
 
-        <Modal
-            title="Thêm mới nhân viên"
-            centered
+        <UpdateEmployee
             visible={showAddNew}
-            onOk={() => setShowAddNew(false)}
-            onCancel={() => setShowAddNew(false)}
-        >
-            <h4>Trực thuộc phòng ban</h4>
-            <Select
-                showSearch
-                className="select"
-                placeholder="Select a person"
-                optionFilterProp="children"
-                // onChange={onChange}
-                // onFocus={onFocus}
-                // onBlur={onBlur}
-                // onSearch={onSearch}
-                filterOption={(input, option) =>
-                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-            >
-                <Select.Option value="jack">Jack</Select.Option >
-                <Select.Option value="lucy">Lucy</Select.Option >
-                <Select.Option value="tom">Tom</Select.Option >
-            </Select>
-            <br />
-            <h4>Chức vụ</h4>
-            <Select
-                showSearch
-                className="select"
-                placeholder="Select a person"
-                optionFilterProp="children"
-                // onChange={onChange}
-                // onFocus={onFocus}
-                // onBlur={onBlur}
-                // onSearch={onSearch}
-                filterOption={(input, option) =>
-                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-            >
-                <Select.Option value="jack">Jack</Select.Option >
-                <Select.Option value="lucy">Lucy</Select.Option >
-                <Select.Option value="tom">Tom</Select.Option >
-            </Select>
-            <br />
-            <h4>Tên nhân viên</h4>
-            <Input placeholder="Trần Văn A" prefix={<UserOutlined />} />
-            <br />
-            <h4>Ngày tháng năm sinh</h4>
-            <DatePicker size="default" className="select" format="DD/MM/yyyy"/>
-            <br />
-            <h4>Đại chỉ email</h4>
-            <Input placeholder="Trần Văn A" prefix={<MailOutlined />} />
-            <br />
-            <h4>Số điện thoại</h4>
-            <Input placeholder="Trần Văn A" prefix={<PhoneOutlined />} />
-            <br />
-        </Modal>
+            onTrigger={(e) => {
+                setShowAddNew(e)
+                getListUser()
+            }}
+        />
+        <UpdateEmployee
+            visible={showEdit}
+            dataSelected={itemSelected}
+            onTrigger={(e) => {
+                setShowEdit(e)
+                getListUser()
+            }}
+        />
     </div>)
 }
 

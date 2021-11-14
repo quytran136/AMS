@@ -49,25 +49,18 @@ export const signup = (body) => {
     }
 }
 
+export const signupSuccess = (result) => {
+    return{
+        type: type.SIGNUP_SUSSESS,
+        result
+    }
+}
+
 
 export const saveCookie = (cookie) => {
     return {
         type: type.COOKIE,
         cookie
-    }
-}
-
-export const getUserInfo = (body) => {
-    return {
-        type: type.GET_USER_INFO,
-        body
-    }
-}
-
-export const saveUserInfo = (userInfo) => {
-    return {
-        type: type.SAVE_USER_INFO,
-        userInfo
     }
 }
 
@@ -138,6 +131,76 @@ export const saveOrganizationalChart = (organizationalChart) => {
 export const saveChangeOrganizationalChart = (body) => {
     return {
         type: type.SAVE_CHANGE_ORGANIZATIONAL,
+        body
+    }
+}
+
+export const getUsers = (body) => {
+    return {
+        type: type.GET_USERS,
+        body
+    }
+}
+
+export const getUserSuccess = (users) => {
+    return {
+        type: type.GET_USERS_SUCCESS,
+        users
+    }
+}
+
+export const getUserInfo = (body) => {
+    return {
+        type: type.GET_USER_INFO,
+        body
+    }
+}
+
+export const getUserInfoLogin = (body) => {
+    return {
+        type: type.GET_USER_INFO_LOGIN,
+        body
+    }
+}
+
+export const getUserInfoLoginSuccess = (userInfo) => {
+    return{
+        type: type.GET_USER_INFO_LOGIN_SUCCESS,
+        userInfo
+    }
+}
+
+export const getUserInfoSuccess = (userInfo) => {
+    return{
+        type: type.GET_USER_INFO_SUCCESS,
+        userInfo
+    }
+}
+
+export const getUsersByDepartment = (body) => {
+    return {
+        type: type.GET_USERS_BY_DEPARTMENT,
+        body
+    }
+}
+
+export const getUsersByDepartmentSuccess = (users) => {
+    return {
+        type: type.GET_USERS_BY_DEPARTMENT_SUCCESS,
+        users
+    }
+}
+
+export const deleteUser = (body) => {
+    return {
+        type: type.DELETE_USER,
+        body
+    }
+}
+
+export const lockOrUnlock = (body) => {
+    return{
+        type: type.LOCK_UNLOCK_USER,
         body
     }
 }

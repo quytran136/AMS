@@ -7,13 +7,16 @@ const initialState = {
     error: null,
     cookie: null,
     userInfo: null,
+    userInfoLogin: null,
+    users: [],
     showMenu: true,
     organizationalChart: null,
     departmentChart: null,
     message: null,
     departmentData: null,
     organizationData: null,
-    departmentDetail: null
+    departmentDetail: null,
+    signupSuccess: false
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -48,10 +51,10 @@ export const amsReducer = (state = initialState, action) => {
                 ...state,
                 tabLogin: action.tab
             }
-        case type.SAVE_USER_INFO:
-            return {
+        case type.SIGNUP_SUSSESS:
+            return{
                 ...state,
-                userInfo: action.userInfo
+                signupSuccess: action.result
             }
         case type.SHOW_MENU:
             return {
@@ -82,6 +85,26 @@ export const amsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 organizationData: action.organizational
+            }
+        case type.GET_USERS_SUCCESS:
+            return{
+                ...state,
+                users: action.users
+            }
+        case type.GET_USER_INFO_LOGIN_SUCCESS:
+            return{
+                ...state,
+                userInfoLogin: action.userInfo
+            }
+        case type.GET_USER_INFO_SUCCESS:
+            return{
+                ...state,
+                userInfo: action.userInfo
+            }
+        case type.GET_USERS_BY_DEPARTMENT_SUCCESS:
+            return{
+                ...state,
+                users: action.users
             }
         default:
             return {

@@ -36,7 +36,7 @@ const DepartmentChart = (prop) => {
             Token: token,
             Key: "DEPARTMENT_CHART",
             Data: {
-                UserName: userName
+                UserNameRequest: userName
             }
         }
         dispatch(getDepartmentChart(body))
@@ -65,7 +65,7 @@ const DepartmentChart = (prop) => {
             Token: token,
             Key: "UPDATE_DEPARTMENT",
             Data: {
-                UserName: userName,
+                UserNameRequest: userName,
                 Department: treeFormat
             }
         }
@@ -172,9 +172,11 @@ const DepartmentChart = (prop) => {
                         }}
                     />
                     <Button
+                        type="primary"
                         shape="circle"
                         icon={<CloseOutlined />}
-                        className="delete-node ams-btn-cancel"
+                        className="delete-node"
+                        danger
                         onClick={() => {
                             var tree = removeNode(departmentChart, node?.ID)
                             dispatch(saveDepartmentChart(tree))
