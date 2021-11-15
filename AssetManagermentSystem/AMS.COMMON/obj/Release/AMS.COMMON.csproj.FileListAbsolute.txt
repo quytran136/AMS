@@ -1,0 +1,6 @@
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\bin\Release\AMS.COMMON.dll
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\bin\Release\AMS.COMMON.pdb
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\obj\Release\AMS.COMMON.csprojAssemblyReference.cache
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\obj\Release\AMS.COMMON.csproj.CoreCompileInputs.cache
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\obj\Release\AMS.COMMON.dll
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\obj\Release\AMS.COMMON.pdb

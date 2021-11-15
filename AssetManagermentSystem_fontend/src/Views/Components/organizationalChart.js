@@ -20,7 +20,6 @@ const OrganizationalChart = (prop) => {
         getOrganizationalChart,
         saveChangeOrganizationalChart,
         setDepartmentData,
-        setOrganizationData,
         getDepartmentDetail
     } = amsAction;
     const [listNodeChange, setListNodeChange] = useState([])

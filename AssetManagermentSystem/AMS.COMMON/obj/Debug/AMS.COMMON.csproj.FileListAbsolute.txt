@@ -4,9 +4,3 @@ C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.csproj.CoreCompileInputs.cache
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.dll
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.pdb
-D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\bin\Debug\AMS.COMMON.dll
-D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\bin\Debug\AMS.COMMON.pdb
-D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.csprojAssemblyReference.cache
-D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.csproj.CoreCompileInputs.cache
-D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.dll
-D:\Projects\2021\AMS\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.pdb

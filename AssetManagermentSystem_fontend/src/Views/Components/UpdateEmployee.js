@@ -188,7 +188,7 @@ const UpdateEmployee = (prop) => {
     function onEdit() {
         if (userPassword === userPassword2) {
             const body = {
-                Token: token,
+                Token: token,   
                 Key: "UPDATE_USER",
                 Data: {
                     UserNameRequest: userName,
@@ -269,6 +269,7 @@ const UpdateEmployee = (prop) => {
                 value={department}
                 treeDefaultExpandAll="true"
                 onChange={(e) => {
+                    setDepartment(e)
                     getORG(e)
                 }}
             >

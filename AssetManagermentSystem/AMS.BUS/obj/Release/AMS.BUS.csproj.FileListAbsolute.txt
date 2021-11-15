@@ -1,0 +1,17 @@
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\log4net.config
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\AMS.BUS.dll.config
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\AMS.BUS.dll
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\AMS.BUS.pdb
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\AMS.COMMON.dll
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\EntityFramework.dll
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\EntityFramework.SqlServer.dll
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\log4net.dll
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\AMS.COMMON.pdb
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\EntityFramework.xml
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\EntityFramework.SqlServer.xml
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\bin\Release\log4net.xml
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Release\AMS.BUS.csprojAssemblyReference.cache
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Release\AMS.BUS.csproj.CoreCompileInputs.cache
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Release\AMS.BUS.csproj.CopyComplete
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Release\AMS.BUS.dll
+D:\Projects\2021\AMS\AssetManagermentSystem\AMS.BUS\obj\Release\AMS.BUS.pdb
