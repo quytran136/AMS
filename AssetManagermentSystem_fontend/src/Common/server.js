@@ -1,1 +1,0 @@
-export const SERVER_API = "http://api.qntech.xyz/api/"
