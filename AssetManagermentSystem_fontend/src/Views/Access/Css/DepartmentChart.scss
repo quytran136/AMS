@@ -1,0 +1,49 @@
+.department-chart {
+    overflow-y : auto;
+    padding-top: 1vh;
+    min-height : 80vh;
+    max-height : 80vh;
+    font-size  : 1vh;
+
+    .tool {
+        position  : absolute;
+        text-align: end;
+        right     : 6vh;
+        z-index   : 9;
+    }
+}
+
+.node {
+    width     : 30vh;
+    display   : inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    .header {
+        color: white;
+    }
+
+    .delete-node {
+        position: absolute;
+        top     : -15px;
+        right   : -15px;
+        width   : 1vh;
+    }
+
+    .add-node {
+        position: absolute;
+        top     : 7vh;
+        right   : 13.2vh;
+        width   : 1vh;
+        z-index : 3;
+    }
+}
+
+.department-detail {
+    .department-detail-header {
+        padding-bottom: 10px;
+    }
+
+    .department-detail-body {
+        width: 100%;
+    }
+}

@@ -1,0 +1,71 @@
+.warnign-message {
+    color: #874d00 !important;
+}
+
+.error-message {
+    color: #820014 !important;
+}
+
+.success-message {
+    color: #135200 !important;
+}
+
+.main-content {
+    padding: 20px 10px 0px 10px;
+    width  : 100%;
+}
+
+.label {
+    width     : 100vh;
+    height    : 100vh;
+    text-align: start;
+}
+
+.input {
+    margin-bottom: 1vh;
+}
+
+.select {
+    width: 100%;
+}
+
+.group {
+    padding-top: 1vh;
+}
+
+.link {
+    color : #fff;
+    cursor: pointer;
+}
+
+.ams-btn {
+    color : white !important;
+    margin: 0.3vh
+}
+
+.ams-btn-default {
+    @extend .ams-btn;
+}
+
+.ams-btn-success {
+    // @extend .ams-btn-default;
+    border-color    : #135200 !important;
+    background-color: #135200!important;
+}
+
+.ams-btn-cancel {
+    // @extend .ams-btn-default;
+    border-color    : #ff4d4f !important;
+    background-color: #ff4d4f !important;
+}
+
+.ams-btn-warning {
+    // @extend .ams-btn-default;
+    border-color    : #faad14 !important;
+    background-color: #faad14!important;
+}
+
+.body-content {
+    width           : auto;
+    background-color: azure;
+}

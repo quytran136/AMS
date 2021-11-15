@@ -1,0 +1,35 @@
+.employee {
+    .employee-header {
+        text-align: start;
+    }
+
+    .employee-body {
+        padding-top: 10px;
+        width : 100%;
+        max-height: 60vh;
+        min-height: 60vh;
+    }
+
+    .employee-tool {
+        .tool-left {
+            text-align: start;
+        }
+
+        .tool-right {
+            text-align: end;
+        }
+    }
+}
+
+.btn-generate-user-name {
+    color           : white;
+    background-color: #1890ff;
+
+    &:focus {
+        background-color: #79beff;
+    }
+
+    &:active {
+        background-color: #1890ff;
+    }
+}
