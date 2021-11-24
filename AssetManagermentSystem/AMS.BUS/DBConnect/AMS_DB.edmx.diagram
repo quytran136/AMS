@@ -14,16 +14,17 @@
         <EntityTypeShape EntityType="AMS_DBModel.function" Width="1.5" PointX="10.75" PointY="17.875" />
         <EntityTypeShape EntityType="AMS_DBModel.message_list" Width="1.5" PointX="7.75" PointY="22.625" />
         <EntityTypeShape EntityType="AMS_DBModel.Organizational" Width="1.5" PointX="6" PointY="26" />
-        <EntityTypeShape EntityType="AMS_DBModel.Process" Width="1.5" PointX="8.25" PointY="26.375" />
+        <EntityTypeShape EntityType="AMS_DBModel.Process" Width="1.5" PointX="8.75" PointY="2.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.ProcessStep" Width="1.5" PointX="11" PointY="2" />
         <EntityTypeShape EntityType="AMS_DBModel.rank" Width="1.5" PointX="6" PointY="0.75" />
-        <EntityTypeShape EntityType="AMS_DBModel.role" Width="1.5" PointX="7.75" PointY="19" />
+        <EntityTypeShape EntityType="AMS_DBModel.role" Width="1.5" PointX="7.75" PointY="10.375" />
         <EntityTypeShape EntityType="AMS_DBModel.role_function" Width="1.5" PointX="13" PointY="14.5" />
         <EntityTypeShape EntityType="AMS_DBModel.role_view" Width="1.5" PointX="10" PointY="10.5" />
         <EntityTypeShape EntityType="AMS_DBModel.store_Identifie" Width="1.5" PointX="0.75" PointY="4" />
-        <EntityTypeShape EntityType="AMS_DBModel.sysdiagram" Width="1.5" PointX="8.75" PointY="1.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.sysdiagram" Width="1.5" PointX="0.75" PointY="10.75" />
         <EntityTypeShape EntityType="AMS_DBModel.system_log" Width="1.5" PointX="10" PointY="14.625" />
-        <EntityTypeShape EntityType="AMS_DBModel.user_identifie" Width="1.5" PointX="7.75" PointY="14" />
-        <EntityTypeShape EntityType="AMS_DBModel.view_page" Width="1.5" PointX="7.75" PointY="10.375" />
+        <EntityTypeShape EntityType="AMS_DBModel.user_identifie" Width="1.5" PointX="7.75" PointY="13.5" />
+        <EntityTypeShape EntityType="AMS_DBModel.view_page" Width="1.5" PointX="7.75" PointY="19.375" />
         <AssociationConnector Association="AMS_DBModel.FK_asset_allocation_history_asset_detail1" />
         <AssociationConnector Association="AMS_DBModel.FK_asset_allocation_history_rank" />
         <AssociationConnector Association="AMS_DBModel.FK_asset_detail_asset_classify" />
@@ -34,7 +35,7 @@
         <AssociationConnector Association="AMS_DBModel.FK_rank_Department" />
         <AssociationConnector Association="AMS_DBModel.FK_role_function_function" />
         <AssociationConnector Association="AMS_DBModel.FK_system_log_message_list" />
-        <AssociationConnector Association="AMS_DBModel.FK_Process_Organizational" />
+        <AssociationConnector Association="AMS_DBModel.FK_ProcessStep_Process" />
         <AssociationConnector Association="AMS_DBModel.FK_role_function_role" />
         <AssociationConnector Association="AMS_DBModel.FK_role_view_role" />
         <AssociationConnector Association="AMS_DBModel.FK_role_function_user_identifie" />

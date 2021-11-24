@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AMS_DBModelStoreContainer" CdmEntityContainer="AMS_DBEntities">
+    <EntitySetMapping Name="asset_allocation_history">
+      <EntityTypeMapping TypeName="AMS_DBModel.asset_allocation_history">
+        <MappingFragment StoreEntitySet="asset_allocation_history">
+          <ScalarProperty Name="IsReject" ColumnName="IsReject" />
+          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
+          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
+          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
+          <ScalarProperty Name="AllocationBy" ColumnName="AllocationBy" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="AllocationFor" ColumnName="AllocationFor" />
+          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="asset_classify">
+      <EntityTypeMapping TypeName="AMS_DBModel.asset_classify">
+        <MappingFragment StoreEntitySet="asset_classify">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="asset_detail">
+      <EntityTypeMapping TypeName="AMS_DBModel.asset_detail">
+        <MappingFragment StoreEntitySet="asset_detail">
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="QuantityDestroyed" ColumnName="QuantityDestroyed" />
+          <ScalarProperty Name="QuantityInStock" ColumnName="QuantityInStock" />
+          <ScalarProperty Name="QuantityUsed" ColumnName="QuantityUsed" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="QuantityOriginalStock" ColumnName="QuantityOriginalStock" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="AssetFullName" ColumnName="AssetFullName" />
+          <ScalarProperty Name="AssetClassifyID" ColumnName="AssetClassifyID" />
+          <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="asset_recovery_history">
+      <EntityTypeMapping TypeName="AMS_DBModel.asset_recovery_history">
+        <MappingFragment StoreEntitySet="asset_recovery_history">
+          <ScalarProperty Name="isApprove1" ColumnName="isApprove1" />
+          <ScalarProperty Name="LocalStep1" ColumnName="LocalStep1" />
+          <ScalarProperty Name="RequestBy1" ColumnName="RequestBy1" />
+          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
+          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
+          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="RecoveryBy" ColumnName="RecoveryBy" />
+          <ScalarProperty Name="RecoveryFor" ColumnName="RecoveryFor" />
+          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="assets_liquidation_history">
+      <EntityTypeMapping TypeName="AMS_DBModel.assets_liquidation_history">
+        <MappingFragment StoreEntitySet="assets_liquidation_history">
+          <ScalarProperty Name="RecoveryPrice" ColumnName="RecoveryPrice" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
+          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
+          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="LiquidationBy" ColumnName="LiquidationBy" />
+          <ScalarProperty Name="LiquidationFor" ColumnName="LiquidationFor" />
+          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="AMS_DBModel.Department">
+        <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="functions">
+      <EntityTypeMapping TypeName="AMS_DBModel.function">
+        <MappingFragment StoreEntitySet="function">
+          <ScalarProperty Name="FunctionKey" ColumnName="FunctionKey" />
+          <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="message_list">
+      <EntityTypeMapping TypeName="AMS_DBModel.message_list">
+        <MappingFragment StoreEntitySet="message_list">
+          <ScalarProperty Name="Message_VN" ColumnName="Message_VN" />
+          <ScalarProperty Name="Message_EN" ColumnName="Message_EN" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="KeyCode" ColumnName="KeyCode" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Organizationals">
+      <EntityTypeMapping TypeName="AMS_DBModel.Organizational">
+        <MappingFragment StoreEntitySet="Organizational">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="OrganizationalName" ColumnName="OrganizationalName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Processes">
+      <EntityTypeMapping TypeName="AMS_DBModel.Process">
+        <MappingFragment StoreEntitySet="Process">
+          <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProcessSteps">
+      <EntityTypeMapping TypeName="AMS_DBModel.ProcessStep">
+        <MappingFragment StoreEntitySet="ProcessStep">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="StepName" ColumnName="StepName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsUseExpiredTime" ColumnName="IsUseExpiredTime" />
+          <ScalarProperty Name="ExpiredTime" ColumnName="ExpiredTime" />
+          <ScalarProperty Name="Approvers" ColumnName="Approvers" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="ProcessID" ColumnName="ProcessID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ranks">
+      <EntityTypeMapping TypeName="AMS_DBModel.rank">
+        <MappingFragment StoreEntitySet="rank">
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="RankParent" ColumnName="RankParent" />
+          <ScalarProperty Name="RankName" ColumnName="RankName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="roles">
+      <EntityTypeMapping TypeName="AMS_DBModel.role">
+        <MappingFragment StoreEntitySet="role">
+          <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="role_function">
+      <EntityTypeMapping TypeName="AMS_DBModel.role_function">
+        <MappingFragment StoreEntitySet="role_function">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="role_view">
+      <EntityTypeMapping TypeName="AMS_DBModel.role_view">
+        <MappingFragment StoreEntitySet="role_view">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="ViewID" ColumnName="ViewID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="store_Identifie">
+      <EntityTypeMapping TypeName="AMS_DBModel.store_Identifie">
+        <MappingFragment StoreEntitySet="store_Identifie">
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="AMS_DBModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="system_log">
+      <EntityTypeMapping TypeName="AMS_DBModel.system_log">
+        <MappingFragment StoreEntitySet="system_log">
+          <ScalarProperty Name="Detail" ColumnName="Detail" />
+          <ScalarProperty Name="Creator" ColumnName="Creator" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="MessageID" ColumnName="MessageID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_identifie">
+      <EntityTypeMapping TypeName="AMS_DBModel.user_identifie">
+        <MappingFragment StoreEntitySet="user_identifie">
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="DOB" ColumnName="DOB" />
+          <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
+          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="UserFullName" ColumnName="UserFullName" />
+          <ScalarProperty Name="Role" ColumnName="Role" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="view_page">
+      <EntityTypeMapping TypeName="AMS_DBModel.view_page">
+        <MappingFragment StoreEntitySet="view_page">
+          <ScalarProperty Name="ViewKey" ColumnName="ViewKey" />
+          <ScalarProperty Name="ViewName" ColumnName="ViewName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

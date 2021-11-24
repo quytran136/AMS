@@ -204,3 +204,17 @@ export const lockOrUnlock = (body) => {
         body
     }
 }
+
+export const requestProcessFlow = (body) => {
+    return{
+        type: type.REQUEST_PROCESS_FLOW,
+        body
+    }
+}
+
+export const saveProcessFlow = (processFlows) => {
+    return{
+        type: type.SAVE_PROCESS_FLOW,
+        processFlows
+    }
+}

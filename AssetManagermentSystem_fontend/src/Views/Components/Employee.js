@@ -166,7 +166,8 @@ const Employee = (prop) => {
                 <Input.Group>
                     <Input.Search
                         placeholder="Search..."
-                        onPressEnter={(e) => getListUser()}
+                        onPressEnter={() => getListUser()}
+                        onSearch = {() => getListUser()}
                         onChange={(e) => setSearchContent(e.target.value)}
                     />
                 </Input.Group >

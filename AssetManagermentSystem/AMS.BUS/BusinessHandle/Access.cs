@@ -18,7 +18,10 @@ namespace AMS.BUS.BusinessHandle
             {
                 var db = DBC.Init;
                 string passwordEncode = SecuritiesHandle.Encode(userPassword);
-                var user = db.user_identifie.Where(ptr => ptr.UserName == userName && ptr.UserPassword == passwordEncode).ToList().LastOrDefault();
+                var user = db.user_identifie.Where(ptr => ptr.UserName == userName && 
+                                                    ptr.UserPassword == passwordEncode && 
+                                                    ptr.IsDelete == false && 
+                                                    ptr.IsLock == false).ToList().LastOrDefault();
                 if (user == null)
                 {
                     return new BaseModel<string>()

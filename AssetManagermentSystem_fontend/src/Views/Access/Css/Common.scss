@@ -33,6 +33,25 @@
     padding-top: 1vh;
 }
 
+.ams-card{
+    margin: 1vh !important;
+}
+
+.ams-card-item{
+    @extend .ams-card;
+    width: 50ch;
+    display: inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.col{
+    padding: 1vh;
+}
+
+.text-area{
+    height: 23vh !important;
+}
+
 .link {
     color : #fff;
     cursor: pointer;

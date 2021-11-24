@@ -116,9 +116,25 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="OrganizationalID" Type="nvarchar" MaxLength="64" />
-          <Property Name="ParentStepID" Type="nvarchar" MaxLength="64" />
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="ProcessName" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsDelete" Type="bit" />
+          <Property Name="IsLock" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProcessStep">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="ProcessID" Type="varchar" MaxLength="64" />
+          <Property Name="ParentID" Type="varchar" MaxLength="64" />
+          <Property Name="UserID" Type="varchar" MaxLength="64" />
+          <Property Name="Approvers" Type="nvarchar(max)" />
+          <Property Name="ExpiredTime" Type="int" />
+          <Property Name="IsUseExpiredTime" Type="bit" />
+          <Property Name="Description" Type="text" />
+          <Property Name="StepName" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsDelete" Type="bit" />
         </EntityType>
         <EntityType Name="rank">
           <Key>
@@ -205,8 +221,8 @@
           <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
           <Property Name="OrganizationID" Type="varchar" MaxLength="64" />
           <Property Name="DOB" Type="date" />
-          <Property Name="Phone" Type="varchar" MaxLength="64" />
-          <Property Name="Email" Type="varchar" MaxLength="64" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="view_page">
           <Key>
@@ -300,15 +316,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Process_Organizational">
-          <End Role="Organizational" Type="Self.Organizational" Multiplicity="0..1" />
-          <End Role="Process" Type="Self.Process" Multiplicity="*" />
+        <Association Name="FK_ProcessStep_Process">
+          <End Role="Process" Type="Self.Process" Multiplicity="0..1" />
+          <End Role="ProcessStep" Type="Self.ProcessStep" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Organizational">
+            <Principal Role="Process">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Process">
-              <PropertyRef Name="OrganizationalID" />
+            <Dependent Role="ProcessStep">
+              <PropertyRef Name="ProcessID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -431,6 +447,7 @@
           <EntitySet Name="message_list" EntityType="Self.message_list" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Organizational" EntityType="Self.Organizational" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Process" EntityType="Self.Process" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProcessStep" EntityType="Self.ProcessStep" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="rank" EntityType="Self.rank" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role_function" EntityType="Self.role_function" Schema="dbo" store:Type="Tables" />
@@ -468,9 +485,9 @@
             <End Role="Department" EntitySet="Department" />
             <End Role="Organizational" EntitySet="Organizational" />
           </AssociationSet>
-          <AssociationSet Name="FK_Process_Organizational" Association="Self.FK_Process_Organizational">
-            <End Role="Organizational" EntitySet="Organizational" />
+          <AssociationSet Name="FK_ProcessStep_Process" Association="Self.FK_ProcessStep_Process">
             <End Role="Process" EntitySet="Process" />
+            <End Role="ProcessStep" EntitySet="ProcessStep" />
           </AssociationSet>
           <AssociationSet Name="FK_rank_Department" Association="Self.FK_rank_Department">
             <End Role="Department" EntitySet="Department" />
@@ -524,6 +541,7 @@
           <EntitySet Name="message_list" EntityType="AMS_DBModel.message_list" />
           <EntitySet Name="Organizationals" EntityType="AMS_DBModel.Organizational" />
           <EntitySet Name="Processes" EntityType="AMS_DBModel.Process" />
+          <EntitySet Name="ProcessSteps" EntityType="AMS_DBModel.ProcessStep" />
           <EntitySet Name="ranks" EntityType="AMS_DBModel.rank" />
           <EntitySet Name="roles" EntityType="AMS_DBModel.role" />
           <EntitySet Name="role_function" EntityType="AMS_DBModel.role_function" />
@@ -573,9 +591,9 @@
             <End Role="message_list" EntitySet="message_list" />
             <End Role="system_log" EntitySet="system_log" />
           </AssociationSet>
-          <AssociationSet Name="FK_Process_Organizational" Association="AMS_DBModel.FK_Process_Organizational">
-            <End Role="Organizational" EntitySet="Organizationals" />
+          <AssociationSet Name="FK_ProcessStep_Process" Association="AMS_DBModel.FK_ProcessStep_Process">
             <End Role="Process" EntitySet="Processes" />
+            <End Role="ProcessStep" EntitySet="ProcessSteps" />
           </AssociationSet>
           <AssociationSet Name="FK_role_function_role" Association="AMS_DBModel.FK_role_function_role">
             <End Role="role" EntitySet="roles" />
@@ -723,16 +741,32 @@
           <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="IsDelete" Type="Boolean" />
           <NavigationProperty Name="Department" Relationship="AMS_DBModel.FK_Organizational_Department" FromRole="Organizational" ToRole="Department" />
-          <NavigationProperty Name="Processes" Relationship="AMS_DBModel.FK_Process_Organizational" FromRole="Organizational" ToRole="Process" />
         </EntityType>
         <EntityType Name="Process">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="OrganizationalID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="ParentStepID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Organizational" Relationship="AMS_DBModel.FK_Process_Organizational" FromRole="Process" ToRole="Organizational" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="ProcessName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <Property Name="IsLock" Type="Boolean" />
+          <NavigationProperty Name="ProcessSteps" Relationship="AMS_DBModel.FK_ProcessStep_Process" FromRole="Process" ToRole="ProcessStep" />
+        </EntityType>
+        <EntityType Name="ProcessStep">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="ProcessID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="ParentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Approvers" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiredTime" Type="Int32" />
+          <Property Name="IsUseExpiredTime" Type="Boolean" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StepName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <NavigationProperty Name="Process" Relationship="AMS_DBModel.FK_ProcessStep_Process" FromRole="ProcessStep" ToRole="Process" />
         </EntityType>
         <EntityType Name="rank">
           <Key>
@@ -829,14 +863,14 @@
           <Property Name="UserFullName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Token" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="role_function" Relationship="AMS_DBModel.FK_role_function_user_identifie" FromRole="user_identifie" ToRole="role_function" />
-          <NavigationProperty Name="role_view" Relationship="AMS_DBModel.FK_role_view_user_identifie" FromRole="user_identifie" ToRole="role_view" />
-          <NavigationProperty Name="system_log" Relationship="AMS_DBModel.FK_system_log_user_identifie" FromRole="user_identifie" ToRole="system_log" />
           <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="OrganizationID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="DOB" Type="DateTime" Precision="0" />
-          <Property Name="Phone" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="role_function" Relationship="AMS_DBModel.FK_role_function_user_identifie" FromRole="user_identifie" ToRole="role_function" />
+          <NavigationProperty Name="role_view" Relationship="AMS_DBModel.FK_role_view_user_identifie" FromRole="user_identifie" ToRole="role_view" />
+          <NavigationProperty Name="system_log" Relationship="AMS_DBModel.FK_system_log_user_identifie" FromRole="user_identifie" ToRole="system_log" />
         </EntityType>
         <EntityType Name="view_page">
           <Key>
@@ -967,15 +1001,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Process_Organizational">
-          <End Type="AMS_DBModel.Organizational" Role="Organizational" Multiplicity="0..1" />
-          <End Type="AMS_DBModel.Process" Role="Process" Multiplicity="*" />
+        <Association Name="FK_ProcessStep_Process">
+          <End Type="AMS_DBModel.Process" Role="Process" Multiplicity="0..1" />
+          <End Type="AMS_DBModel.ProcessStep" Role="ProcessStep" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Organizational">
+            <Principal Role="Process">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Process">
-              <PropertyRef Name="OrganizationalID" />
+            <Dependent Role="ProcessStep">
+              <PropertyRef Name="ProcessID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1176,8 +1210,25 @@
           <EntitySetMapping Name="Processes">
             <EntityTypeMapping TypeName="AMS_DBModel.Process">
               <MappingFragment StoreEntitySet="Process">
-                <ScalarProperty Name="ParentStepID" ColumnName="ParentStepID" />
-                <ScalarProperty Name="OrganizationalID" ColumnName="OrganizationalID" />
+                <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProcessSteps">
+            <EntityTypeMapping TypeName="AMS_DBModel.ProcessStep">
+              <MappingFragment StoreEntitySet="ProcessStep">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="StepName" ColumnName="StepName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsUseExpiredTime" ColumnName="IsUseExpiredTime" />
+                <ScalarProperty Name="ExpiredTime" ColumnName="ExpiredTime" />
+                <ScalarProperty Name="Approvers" ColumnName="Approvers" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="ProcessID" ColumnName="ProcessID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1260,8 +1311,8 @@
           <EntitySetMapping Name="user_identifie">
             <EntityTypeMapping TypeName="AMS_DBModel.user_identifie">
               <MappingFragment StoreEntitySet="user_identifie">
-                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="DOB" ColumnName="DOB" />
                 <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
                 <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />

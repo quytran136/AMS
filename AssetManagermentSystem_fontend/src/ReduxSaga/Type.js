@@ -29,4 +29,6 @@ export const GET_USERS_BY_DEPARTMENT = "base/get_users_by_department"
 export const GET_USERS_BY_DEPARTMENT_SUCCESS = "base/get_users_by_department_success"
 export const DELETE_USER = "base/delete_user"
 export const LOCK_UNLOCK_USER = "base/lock_unlock_user"
+export const REQUEST_PROCESS_FLOW = "base/request_process_flow"
+export const SAVE_PROCESS_FLOW = "base/save_process_flow"
 

@@ -18,5 +18,6 @@ namespace AMS.COMMON
         public static string ASSET = "D";
         public static string DEPARTMENT = "E";
         public static string ORGANIZATIONAL = "F";
+        public static string PROCESSFLOW = "G";
     }
 }

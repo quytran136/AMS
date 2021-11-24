@@ -13,6 +13,7 @@ import {
 } from '@ant-design/icons';
 import DepartmentChart from "./Components/DepartmentChart";
 import Employee from "./Components/Employee";
+import ProcessFlow from "./Components/ProcessFlow";
 
 function Config() {
 
@@ -28,7 +29,7 @@ function Config() {
     {
       key: "FlowConfig",
       value: "Cấu hình luồng duyệt",
-      component: "NodeIndexOutlined",
+      component: <ProcessFlow />,
       icon: <NodeIndexOutlined />
     },
     {

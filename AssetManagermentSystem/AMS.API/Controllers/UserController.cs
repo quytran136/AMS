@@ -227,7 +227,8 @@ namespace AMS.API.Controllers
                             Email = item.User_Identifie.Email ?? "",
                             DOB = item.User_Identifie.DOB ?? DateTime.Now,
                             DepartmentName = item.DepartmentName ?? "",
-                            OrganizationName = item.OrganizationName ?? ""
+                            OrganizationName = item.OrganizationName ?? "",
+                            key = item.User_Identifie.ID ?? ""
                         });
                     }
 

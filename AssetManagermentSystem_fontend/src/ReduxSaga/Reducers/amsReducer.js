@@ -16,7 +16,8 @@ const initialState = {
     departmentData: null,
     organizationData: null,
     departmentDetail: null,
-    signupSuccess: false
+    signupSuccess: false,
+    processFlows: null
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -105,6 +106,11 @@ export const amsReducer = (state = initialState, action) => {
             return{
                 ...state,
                 users: action.users
+            }
+        case type.SAVE_PROCESS_FLOW:
+            return{
+                ...state,
+                processFlows: action.processFlows
             }
         default:
             return {

@@ -12,14 +12,19 @@ namespace AMS.BUS.DBConnect
     using System;
     using System.Collections.Generic;
     
-    public partial class Organizational
+    public partial class ProcessStep
     {
         public string ID { get; set; }
-        public string OrganizationalName { get; set; }
+        public string ProcessID { get; set; }
         public string ParentID { get; set; }
-        public string DepartmentID { get; set; }
+        public string UserID { get; set; }
+        public string Approvers { get; set; }
+        public Nullable<int> ExpiredTime { get; set; }
+        public Nullable<bool> IsUseExpiredTime { get; set; }
+        public string Description { get; set; }
+        public string StepName { get; set; }
         public Nullable<bool> IsDelete { get; set; }
     
-        public virtual Department Department { get; set; }
+        public virtual Process Process { get; set; }
     }
 }

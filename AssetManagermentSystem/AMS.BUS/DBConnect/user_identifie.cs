@@ -35,8 +35,8 @@ namespace AMS.BUS.DBConnect
         public string DepartmentID { get; set; }
         public string OrganizationID { get; set; }
         public Nullable<System.DateTime> DOB { get; set; }
-        public string Phone { get; set; }
         public string Email { get; set; }
+        public string Phone { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<role_function> role_function { get; set; }

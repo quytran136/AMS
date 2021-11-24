@@ -20,6 +20,10 @@ const AMS_API = {
     organizationalChart: (body) =>{
         const url = "OrganizationalChart/OrganizationalControl"
         return request.post(url, body);
+    },
+    processFlow: (body) =>{
+        const url = "ProcessFlow/ProcessControl"
+        return request.post(url, body);
     }
 }
 

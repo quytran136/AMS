@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AMS_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="asset_allocation_history">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="AssetID" Type="varchar" MaxLength="64" />
+    <Property Name="AllocationFor" Type="nvarchar" MaxLength="128" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="AllocationBy" Type="nvarchar" MaxLength="128" />
+    <Property Name="RequestBy" Type="nvarchar" MaxLength="128" />
+    <Property Name="LocalStep" Type="varchar" MaxLength="64" />
+    <Property Name="isApprove" Type="bit" />
+    <Property Name="IsReject" Type="bit" />
+  </EntityType>
+  <EntityType Name="asset_classify">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="AssetName" Type="nvarchar" MaxLength="128" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="IsDelete" Type="bit" />
+  </EntityType>
+  <EntityType Name="asset_detail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="StoreID" Type="varchar" MaxLength="64" />
+    <Property Name="AssetClassifyID" Type="varchar" MaxLength="64" />
+    <Property Name="AssetFullName" Type="nvarchar" MaxLength="128" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="QuantityOriginalStock" Type="int" />
+    <Property Name="Unit" Type="int" />
+    <Property Name="QuantityUsed" Type="int" />
+    <Property Name="QuantityInStock" Type="int" />
+    <Property Name="QuantityDestroyed" Type="int" />
+    <Property Name="Price" Type="float" />
+  </EntityType>
+  <EntityType Name="asset_recovery_history">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="AssetID" Type="varchar" MaxLength="64" />
+    <Property Name="RecoveryFor" Type="nvarchar" MaxLength="128" />
+    <Property Name="RecoveryBy" Type="nvarchar" MaxLength="128" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="RequestBy" Type="nvarchar" MaxLength="128" />
+    <Property Name="LocalStep" Type="varchar" MaxLength="64" />
+    <Property Name="isApprove" Type="bit" />
+    <Property Name="RequestBy1" Type="nvarchar" MaxLength="128" />
+    <Property Name="LocalStep1" Type="varchar" MaxLength="64" />
+    <Property Name="isApprove1" Type="bit" />
+  </EntityType>
+  <EntityType Name="assets_liquidation_history">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="AssetID" Type="varchar" MaxLength="64" />
+    <Property Name="LiquidationFor" Type="nvarchar" MaxLength="128" />
+    <Property Name="LiquidationBy" Type="nvarchar" MaxLength="128" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="RequestBy" Type="nvarchar" MaxLength="128" />
+    <Property Name="LocalStep" Type="varchar" MaxLength="64" />
+    <Property Name="isApprove" Type="bit" />
+    <Property Name="Price" Type="float" />
+    <Property Name="RecoveryPrice" Type="float" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="DepartmentName" Type="nvarchar" MaxLength="128" />
+    <Property Name="ParentID" Type="varchar" MaxLength="64" />
+    <Property Name="IsDelete" Type="bit" />
+  </EntityType>
+  <EntityType Name="function">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="FunctionName" Type="nvarchar" MaxLength="128" />
+    <Property Name="FunctionKey" Type="varchar" MaxLength="64" />
+  </EntityType>
+  <EntityType Name="message_list">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="KeyCode" Type="varchar" MaxLength="64" />
+    <Property Name="Code" Type="varchar" MaxLength="64" />
+    <Property Name="Message_EN" Type="nvarchar(max)" />
+    <Property Name="Message_VN" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Organizational">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
+    <Property Name="OrganizationalName" Type="nvarchar" MaxLength="128" />
+    <Property Name="ParentID" Type="varchar" MaxLength="64" />
+    <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+    <Property Name="IsDelete" Type="bit" />
+  </EntityType>
+  <EntityType Name="Process">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="ProcessName" Type="nvarchar" MaxLength="128" />
+    <Property Name="IsDelete" Type="bit" />
+    <Property Name="IsLock" Type="bit" />
+  </EntityType>
+  <EntityType Name="ProcessStep">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="ProcessID" Type="varchar" MaxLength="64" />
+    <Property Name="ParentID" Type="varchar" MaxLength="64" />
+    <Property Name="UserID" Type="varchar" MaxLength="64" />
+    <Property Name="Approvers" Type="nvarchar(max)" />
+    <Property Name="ExpiredTime" Type="int" />
+    <Property Name="IsUseExpiredTime" Type="bit" />
+    <Property Name="Description" Type="text" />
+    <Property Name="StepName" Type="nvarchar" MaxLength="128" />
+    <Property Name="IsDelete" Type="bit" />
+  </EntityType>
+  <EntityType Name="rank">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="RankName" Type="nvarchar" MaxLength="128" />
+    <Property Name="RankParent" Type="varchar" MaxLength="64" />
+    <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+    <Property Name="CreateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="role">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="RoleName" Type="nvarchar" MaxLength="128" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="IsLock" Type="nchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="role_function">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="RoleID" Type="varchar" MaxLength="64" />
+    <Property Name="FunctionID" Type="varchar" MaxLength="64" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="UserID" Type="varchar" MaxLength="64" />
+  </EntityType>
+  <EntityType Name="role_view">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="RoleID" Type="varchar" MaxLength="64" />
+    <Property Name="ViewID" Type="varchar" MaxLength="64" />
+    <Property Name="CreateDate" Type="date" />
+    <Property Name="UserID" Type="varchar" MaxLength="64" />
+  </EntityType>
+  <EntityType Name="store_Identifie">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="StoreName" Type="nchar" MaxLength="10" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Owner" Type="nvarchar" MaxLength="128" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="system_log">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="MessageID" Type="varchar" MaxLength="64" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Creator" Type="varchar" MaxLength="64" />
+    <Property Name="Detail" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="user_identifie">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="64" />
+    <Property Name="UserPassword" Type="varchar" MaxLength="64" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="IsLock" Type="bit" />
+    <Property Name="IsDelete" Type="bit" />
+    <Property Name="Role" Type="varchar" MaxLength="64" />
+    <Property Name="UserFullName" Type="nvarchar" MaxLength="128" />
+    <Property Name="Image" Type="nvarchar" MaxLength="128" />
+    <Property Name="Token" Type="nvarchar" MaxLength="128" />
+    <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
+    <Property Name="OrganizationID" Type="varchar" MaxLength="64" />
+    <Property Name="DOB" Type="date" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Phone" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="view_page">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="ViewName" Type="nvarchar" MaxLength="128" />
+    <Property Name="ViewKey" Type="varchar" MaxLength="64" />
+  </EntityType>
+  <Association Name="FK_asset_allocation_history_asset_detail1">
+    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+    <End Role="asset_allocation_history" Type="Self.asset_allocation_history" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="asset_detail">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="asset_allocation_history">
+        <PropertyRef Name="AssetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_asset_allocation_history_rank">
+    <End Role="rank" Type="Self.rank" Multiplicity="0..1" />
+    <End Role="asset_allocation_history" Type="Self.asset_allocation_history" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="rank">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="asset_allocation_history">
+        <PropertyRef Name="LocalStep" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_asset_detail_asset_classify">
+    <End Role="asset_classify" Type="Self.asset_classify" Multiplicity="0..1" />
+    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="asset_classify">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="asset_detail">
+        <PropertyRef Name="AssetClassifyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_asset_detail_store_Identifie">
+    <End Role="store_Identifie" Type="Self.store_Identifie" Multiplicity="0..1" />
+    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="store_Identifie">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="asset_detail">
+        <PropertyRef Name="StoreID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_asset_recovery_history_asset_detail1">
+    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+    <End Role="asset_recovery_history" Type="Self.asset_recovery_history" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="asset_detail">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="asset_recovery_history">
+        <PropertyRef Name="AssetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_assets_liquidation_history_asset_detail">
+    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="0..1" />
+    <End Role="assets_liquidation_history" Type="Self.assets_liquidation_history" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="asset_detail">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="assets_liquidation_history">
+        <PropertyRef Name="AssetID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Organizational_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Organizational" Type="Self.Organizational" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Organizational">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ProcessStep_Process">
+    <End Role="Process" Type="Self.Process" Multiplicity="0..1" />
+    <End Role="ProcessStep" Type="Self.ProcessStep" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Process">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ProcessStep">
+        <PropertyRef Name="ProcessID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_rank_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="rank" Type="Self.rank" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="rank">
+        <PropertyRef Name="DepartmentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_role_function_function">
+    <End Role="function" Type="Self.function" Multiplicity="0..1" />
+    <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="function">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="role_function">
+        <PropertyRef Name="FunctionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_role_function_role">
+    <End Role="role" Type="Self.role" Multiplicity="0..1" />
+    <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="role">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="role_function">
+        <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_role_function_user_identifie">
+    <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
+    <End Role="role_function" Type="Self.role_function" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_identifie">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="role_function">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_role_view_role">
+    <End Role="role" Type="Self.role" Multiplicity="0..1" />
+    <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="role">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="role_view">
+        <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_role_view_user_identifie">
+    <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
+    <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_identifie">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="role_view">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_role_view_view_page">
+    <End Role="view_page" Type="Self.view_page" Multiplicity="0..1" />
+    <End Role="role_view" Type="Self.role_view" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="view_page">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="role_view">
+        <PropertyRef Name="ViewID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_system_log_message_list">
+    <End Role="message_list" Type="Self.message_list" Multiplicity="0..1" />
+    <End Role="system_log" Type="Self.system_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="message_list">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="system_log">
+        <PropertyRef Name="MessageID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_system_log_user_identifie">
+    <End Role="user_identifie" Type="Self.user_identifie" Multiplicity="0..1" />
+    <End Role="system_log" Type="Self.system_log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="user_identifie">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="system_log">
+        <PropertyRef Name="Creator" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AMS_DBModelStoreContainer">
+    <EntitySet Name="asset_allocation_history" EntityType="Self.asset_allocation_history" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="asset_classify" EntityType="Self.asset_classify" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="asset_detail" EntityType="Self.asset_detail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="asset_recovery_history" EntityType="Self.asset_recovery_history" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="assets_liquidation_history" EntityType="Self.assets_liquidation_history" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="function" EntityType="Self.function" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="message_list" EntityType="Self.message_list" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Organizational" EntityType="Self.Organizational" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Process" EntityType="Self.Process" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProcessStep" EntityType="Self.ProcessStep" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="rank" EntityType="Self.rank" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="role_function" EntityType="Self.role_function" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="role_view" EntityType="Self.role_view" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="system_log" EntityType="Self.system_log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_identifie" EntityType="Self.user_identifie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="view_page" EntityType="Self.view_page" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_asset_allocation_history_asset_detail1" Association="Self.FK_asset_allocation_history_asset_detail1">
+      <End Role="asset_detail" EntitySet="asset_detail" />
+      <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_allocation_history_rank" Association="Self.FK_asset_allocation_history_rank">
+      <End Role="rank" EntitySet="rank" />
+      <End Role="asset_allocation_history" EntitySet="asset_allocation_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_detail_asset_classify" Association="Self.FK_asset_detail_asset_classify">
+      <End Role="asset_classify" EntitySet="asset_classify" />
+      <End Role="asset_detail" EntitySet="asset_detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_detail_store_Identifie" Association="Self.FK_asset_detail_store_Identifie">
+      <End Role="store_Identifie" EntitySet="store_Identifie" />
+      <End Role="asset_detail" EntitySet="asset_detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_recovery_history_asset_detail1" Association="Self.FK_asset_recovery_history_asset_detail1">
+      <End Role="asset_detail" EntitySet="asset_detail" />
+      <End Role="asset_recovery_history" EntitySet="asset_recovery_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_assets_liquidation_history_asset_detail" Association="Self.FK_assets_liquidation_history_asset_detail">
+      <End Role="asset_detail" EntitySet="asset_detail" />
+      <End Role="assets_liquidation_history" EntitySet="assets_liquidation_history" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Organizational_Department" Association="Self.FK_Organizational_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Organizational" EntitySet="Organizational" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ProcessStep_Process" Association="Self.FK_ProcessStep_Process">
+      <End Role="Process" EntitySet="Process" />
+      <End Role="ProcessStep" EntitySet="ProcessStep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_rank_Department" Association="Self.FK_rank_Department">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="rank" EntitySet="rank" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_function_function" Association="Self.FK_role_function_function">
+      <End Role="function" EntitySet="function" />
+      <End Role="role_function" EntitySet="role_function" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_function_role" Association="Self.FK_role_function_role">
+      <End Role="role" EntitySet="role" />
+      <End Role="role_function" EntitySet="role_function" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_function_user_identifie" Association="Self.FK_role_function_user_identifie">
+      <End Role="user_identifie" EntitySet="user_identifie" />
+      <End Role="role_function" EntitySet="role_function" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_view_role" Association="Self.FK_role_view_role">
+      <End Role="role" EntitySet="role" />
+      <End Role="role_view" EntitySet="role_view" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_view_user_identifie" Association="Self.FK_role_view_user_identifie">
+      <End Role="user_identifie" EntitySet="user_identifie" />
+      <End Role="role_view" EntitySet="role_view" />
+    </AssociationSet>
+    <AssociationSet Name="FK_role_view_view_page" Association="Self.FK_role_view_view_page">
+      <End Role="view_page" EntitySet="view_page" />
+      <End Role="role_view" EntitySet="role_view" />
+    </AssociationSet>
+    <AssociationSet Name="FK_system_log_message_list" Association="Self.FK_system_log_message_list">
+      <End Role="message_list" EntitySet="message_list" />
+      <End Role="system_log" EntitySet="system_log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_system_log_user_identifie" Association="Self.FK_system_log_user_identifie">
+      <End Role="user_identifie" EntitySet="user_identifie" />
+      <End Role="system_log" EntitySet="system_log" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

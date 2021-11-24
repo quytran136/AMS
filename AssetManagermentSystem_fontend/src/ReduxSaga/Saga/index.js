@@ -12,7 +12,8 @@ import {
     getUsersWatcher,
     getUsersByDepartmentWatcher,
     deleteUserWatcher,
-    lockOrUnlockUserWatcher
+    lockOrUnlockUserWatcher,
+    requestProcessFlowWatcher
 } from "./amsSaga";
 
 export default function* sagas() {
@@ -29,6 +30,7 @@ export default function* sagas() {
         getUsersWatcher(),
         getUsersByDepartmentWatcher(),
         deleteUserWatcher(),
-        lockOrUnlockUserWatcher()
+        lockOrUnlockUserWatcher(),
+        requestProcessFlowWatcher()
     ]);
 }

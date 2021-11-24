@@ -9,6 +9,7 @@ namespace AMS.API.Models.ResponseModel
 {
     public class Res_UserInformation
     {
+        public string key { get; set; }
         public string ID { get; set; }
         public string UserName { get; set; }
         public string UserFullName { get; set; }
