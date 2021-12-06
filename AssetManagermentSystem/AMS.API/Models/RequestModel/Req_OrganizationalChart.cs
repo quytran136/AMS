@@ -8,7 +8,6 @@ namespace AMS.API.Models.RequestModel
 {
     public class Req_OrganizationalChart
     {
-        public string UserNameRequest { get; set; }
         public string DepartmentID { get; set; }
         public OrganizationalChart Organizational { get; set; }
     }

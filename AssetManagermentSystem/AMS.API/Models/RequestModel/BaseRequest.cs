@@ -9,6 +9,7 @@ namespace AMS.API.Models.RequestModel
     {
         public string Token { get; set; }
         public string Key { get; set; }
+        public string UserNameRequest { get; set; }
         public T Data { get; set; }
     }
 }

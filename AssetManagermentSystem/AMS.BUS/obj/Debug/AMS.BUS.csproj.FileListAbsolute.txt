@@ -32,3 +32,5 @@ C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AM
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.csproj.CopyComplete
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.dll
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.BUS\obj\Debug\AMS.BUS.pdb
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.BUS\bin\Debug\Newtonsoft.Json.dll
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.BUS\bin\Debug\Newtonsoft.Json.xml

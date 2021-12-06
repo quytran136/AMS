@@ -18,7 +18,6 @@ namespace AMS.BUS.DBConnect
         public Department()
         {
             this.Organizationals = new HashSet<Organizational>();
-            this.ranks = new HashSet<rank>();
         }
     
         public string ID { get; set; }
@@ -28,7 +27,5 @@ namespace AMS.BUS.DBConnect
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Organizational> Organizationals { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<rank> ranks { get; set; }
     }
 }

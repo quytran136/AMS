@@ -102,8 +102,8 @@ const Employee = (prop) => {
         const body = {
             Token: token,
             Key: "DELETE_USER",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 UserID: record.ID
             }
         }
@@ -117,8 +117,8 @@ const Employee = (prop) => {
         const body = {
             Token: token,
             Key: "UNLOCK_USER",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 UserID: record.ID
             }
         }
@@ -132,8 +132,8 @@ const Employee = (prop) => {
         const body = {
             Token: token,
             Key: "LOCK_USER",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 UserID: record.ID
             }
         }
@@ -147,8 +147,8 @@ const Employee = (prop) => {
         const body = {
             Token: token,
             Key: "USERS",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 SearchContent: searchContent || null
             }
         }

@@ -7,36 +7,50 @@ import { TreeSelect } from 'antd';
 import * as amsAction from '../../ReduxSaga/Actions/action';
 
 const SelectDepartment = (prop) => {
-    const { departmentID, selected } = prop
+    const { visible, selected, onSelected } = prop
     const dispatch = useDispatch();
     const {
         getOrganizationalChart,
     } = amsAction;
 
+    const [department, setDepartment] = useState()
+    const [organization, setOrganization] = useState()
+
+    function init() {
+        if (selected.includes("DEP")) {
+            setDepartment(selected.split("/")[1])
+            getORG(selected.split("/")[1])
+        }
+
+        if (selected.includes("ORG")) {
+            const dep = selected.split("|")[0]
+            const org = selected.split("|")[1]
+            setDepartment(dep.split("/")[1])
+            getORG(dep.split("/")[1])
+            setOrganization(org.split("/")[1])
+        }
+    }
+
+    useEffect(init, [])
+
     const {
         userName,
         token,
         departmentChart,
-        organizationalChart
+        organizationalChart,
     } = prop.amsStore;
 
-    const [department, setDepartment] = useState()
-    const [organization, setOrganization] = useState()
 
     function getORG(value) {
         const body = {
             Token: token,
             Key: "ORGANIZATIONAL_CHART",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 DepartmentID: value
             }
         }
         dispatch(getOrganizationalChart(body))
-    }
-
-    function getAllEmployee(){
-        
     }
 
     function RenderTreeDepartment(item) {
@@ -94,16 +108,18 @@ const SelectDepartment = (prop) => {
     return (<>
         <h4>Phòng ban</h4>
         <TreeSelect
+            disabled={visible}
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             placeholder="Please select"
             allowClear="true"
-            defaultValue={departmentID}
+            value={department}
             treeDefaultExpandAll="true"
             onChange={(e) => {
                 setDepartment(e)
                 getORG(e)
+                onSelected("DEP/" + e)
             }}
         >
             {departmentChart ?
@@ -116,15 +132,18 @@ const SelectDepartment = (prop) => {
         <h4>Vị trí</h4>
 
         <TreeSelect
+            disabled={visible}
             showSearch
             style={{ width: '100%' }}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             placeholder="Please select"
             allowClear="true"
             treeDefaultExpandAll="true"
-            defaultValue={organization}
             value={organization}
-            onChange={(e) => setOrganization(e)}
+            onChange={(e) => {
+                setOrganization(e)
+                onSelected("DEP/" + department + "|" + "ORG/" + e)
+            }}
         >
             {organizationalChart ?
                 <TreeSelect.TreeNode key={organizationalChart.Node.ID} value={organizationalChart.Node.ID} title={organizationalChart.Node.OrganizationalName}>

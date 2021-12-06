@@ -22,22 +22,20 @@ const ProcessFlowSetting = (props) => {
     const {
         token,
         userName,
-        processFlows,
-        departmentChart,
-        organizationalChart
+        processFlows
     } = props.amsStore
 
     const [processName, setProcessName] = useState("")
     const [visible, setVisible] = useState(false)
     const [stepsFlow, setStepsFlow] = useState()
 
-    useEffect(() => {
+    function checkActive(){
         setVisible(active)
         if (active === true) {
             showDetailProcessFlow()
         }
-    }, [active])
-
+    }
+    
     function showDetailProcessFlow() {
         if (dataSelected) {
             const body = {
@@ -48,18 +46,19 @@ const ProcessFlowSetting = (props) => {
                     ProcessID: dataSelected
                 }
             }
-
+            
             dispatch(requestProcessFlow(body))
         }
     }
-
+    
     function setEdit() {
         if (processFlows) {
             setProcessName(processFlows?.Response?.ProcessFlow?.Process?.ProcessName)
             setStepsFlow(ReadStep(processFlows?.Response?.ProcessFlow?.Child, []))
         }
     }
-
+    
+    useEffect(checkActive, [active])
     useEffect(setEdit, [processFlows])
 
     function onSave() {
@@ -276,8 +275,8 @@ const ProcessFlowSetting = (props) => {
                                             <Tabs defaultActiveKey="1">
                                                 <Tabs.TabPane tab="Nhân sự" key="1">
                                                     <SelectEmployee
-                                                        selectedBeffor={element.Approvers.split("|")}
-                                                        selected={(selectedRows) => {
+                                                        selected={element.Approvers.split("|")}
+                                                        onSelected={(selectedRows) => {
                                                             var listApprover = ""
                                                             selectedRows.forEach((element) => listApprover += element.ID + "|")
                                                             element.Approvers = listApprover
@@ -288,9 +287,9 @@ const ProcessFlowSetting = (props) => {
                                                     <Checkbox
                                                         checked={element.Approvers.length === 0 ? true : false}
                                                         onChange={(e) => {
-                                                            if(e.target.checked){
+                                                            if (e.target.checked) {
                                                                 element.Approvers = ""
-                                                            }else{
+                                                            } else {
                                                                 element.Approvers = "|"
                                                             }
                                                             editStep(element, index)
@@ -298,11 +297,11 @@ const ProcessFlowSetting = (props) => {
                                                         Phê duyệt nội bộ phòng người yêu cầu
                                                     </Checkbox>
                                                     <SelectDepartment
-                                                        // departmentID = {element.}
-                                                        selected={(selectedRows) => {
-                                                            var listApprover = ""
-                                                            selectedRows.forEach((element) => listApprover += element.ID + "|")
-                                                            element.Approvers = listApprover
+                                                        visible = {element.Approvers.length === 0 ? true : false}
+                                                        selected={element.Approvers}
+                                                        onSelected={(selectedRows) => {
+                                                            console.log(selectedRows)
+                                                            element.Approvers = selectedRows
                                                             editStep(element, index)
                                                         }} />
                                                 </Tabs.TabPane>

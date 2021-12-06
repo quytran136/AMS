@@ -1,3 +1,4 @@
+import { getAssetSuccess } from "../Actions/action";
 import * as type from "../Type";
 
 const initialState = {
@@ -17,7 +18,13 @@ const initialState = {
     organizationData: null,
     departmentDetail: null,
     signupSuccess: false,
-    processFlows: null
+    processFlows: null,
+    warehouseAction: null,
+    assetClassifies: null,
+    configCommon: null,
+    ticket: null,
+    notifications: null,
+    requestID: null
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -53,7 +60,7 @@ export const amsReducer = (state = initialState, action) => {
                 tabLogin: action.tab
             }
         case type.SIGNUP_SUSSESS:
-            return{
+            return {
                 ...state,
                 signupSuccess: action.result
             }
@@ -88,29 +95,64 @@ export const amsReducer = (state = initialState, action) => {
                 organizationData: action.organizational
             }
         case type.GET_USERS_SUCCESS:
-            return{
+            return {
                 ...state,
                 users: action.users
             }
         case type.GET_USER_INFO_LOGIN_SUCCESS:
-            return{
+            return {
                 ...state,
                 userInfoLogin: action.userInfo
             }
         case type.GET_USER_INFO_SUCCESS:
-            return{
+            return {
                 ...state,
                 userInfo: action.userInfo
             }
         case type.GET_USERS_BY_DEPARTMENT_SUCCESS:
-            return{
+            return {
                 ...state,
                 users: action.users
             }
         case type.SAVE_PROCESS_FLOW:
-            return{
+            return {
                 ...state,
                 processFlows: action.processFlows
+            }
+        case type.GET_WAREHOUSE_SUCCESS:
+            return {
+                ...state,
+                warehouses: action.warehouses
+            }
+        case type.GET_ASSETCLASSIFIES_SUCCESS:
+            return {
+                ...state,
+                assetClassifies: action.assetClassifies
+            }
+        case type.SET_WAREHOUSE_ACTION:
+            return {
+                ...state,
+                warehouseAction: action.warehouseAction
+            }
+        case type.GET_CONFIG_COMMON:
+            return {
+                ...state,
+                configCommon: action.configCommon
+            }
+        case type.GET_TICKET:
+            return {
+                ...state,
+                ticket: action.ticket
+            }
+        case type.GET_NOTIFICATION_SUCCESS:
+            return {
+                ...state,
+                notifications: action.notifications
+            }
+        case type.REQUEST_ID:
+            return {
+                ...state,
+                requestID: action.requestID
             }
         default:
             return {

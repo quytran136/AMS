@@ -112,9 +112,7 @@ function* saveChangeDepartmentChartSaga(action) {
             const body = {
                 Token: reducer?.amsReducer?.token,
                 Key: "DEPARTMENT_CHART",
-                Data: {
-                    UserNameRequest: reducer?.amsReducer?.userName
-                }
+                UserNameRequest: reducer?.amsReducer?.userName
             }
             yield call(getDepartmentChartSaga, {
                 body: body
@@ -177,8 +175,8 @@ function* saveChangeOrganizationalChartSaga(action) {
             const body = {
                 Token: reducer?.amsReducer?.token,
                 Key: "ORGANIZATIONAL_CHART",
+                UserNameRequest: reducer?.amsReducer?.userName,
                 Data: {
-                    UserNameRequest: reducer?.amsReducer?.userName,
                     DepartmentID: reducer?.amsReducer?.departmentData.ID
                 }
             }
@@ -414,7 +412,8 @@ function* requestProcessFlowSaga(action) {
                     break;
                 case "GET_PROCESS_DETAIL":
                     yield put(amsAction.saveProcessFlow(process))
-                    yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
+                    break;
+                default:
                     break;
             }
         } else {
@@ -430,4 +429,175 @@ function* requestProcessFlowSaga(action) {
 
 export function* requestProcessFlowWatcher() {
     yield takeLatest(type.REQUEST_PROCESS_FLOW, requestProcessFlowSaga);
+}
+
+function* requestWarehouseSaga(action) {
+    try {
+        const warehouse = yield call(AMS_API.warehouse, action.body)
+        if (!warehouse) {
+            throw new Error("Thao tác không thành công")
+        }
+
+        if (!warehouse.Message) {
+            switch (action.body.Key) {
+                case "UPDATE_WAREHOUSE":
+                    // yield put(amsAction.saveProcessFlow(null))
+                    yield put(amsAction.setMessage("Câp nhật dữ liệu thành công"))
+                    break;
+                case "GET_WAREHOUSE":
+                    yield put(amsAction.getWarehouseSuccess(warehouse))
+                    yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
+                    break;
+                case "GET_WAREHOUSE_DETAIL":
+                    console.log(warehouse)
+                    yield put(amsAction.getWarehouseSuccess(warehouse))
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            yield put(amsAction.setError(warehouse))
+        }
+    } catch (ex) {
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* requestWarehouseWatcher() {
+    yield takeLatest(type.REQUEST_WAREHOUSE, requestWarehouseSaga);
+}
+
+function* requestAssetSaga(action) {
+    try {
+        const warehouse = yield call(AMS_API.asset, action.body)
+        if (!warehouse) {
+            throw new Error("Thao tác không thành công")
+        }
+
+        if (!warehouse.Message) {
+            switch (action.body.Key) {
+                case "UPDATE_ASSET_CLASSIFY":
+                    // yield put(amsAction.saveProcessFlow(null))
+                    yield put(amsAction.setMessage("Câp nhật dữ liệu thành công"))
+                    break;
+                case "GET_ASSET_CLASSIFY":
+                    yield put(amsAction.getAssetClassifiesSuccess(warehouse))
+                    yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
+                    break;
+                case "GET_ASSET_CLASSIFY_DETAIL":
+                    console.log(warehouse)
+                    yield put(amsAction.getAssetClassifiesSuccess(warehouse))
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            yield put(amsAction.setError(warehouse))
+        }
+    } catch (ex) {
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* requestAssetWatcher() {
+    yield takeLatest(type.REQUEST_ASSET, requestAssetSaga);
+}
+
+function* requestConfigCommonSaga(action) {
+    try {
+        const configCommon = yield call(AMS_API.config, action.body)
+        if (!configCommon) {
+            throw new Error("Thao tác không thành công")
+        }
+
+        if (!configCommon.Message) {
+            switch (action.body.Key) {
+                case "UPDATE_CONFIG_COMMON":
+                    // yield put(amsAction.saveProcessFlow(null))
+                    yield put(amsAction.setMessage("Câp nhật dữ liệu thành công"))
+                    break;
+                case "GET_CONFIG_COMMON":
+                    yield put(amsAction.getConfigCommonSuccess(configCommon))
+                    yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            yield put(amsAction.setError(configCommon))
+        }
+    } catch (ex) {
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* requestConfigCommonWatcher() {
+    yield takeLatest(type.REQUEST_CONFIG_COMMON, requestConfigCommonSaga);
+}
+
+function* requestTicketSaga(action) {
+    try {
+        const ticket = yield call(AMS_API.ticket, action.body)
+        if (!ticket) {
+            throw new Error("Thao tác không thành công")
+        }
+
+        if (!ticket.Message) {
+            switch (action.body.Key) {
+                case "GET_TICKET_SHOPPING":
+                    yield put(amsAction.getTicketSuccess(ticket))
+                    yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
+                    break;
+                default:
+                    yield put(amsAction.setMessage("Gửi yêu cầu thành công"))
+                    break;
+            }
+        } else {
+            yield put(amsAction.setError(ticket))
+        }
+    } catch (ex) {
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* requestTicketWatcher() {
+    yield takeLatest(type.REQUEST_CREATE_TICKET, requestTicketSaga);
+}
+
+function* notificationSaga(action) {
+    try {
+        const notification = yield call(AMS_API.notification, action.body)
+        if (!notification) {
+            throw new Error("Thao tác không thành công")
+        }
+
+        if (!notification.Message) {
+            if (action.body.Key === "GET_NOTIFICATION") {
+                yield put(amsAction.requestNotificationSuccess(notification))
+            }
+        } else {
+            yield put(amsAction.setError(notification))
+        }
+    } catch (ex) {
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* notificationWatcher() {
+    yield takeLatest(type.GET_NOTIFICATION, notificationSaga);
 }

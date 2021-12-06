@@ -16,8 +16,6 @@ namespace AMS.BUS.BusinessHandle
         public List<OrganizationalChart> Childs { get; set; }
         private List<Organizational> ListOrganizationalUpdate = new List<Organizational>();
         private List<Organizational> ListOrganizationalUpdateData = new List<Organizational>();
-
-
         public BaseModel<OrganizationalChart> GetChart(string DepartmentID)
         {
             try
@@ -254,7 +252,6 @@ namespace AMS.BUS.BusinessHandle
                 };
             }
         }
-
 
         public string BUSMessageCode(int id)
         {

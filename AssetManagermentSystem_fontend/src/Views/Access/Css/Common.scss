@@ -15,10 +15,9 @@
     width  : 100%;
 }
 
-.label {
-    width     : 100vh;
-    height    : 100vh;
-    text-align: start;
+.icon{
+    font-size: 23px;
+    color: #fff !important;
 }
 
 .input {
@@ -49,7 +48,7 @@
 }
 
 .text-area{
-    height: 23vh !important;
+    min-height: 23vh !important;
 }
 
 .link {

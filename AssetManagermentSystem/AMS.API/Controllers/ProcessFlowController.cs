@@ -32,61 +32,35 @@ namespace AMS.API.Controllers
                 case "GET_PROCESS":
                     BaseModel<List<Process>> list = new ProcessChart().GetProcess();
 
-                    if (!string.IsNullOrEmpty(list.Exception.Code))
-                    {
-                        return new BaseResponse<Res_Process>()
-                        {
-                            Code = list.Exception.Code,
-                            Message = list.Exception.Message
-                        };
-                    }
-
-                    return new BaseResponse<Res_Process>()
-                    {
+                    return new BaseResponse<Res_Process>().Result<List<Process>>(list, new BaseResponse<Res_Process>() {
                         Response = new Res_Process()
                         {
                             Process = list.Result
                         }
-                    };
+                    });
                 case "UPDATE_PROCESS":
                     BaseModel<string> ProcessFlow = new ProcessChart()
                                                     .UpdateProcess(req.Data.ProcessName, req.Data.ProcessID, req.Data.IsDelete, req.Data.IsLock)
                                                     .UpdateFlow(user_info.Result.ID, req.Data.ProcessFlow)
                                                     .SaveChange();
-                    if (!string.IsNullOrEmpty(ProcessFlow.Exception.Code))
-                    {
-                        return new BaseResponse<Res_Process>()
-                        {
-                            Code = ProcessFlow.Exception.Code,
-                            Message = ProcessFlow.Exception.Message
-                        };
-                    }
 
-                    return new BaseResponse<Res_Process>()
+                    return new BaseResponse<Res_Process>().Result(ProcessFlow, new BaseResponse<Res_Process>()
                     {
                         Response = new Res_Process()
                         {
                             ProcessFlow = new ProcessChart()
                         }
-                    };
+                    });
                 case "GET_PROCESS_DETAIL":
                     BaseModel<ProcessChart> processFlow2 = new ProcessChart().GetProcessDetail(req.Data.ProcessID);
-                    if (!string.IsNullOrEmpty(processFlow2.Exception.Code))
-                    {
-                        return new BaseResponse<Res_Process>()
-                        {
-                            Code = processFlow2.Exception.Code,
-                            Message = processFlow2.Exception.Message
-                        };
-                    }
 
-                    return new BaseResponse<Res_Process>()
+                    return new BaseResponse<Res_Process>().Result(processFlow2, new BaseResponse<Res_Process>()
                     {
                         Response = new Res_Process()
                         {
                             ProcessFlow = processFlow2.Result
                         }
-                    };
+                    });
                 default:
                     return new BaseResponse<Res_Process>()
                     {

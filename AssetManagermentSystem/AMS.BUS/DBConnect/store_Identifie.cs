@@ -24,6 +24,7 @@ namespace AMS.BUS.DBConnect
         public string StoreName { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string Owner { get; set; }
+        public Nullable<bool> IsDelete { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<asset_detail> asset_detail { get; set; }

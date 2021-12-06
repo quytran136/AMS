@@ -8,7 +8,6 @@ namespace AMS.API.Models.RequestModel
 {
     public class Req_UserInformation
     {
-        public string UserNameRequest { get; set; }
         public string UserID { get; set; }
         public string UserLoginName { get; set; }
         public string UserPassword { get; set; }

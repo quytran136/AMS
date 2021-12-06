@@ -14,33 +14,24 @@ namespace AMS.BUS.DBConnect
     
     public partial class asset_detail
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public asset_detail()
-        {
-            this.asset_allocation_history = new HashSet<asset_allocation_history>();
-            this.asset_recovery_history = new HashSet<asset_recovery_history>();
-            this.assets_liquidation_history = new HashSet<assets_liquidation_history>();
-        }
-    
         public string ID { get; set; }
         public string StoreID { get; set; }
         public string AssetClassifyID { get; set; }
         public string AssetFullName { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> QuantityOriginalStock { get; set; }
-        public Nullable<int> Unit { get; set; }
         public Nullable<int> QuantityUsed { get; set; }
         public Nullable<int> QuantityInStock { get; set; }
         public Nullable<int> QuantityDestroyed { get; set; }
         public Nullable<double> Price { get; set; }
+        public Nullable<bool> IsDelete { get; set; }
+        public string TicketID { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public string Unit { get; set; }
+        public string Description { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<asset_allocation_history> asset_allocation_history { get; set; }
         public virtual asset_classify asset_classify { get; set; }
+        public virtual request_ticket_history request_ticket_history { get; set; }
         public virtual store_Identifie store_Identifie { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<asset_recovery_history> asset_recovery_history { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<assets_liquidation_history> assets_liquidation_history { get; set; }
     }
 }

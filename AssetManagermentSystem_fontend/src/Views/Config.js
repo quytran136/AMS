@@ -14,6 +14,7 @@ import {
 import DepartmentChart from "./Components/DepartmentChart";
 import Employee from "./Components/Employee";
 import ProcessFlow from "./Components/ProcessFlow";
+import ConfigCommon from "./Components/ConfigCommon";
 
 function Config() {
 
@@ -47,7 +48,7 @@ function Config() {
     {
       key: "CommonConfig",
       value: "Cấu hình chung",
-      component: "SettingOutlined",
+      component: <ConfigCommon />,
       icon: <SettingOutlined />
     },
   ]

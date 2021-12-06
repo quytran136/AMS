@@ -13,6 +13,7 @@ namespace AMS.BUS.BusinessHandle
         public user_identifie User_Identifie { get; set; }
         public string DepartmentName { get; set; }
         public string OrganizationName { get; set; }
+
         private string validData(string data, bool isSpace = true)
         {
             if (string.IsNullOrEmpty(data))
@@ -114,6 +115,77 @@ namespace AMS.BUS.BusinessHandle
                 };
             }
         }
+
+        public BaseModel<List<user_identifie>> UsersByOrganizationID(string departmentID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                var users = db.user_identifie.Where(ptr => ptr.OrganizationID == departmentID).ToList();
+                if (users == null || users.Count == 0)
+                {
+                    return new BaseModel<List<user_identifie>>
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(1)
+                        }
+                    };
+                }
+
+                return new BaseModel<List<user_identifie>>
+                {
+                    Result = users
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<List<user_identifie>>
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public BaseModel<user_identifie> GetUserInforByID(string useID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                var user = db.user_identifie.Where(ptr => ptr.ID == useID).ToList().LastOrDefault();
+                if (user == null)
+                {
+                    return new BaseModel<user_identifie>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(1)
+                        }
+                    };
+                }
+
+                return new BaseModel<user_identifie>()
+                {
+                    Result = user
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<user_identifie>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
 
         public BaseModel<user_identifie> GetUserInfor(string userName)
         {
@@ -457,6 +529,7 @@ namespace AMS.BUS.BusinessHandle
                 };
             }
         }
+
         public string BUSMessageCode(int id)
         {
             return string.Format("{0}{1}{2}{3}",

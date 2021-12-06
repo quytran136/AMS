@@ -27,6 +27,10 @@ import * as amsAction from './ReduxSaga/Actions/action';
 import NavigationBar from './Views/Components/NavigationBar';
 import AMSMenu from "./Views/Components/Menu";
 import { Row, Col } from 'antd';
+import Shopping from './Views/Components/Shopping';
+import Liquidation from './Views/Components/Liquidation';
+import Recovery from './Views/Components/Recovery';
+import Allocation from './Views/Components/Allocation';
 
 function App(prop) {
   const dispatch = useDispatch();
@@ -35,14 +39,17 @@ function App(prop) {
     token,
     cookie,
     showMenu,
-    message
+    message,
+    requestID
   } = prop.amsStore;
   const {
     saveCookie,
     saveUserLogin,
     saveToken,
     setMessage,
-    setError
+    setError,
+    requestConfigCommon,
+    requestNotification
   } = amsAction;
 
   function load() {
@@ -52,7 +59,26 @@ function App(prop) {
       dispatch(saveCookie(cookieData))
       dispatch(saveUserLogin(cookieData.userName))
       dispatch(saveToken(cookieData.token))
+      getConfigCommon(cookieData.userName, cookieData.token)
+
+      setInterval(() => {
+        const body = {
+          Token: cookieData.token,
+          Key: "GET_NOTIFICATION",
+          UserNameRequest: cookieData.userName,
+        }
+        dispatch(requestNotification(body))
+      }, 5000);
     }
+  }
+
+  function getConfigCommon(userName, token) {
+    const body = {
+      Token: token,
+      Key: "GET_CONFIG_COMMON",
+      UserNameRequest: userName,
+    }
+    dispatch(requestConfigCommon(body))
   }
 
   function signout() { }
@@ -96,46 +122,58 @@ function App(prop) {
           <div className="body-content">
             <Row>
               <Col span={showMenu ? 1 : 3}>
-              <AMSMenu />
-            </Col>
-            <Col span={showMenu ? 23 : 21}>
-              <Switch >
-                <Route exact path="/Home">
-                  <Home />
-                </Route>
-                <Route exact path="/User">
-                  <User />
-                </Route>
-                <Route exact path="/Config">
-                  <Config />
-                </Route>
-                <Route exact path="/Warehousing">
-                  <Warehousing />
-                </Route>
-                <Route exact path="/Asset">
-                  <Asset />
-                </Route>
-                <Route exact path="/Report">
-                  <Report />
-                </Route>
-                <Route exact path="/404Notfound">
-                  <Home />
-                </Route>
-                <Route path="/">
-                  <Home />
-                </Route>
-              </Switch>
-            </Col>
-          </Row>
-        </div>
+                <AMSMenu />
+              </Col>
+              <Col span={showMenu ? 23 : 21}>
+                <Switch >
+                  <Route exact path="/Home">
+                    <Home />
+                  </Route>
+                  <Route exact path="/User">
+                    <User />
+                  </Route>
+                  <Route exact path="/Config">
+                    <Config />
+                  </Route>
+                  <Route exact path="/Warehousing">
+                    <Warehousing />
+                  </Route>
+                  <Route exact path="/Asset">
+                    <Asset />
+                  </Route>
+                  <Route exact path="/Report">
+                    <Report />
+                  </Route>
+                  <Route path="/Shopping">
+                    <Shopping data={requestID}/>
+                  </Route>
+                  <Route exact path="/Liquidation">
+                    <Liquidation />
+                  </Route>
+                  <Route exact path="/Recovery">
+                    <Recovery />
+                  </Route>
+                  <Route exact path="/Allocation">
+                    <Allocation />
+                  </Route>
+                  <Route exact path="/404Notfound">
+                    <Home />
+                  </Route>
+                  <Route path="/">
+                    <Home />
+                  </Route>
+                </Switch>
+              </Col>
+            </Row>
+          </div>
         </>
-      : <><Redirect to='/Login' />
-        <Switch>
-          <Route exact path="/Login">
-            <Login />
-          </Route>
-        </Switch></>}
-    </div>
+          : <><Redirect to='/Login' />
+            <Switch>
+              <Route exact path="/Login">
+                <Login />
+              </Route>
+            </Switch></>}
+      </div>
     </Router >
   )
 }

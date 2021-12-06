@@ -278,7 +278,6 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-
         public string BUSMessageCode(int id)
         {
             return string.Format("{0}{1}{2}{3}",

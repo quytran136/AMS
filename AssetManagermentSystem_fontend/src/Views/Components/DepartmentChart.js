@@ -35,9 +35,7 @@ const DepartmentChart = (prop) => {
         const body = {
             Token: token,
             Key: "DEPARTMENT_CHART",
-            Data: {
-                UserNameRequest: userName
-            }
+            UserNameRequest: userName,
         }
         dispatch(getDepartmentChart(body))
     }
@@ -64,8 +62,8 @@ const DepartmentChart = (prop) => {
         const body = {
             Token: token,
             Key: "UPDATE_DEPARTMENT",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 Department: treeFormat
             }
         }

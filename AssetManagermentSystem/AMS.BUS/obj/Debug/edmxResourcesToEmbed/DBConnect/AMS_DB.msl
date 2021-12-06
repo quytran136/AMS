@@ -1,17 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="AMS_DBModelStoreContainer" CdmEntityContainer="AMS_DBEntities">
-    <EntitySetMapping Name="asset_allocation_history">
-      <EntityTypeMapping TypeName="AMS_DBModel.asset_allocation_history">
-        <MappingFragment StoreEntitySet="asset_allocation_history">
-          <ScalarProperty Name="IsReject" ColumnName="IsReject" />
-          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
-          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
-          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
-          <ScalarProperty Name="AllocationBy" ColumnName="AllocationBy" />
+    <EntitySetMapping Name="ams_config">
+      <EntityTypeMapping TypeName="AMS_DBModel.ams_config">
+        <MappingFragment StoreEntitySet="ams_config">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ams_notification">
+      <EntityTypeMapping TypeName="AMS_DBModel.ams_notification">
+        <MappingFragment StoreEntitySet="ams_notification">
+          <ScalarProperty Name="NotificationFor" ColumnName="NotificationFor" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="AllocationFor" ColumnName="AllocationFor" />
-          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="NotificationContent" ColumnName="NotificationContent" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -21,7 +27,7 @@
         <MappingFragment StoreEntitySet="asset_classify">
           <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+          <ScalarProperty Name="AssetClassifyName" ColumnName="AssetClassifyName" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -29,49 +35,20 @@
     <EntitySetMapping Name="asset_detail">
       <EntityTypeMapping TypeName="AMS_DBModel.asset_detail">
         <MappingFragment StoreEntitySet="asset_detail">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="QuantityDestroyed" ColumnName="QuantityDestroyed" />
           <ScalarProperty Name="QuantityInStock" ColumnName="QuantityInStock" />
           <ScalarProperty Name="QuantityUsed" ColumnName="QuantityUsed" />
-          <ScalarProperty Name="Unit" ColumnName="Unit" />
           <ScalarProperty Name="QuantityOriginalStock" ColumnName="QuantityOriginalStock" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
           <ScalarProperty Name="AssetFullName" ColumnName="AssetFullName" />
           <ScalarProperty Name="AssetClassifyID" ColumnName="AssetClassifyID" />
           <ScalarProperty Name="StoreID" ColumnName="StoreID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="asset_recovery_history">
-      <EntityTypeMapping TypeName="AMS_DBModel.asset_recovery_history">
-        <MappingFragment StoreEntitySet="asset_recovery_history">
-          <ScalarProperty Name="isApprove1" ColumnName="isApprove1" />
-          <ScalarProperty Name="LocalStep1" ColumnName="LocalStep1" />
-          <ScalarProperty Name="RequestBy1" ColumnName="RequestBy1" />
-          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
-          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
-          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
-          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="RecoveryBy" ColumnName="RecoveryBy" />
-          <ScalarProperty Name="RecoveryFor" ColumnName="RecoveryFor" />
-          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="assets_liquidation_history">
-      <EntityTypeMapping TypeName="AMS_DBModel.assets_liquidation_history">
-        <MappingFragment StoreEntitySet="assets_liquidation_history">
-          <ScalarProperty Name="RecoveryPrice" ColumnName="RecoveryPrice" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
-          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
-          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
-          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="LiquidationBy" ColumnName="LiquidationBy" />
-          <ScalarProperty Name="LiquidationFor" ColumnName="LiquidationFor" />
-          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -143,13 +120,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ranks">
-      <EntityTypeMapping TypeName="AMS_DBModel.rank">
-        <MappingFragment StoreEntitySet="rank">
+    <EntitySetMapping Name="request_ticket_history">
+      <EntityTypeMapping TypeName="AMS_DBModel.request_ticket_history">
+        <MappingFragment StoreEntitySet="request_ticket_history">
+          <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+          <ScalarProperty Name="IsReject" ColumnName="IsReject" />
+          <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+          <ScalarProperty Name="ProcessID" ColumnName="ProcessID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsApprove" ColumnName="IsApprove" />
+          <ScalarProperty Name="StepID" ColumnName="StepID" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
-          <ScalarProperty Name="RankParent" ColumnName="RankParent" />
-          <ScalarProperty Name="RankName" ColumnName="RankName" />
+          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -189,6 +171,7 @@
     <EntitySetMapping Name="store_Identifie">
       <EntityTypeMapping TypeName="AMS_DBModel.store_Identifie">
         <MappingFragment StoreEntitySet="store_Identifie">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="Owner" ColumnName="Owner" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
           <ScalarProperty Name="StoreName" ColumnName="StoreName" />

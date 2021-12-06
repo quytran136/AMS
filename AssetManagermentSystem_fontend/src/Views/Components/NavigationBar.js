@@ -3,7 +3,7 @@ import { connect, useDispatch } from "react-redux";
 import 'antd/dist/antd.css';
 import '../Access/Css/NavBar.scss';
 import '../Access/Css/Common.scss';
-import { Col, Input, Row, Avatar } from 'antd';
+import { Col, Input, Row, Avatar, Badge, Popover } from 'antd';
 import {
     UserOutlined,
     MessageOutlined,
@@ -13,24 +13,42 @@ import {
     MenuFoldOutlined,
 } from '@ant-design/icons';
 import * as amsAction from '../../ReduxSaga/Actions/action';
-import * as cookieHandle from '../../Common/Cookie'
+import * as cookieHandle from '../../Common/Cookie';
+import {
+    useHistory
+} from "react-router-dom";
 
 const NavigationBar = (prop) => {
+    const history = useHistory();
     const dispatch = useDispatch();
-    const [showUserInfo, setShowUserInfo] = useState(false);
-    const [showNotiInfo, setShowNotiInfo] = useState(false);
-    const [showMessage, setShowMessage] = useState(false);
     const {
         saveCookie,
         getUserInfoLogin,
-        setShowMenu
+        setShowMenu,
+        setRequestID,
+        requestNotification
     } = amsAction;
     const {
         token,
         userName,
         userInfoLogin,
-        showMenu
+        showMenu,
+        notifications
     } = prop.amsStore;
+
+    const [countNotification, setCountNotification] = useState(0)
+
+    function readNotification() {
+        if (notifications) {
+            let count = 0;
+            notifications.Response.Notifications.forEach(element => {
+                if (element.IsRead === false) {
+                    count++
+                }
+            });
+            setCountNotification(count)
+        }
+    }
 
     const signout = () => {
         cookieHandle.setCookie("BASE", null, -1);
@@ -38,11 +56,7 @@ const NavigationBar = (prop) => {
     }
 
     const UserBoard = () => {
-        return (<span
-            className="board-info"
-            onMouseLeave={() => {
-                setShowUserInfo(false);
-            }}>
+        return (<span className="board-info">
             <Row
                 className="menu-item"
                 onClick={() => {
@@ -104,22 +118,44 @@ const NavigationBar = (prop) => {
 
     const NotificationBoard = () => {
         return (
-            <span
-                className="board-info"
-                onMouseLeave={() => {
-                    setShowNotiInfo(false)
-                }}>
-            </span>
+            <div className="notification-board">
+                {
+                    notifications?.Response?.Notifications &&
+                    notifications.Response.Notifications.map((element) => {
+                        return (
+                            <div
+                                key={element.ID}
+                                className="item"
+                                onClick={() => {
+                                    const ac = JSON.parse(element.Action)
+                                    const body = {
+                                        Token: token,
+                                        Key: "READED_NOTIFICATION",
+                                        UserNameRequest: userName,
+                                        Data: element.ID
+                                    }
+                                    dispatch(requestNotification(body))
+                                    const body2 = {
+                                        Token: token,
+                                        Key: "GET_NOTIFICATION",
+                                        UserNameRequest: userName,
+                                    }
+                                    dispatch(requestNotification(body2))
+                                    dispatch(setRequestID(ac.Value))
+                                    history.push(ac.Path)
+                                }}>
+                                {element.NotificationContent}
+                            </div>
+                        )
+                    })
+                }
+            </div>
         )
     }
 
     const MessageBoard = () => {
         return (
-            <span 
-            className="board-info"
-            onMouseLeave={() =>{
-                setShowMessage(false)
-            }}>
+            <span>
             </span>
         )
     }
@@ -129,8 +165,8 @@ const NavigationBar = (prop) => {
             const body = {
                 Token: token,
                 Key: "USER_INFORMATION",
+                UserNameRequest: userName,
                 Data: {
-                    UserNameRequest: userName,
                     userLoginName: userName
                 }
             }
@@ -139,6 +175,7 @@ const NavigationBar = (prop) => {
     }
 
     useEffect(getUser, [userName])
+    useEffect(readNotification, [notifications])
 
     return (
         <Row className="navbar">
@@ -162,33 +199,26 @@ const NavigationBar = (prop) => {
                 </span>
             </Col>
             <Col span={10} className="nav-bar-right">
-                <span className="nav-bar-item ams-btn"
-                    onClick={() => {
-                        setShowNotiInfo(true)
-                    }}>
-                    <BellOutlined />
-                    <span className="number-noti">
-                        12
-                    </span>
+                <span className="nav-bar-item ams-btn">
+                    <Popover placement="bottom" content={<NotificationBoard />} trigger="click">
+                        <Badge count={countNotification}>
+                            <BellOutlined className="icon" />
+                        </Badge>
+                    </Popover>
                 </span>
-                <span className="nav-bar-item ams-btn"
-                    onClick={() => {
-                        setShowMessage(true)
-                    }}>
-                    <MessageOutlined />
-                    <span className="number-noti">
-                        12
-                    </span>
+                <span className="nav-bar-item ams-btn">
+                    <Popover placement="bottom" content={<MessageBoard />} trigger="click">
+                        <Badge count={5}>
+                            <MessageOutlined className="icon" />
+                        </Badge>
+                    </Popover>
+
                 </span>
-                <span className="nav-bar-item ams-btn"
-                    onClick={() => {
-                        setShowUserInfo(true)
-                    }}>
-                    <UserOutlined />
+                <span className="nav-bar-item ams-btn">
+                    <Popover placement="bottom" content={<UserBoard />} trigger="click">
+                        <UserOutlined className="icon" />
+                    </Popover>
                 </span>
-                {showUserInfo ? <UserBoard /> : ""}
-                {showNotiInfo ? <NotificationBoard /> : ""}
-                {showMessage ? <MessageBoard /> : ""}
             </Col>
         </Row>
     )

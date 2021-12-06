@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import React from "react";
+import { connect } from "react-redux";
 import 'antd/dist/antd.css';
 import '../Access/Css/Menu.scss';
 import '../Access/Css/Common.scss';
@@ -14,14 +14,11 @@ import {
 import {
     useHistory
 } from "react-router-dom";
-import * as amsAction from '../../ReduxSaga/Actions/action';
+// import * as amsAction from '../../ReduxSaga/Actions/action';
 
 const AMSMenu = (prop) => {
     const history = useHistory();
-    const dispatch = useDispatch();
-    const {
 
-    } = amsAction;
     const {
         showMenu
     } = prop.amsStore;

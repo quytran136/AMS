@@ -8,8 +8,7 @@ import { Button, Input, Card, Row, Col } from 'antd';
 import {
     UserOutlined,
     PlusOutlined,
-    CloseOutlined,
-    FolderOpenOutlined
+    CloseOutlined
 } from '@ant-design/icons';
 import * as amsAction from '../../ReduxSaga/Actions/action';
 
@@ -36,8 +35,8 @@ const OrganizationalChart = (prop) => {
         const body = {
             Token: token,
             Key: "ORGANIZATIONAL_CHART",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 DepartmentID: departmentData.ID
             }
         }
@@ -49,8 +48,8 @@ const OrganizationalChart = (prop) => {
         const body = {
             Token: token,
             Key: "DEPARTMENT_DETAIL",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 DepartmentID: departmentData.ID
             }
         }
@@ -79,8 +78,8 @@ const OrganizationalChart = (prop) => {
         const body = {
             Token: token,
             Key: "UPDATE_ORGANIZATIONAL",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 DepartmentID: departmentData.ID,
                 Organizational: treeFormat
             }

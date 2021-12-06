@@ -9,3 +9,4 @@ C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AM
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.csproj.CoreCompileInputs.cache
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.dll
 C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.pdb
+C:\Users\BASEHN\Desktop\QuyttWorkspace\myProject\AMS_1\AssetManagermentSystem\AMS.COMMON\obj\Debug\AMS.COMMON.csprojAssemblyReference.cache

@@ -25,18 +25,17 @@ namespace AMS.BUS.DBConnect
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<asset_allocation_history> asset_allocation_history { get; set; }
+        public virtual DbSet<ams_config> ams_config { get; set; }
+        public virtual DbSet<ams_notification> ams_notification { get; set; }
         public virtual DbSet<asset_classify> asset_classify { get; set; }
         public virtual DbSet<asset_detail> asset_detail { get; set; }
-        public virtual DbSet<asset_recovery_history> asset_recovery_history { get; set; }
-        public virtual DbSet<assets_liquidation_history> assets_liquidation_history { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<function> functions { get; set; }
         public virtual DbSet<message_list> message_list { get; set; }
         public virtual DbSet<Organizational> Organizationals { get; set; }
         public virtual DbSet<Process> Processes { get; set; }
         public virtual DbSet<ProcessStep> ProcessSteps { get; set; }
-        public virtual DbSet<rank> ranks { get; set; }
+        public virtual DbSet<request_ticket_history> request_ticket_history { get; set; }
         public virtual DbSet<role> roles { get; set; }
         public virtual DbSet<role_function> role_function { get; set; }
         public virtual DbSet<role_view> role_view { get; set; }

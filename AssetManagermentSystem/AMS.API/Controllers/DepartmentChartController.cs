@@ -18,7 +18,7 @@ namespace AMS.API.Controllers
         public BaseResponse<Res_DepartmentChart> DepartmentControl(BaseRequest<Req_DepartmentChart> req)
         {
             // validate token
-            BaseModel<bool> access = new Access().CheckToken(req.Token, req.Data.UserNameRequest);
+            BaseModel<bool> access = new Access().CheckToken(req.Token, req.UserNameRequest);
             if (!string.IsNullOrEmpty(access.Exception.Message))
             {
                 return new BaseResponse<Res_DepartmentChart>()
@@ -32,55 +32,28 @@ namespace AMS.API.Controllers
             {
                 case "DEPARTMENT_CHART":
                     BaseModel<DepartmentChart> departmentChart = new DepartmentChart().GetChart();
-                    if (!string.IsNullOrEmpty(departmentChart.Exception.Code))
-                    {
-                        return new BaseResponse<Res_DepartmentChart>()
-                        {
-                            Code = departmentChart.Exception.Code,
-                            Message = departmentChart.Exception.Message
-                        };
-                    }
-                    return new BaseResponse<Res_DepartmentChart>()
+                    return new BaseResponse<Res_DepartmentChart>().Result(departmentChart, new BaseResponse<Res_DepartmentChart>()
                     {
                         Response = new Res_DepartmentChart()
                         {
                             Department = departmentChart.Result
                         }
-                    };
+                    });
                 case "UPDATE_DEPARTMENT":
                     BaseModel<string> department = new DepartmentChart().UpdateChart(req.Data.Department);
-                    if (!string.IsNullOrEmpty(department.Exception.Code))
-                    {
-                        return new BaseResponse<Res_DepartmentChart>()
-                        {
-                            Code = department.Exception.Code,
-                            Message = department.Exception.Message
-                        };
-                    }
-                    return new BaseResponse<Res_DepartmentChart>()
+                    return new BaseResponse<Res_DepartmentChart>().Result(department, new BaseResponse<Res_DepartmentChart>()
                     {
                         Response = new Res_DepartmentChart()
-                        {
-                            Department = new DepartmentChart(),
-                        }
-                    };
+                    });
                 case "DEPARTMENT_DETAIL":
                     BaseModel<DepartmentChart> departmentDetail = new DepartmentChart().GetDepartmentDetailByID(req.Data.DepartmentID);
-                    if (!string.IsNullOrEmpty(departmentDetail.Exception.Code))
-                    {
-                        return new BaseResponse<Res_DepartmentChart>()
-                        {
-                            Code = departmentDetail.Exception.Code,
-                            Message = departmentDetail.Exception.Message
-                        };
-                    }
-                    return new BaseResponse<Res_DepartmentChart>()
+                    return new BaseResponse<Res_DepartmentChart>().Result(departmentDetail, new BaseResponse<Res_DepartmentChart>()
                     {
                         Response = new Res_DepartmentChart()
                         {
                             Department = departmentDetail.Result
                         }
-                    };
+                    });
                 default:
                     return new BaseResponse<Res_DepartmentChart>()
                     {

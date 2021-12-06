@@ -40,6 +40,9 @@
     <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -56,14 +59,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessHandle\Access.cs" />
-    <Compile Include="BusinessHandle\AssetClassify.cs" />
+    <Compile Include="BusinessHandle\AMS_Config.cs" />
+    <Compile Include="BusinessHandle\Asset.cs" />
     <Compile Include="BusinessHandle\IBaseHandle.cs" />
     <Compile Include="BusinessHandle\DepartmentChart.cs" />
+    <Compile Include="BusinessHandle\Notification.cs" />
     <Compile Include="BusinessHandle\OrganizationalChart.cs" />
     <Compile Include="BusinessHandle\ProcessChart.cs" />
+    <Compile Include="BusinessHandle\Ticket.cs" />
     <Compile Include="BusinessHandle\UserInformation.cs" />
+    <Compile Include="BusinessHandle\Warehouse.cs" />
     <Compile Include="BusModels\BaseModel.cs" />
     <Compile Include="BusModels\ExceptionHandle.cs" />
+    <Compile Include="DBConnect\ams_config.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBConnect\AMS_DB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,19 +89,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AMS_DB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="DBConnect\assets_liquidation_history.cs">
-      <DependentUpon>AMS_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBConnect\asset_allocation_history.cs">
+    <Compile Include="DBConnect\ams_notification.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\asset_classify.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\asset_detail.cs">
-      <DependentUpon>AMS_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBConnect\asset_recovery_history.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\DBConnect.cs" />
@@ -113,7 +117,7 @@
     <Compile Include="DBConnect\ProcessStep.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
-    <Compile Include="DBConnect\rank.cs">
+    <Compile Include="DBConnect\request_ticket_history.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\role.cs">

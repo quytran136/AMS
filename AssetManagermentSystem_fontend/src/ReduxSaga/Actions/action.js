@@ -218,3 +218,87 @@ export const saveProcessFlow = (processFlows) => {
         processFlows
     }
 }
+
+export const requestWarehouse = (body) => {
+    return{
+        type: type.REQUEST_WAREHOUSE,
+        body
+    }
+}
+
+export const getWarehouseSuccess = (warehouses) => {
+    return{
+        type: type.GET_WAREHOUSE_SUCCESS,
+        warehouses
+    }
+}
+
+export const setWarehouseAction = (warehouseAction) => {
+    return{
+        type: type.SET_WAREHOUSE_ACTION,
+        warehouseAction
+    }
+}
+
+export const requestAsset = (body) => {
+    return{
+        type: type.REQUEST_ASSET,
+        body
+    }
+}
+
+export const getAssetClassifiesSuccess = (assetClassifies) => {
+    return{
+        type: type.GET_ASSETCLASSIFIES_SUCCESS,
+        assetClassifies
+    }
+}
+
+export const requestConfigCommon = (body) => {
+    return{
+        type: type.REQUEST_CONFIG_COMMON,
+        body
+    }
+}
+
+export const getConfigCommonSuccess = (configCommon) => {
+    return{
+        type: type.GET_CONFIG_COMMON,
+        configCommon
+    }
+}
+
+export const requestTicket = (body) => {
+    return{
+        type: type.REQUEST_CREATE_TICKET,
+        body
+    }
+}
+
+export const getTicketSuccess = (ticket) => {
+    return{
+        type: type.GET_TICKET,
+        ticket
+    }
+}
+
+export const requestNotification = (body) => {
+    return{
+        type: type.GET_NOTIFICATION,
+        body
+    }
+}
+
+export const requestNotificationSuccess = (notifications) => {
+    return{
+        type: type.GET_NOTIFICATION_SUCCESS,
+        notifications
+    }
+}
+
+export const setRequestID = (requestID) => {
+    return{
+        type: type.REQUEST_ID,
+        requestID
+    }
+}

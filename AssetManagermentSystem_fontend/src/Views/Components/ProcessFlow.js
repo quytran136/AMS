@@ -109,7 +109,6 @@ const ProcessFlow = (props) => {
                                 /></span>}
                             title={element.ProcessName}
                             bordered={true}>
-                            Xin chào
                         </Card>)
                     })
                 }

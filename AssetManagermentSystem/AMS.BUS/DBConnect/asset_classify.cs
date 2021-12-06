@@ -21,7 +21,7 @@ namespace AMS.BUS.DBConnect
         }
     
         public string ID { get; set; }
-        public string AssetName { get; set; }
+        public string AssetClassifyName { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<bool> IsDelete { get; set; }
     

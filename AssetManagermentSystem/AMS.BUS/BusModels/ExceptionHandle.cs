@@ -22,15 +22,10 @@ namespace AMS.BUS.BusModels
             set
             {
                 code = value;
+                Message = takeMessage();
             }
         }
-        public string Message
-        {
-            get
-            {
-                return takeMessage();
-            }
-        }
+        public string Message { get; set; }
 
         public string Lang { get => lang; set => lang = value; }
         public Exception Exception

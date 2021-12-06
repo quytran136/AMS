@@ -7,7 +7,7 @@ import { Input, Row, Col, Table } from 'antd';
 import * as amsAction from '../../ReduxSaga/Actions/action';
 
 const SelectEmployee = (prop) => {
-    const { selectedBeffor, selected } = prop
+    const {title, selected, onSelected } = prop
 
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState();
@@ -53,8 +53,8 @@ const SelectEmployee = (prop) => {
         const body = {
             Token: token,
             Key: "USERS",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 SearchContent: searchContent || null
             }
         }
@@ -64,9 +64,9 @@ const SelectEmployee = (prop) => {
     useEffect(getListUser, [])
 
     const rowSelection = {
-        selectedRowKeys: selectedBeffor,
+        selectedRowKeys: selected,
         onChange: (selectedRowKeys, selectedRows) => {
-            selected(selectedRows)
+            onSelected(selectedRows)
         },
         getCheckboxProps: (record) => ({
             disabled: record.name === 'Disabled User',
@@ -77,7 +77,7 @@ const SelectEmployee = (prop) => {
 
     return (<div className="employee">
         <div className="employee-header">
-            <h3>Danh sách nhân sự</h3>
+            <h3>{title}</h3>
         </div>
         <Row className="employee-tool">
             <Col span={24} className="tool-left">

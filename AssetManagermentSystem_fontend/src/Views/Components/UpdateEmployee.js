@@ -40,8 +40,8 @@ const UpdateEmployee = (prop) => {
     const [department, setDepartment] = useState();
     const [organization, setOrganization] = useState();
     const [userLoginName, setUserLoginName] = useState();
-    const [userPassword, setUserPassword] = useState();
-    const [userPassword2, setUserPassword2] = useState();
+    const [userPassword, setUserPassword] = useState("");
+    const [userPassword2, setUserPassword2] = useState("");
     const [userFullName, setUserFullName] = useState();
     const [DOB, setDOB] = useState();
     const [email, setEmail] = useState();
@@ -69,8 +69,8 @@ const UpdateEmployee = (prop) => {
             const body = {
                 Token: token,
                 Key: "USER_INFORMATION",
+                UserNameRequest: userName,
                 Data: {
-                    UserNameRequest: userName,
                     userLoginName: dataSelected.UserName
                 }
             }
@@ -81,13 +81,15 @@ const UpdateEmployee = (prop) => {
     function showDetail() {
         if (userInfo) {
             getORG(userInfo.DepartmentID)
-            setDepartment(userInfo.DepartmentID)
-            setOrganization(userInfo.OrganizationID)
-            setUserFullName(userInfo.UserFullName)
-            setDOB(userInfo.DOB)
-            setEmail(userInfo.Email)
-            setPhone(userInfo.Phone)
-            setUserLoginName(userInfo.UserName)
+            setTimeout(() => {
+                setDepartment(userInfo.DepartmentID)
+                setOrganization(userInfo.OrganizationID)
+                setUserFullName(userInfo.UserFullName)
+                setDOB(userInfo.DOB)
+                setEmail(userInfo.Email)
+                setPhone(userInfo.Phone)
+                setUserLoginName(userInfo.UserName)
+            }, 100);
         }
     }
 
@@ -149,8 +151,8 @@ const UpdateEmployee = (prop) => {
         const body = {
             Token: token,
             Key: "ORGANIZATIONAL_CHART",
+            UserNameRequest: userName,
             Data: {
-                UserNameRequest: userName,
                 DepartmentID: value
             }
         }
@@ -163,8 +165,8 @@ const UpdateEmployee = (prop) => {
             const body = {
                 Token: token,
                 Key: "CREATE_USER",
+                UserNameRequest: userName,
                 Data: {
-                    UserNameRequest: userName,
                     UserFullName: userFullName,
                     UserLoginName: userLoginName,
                     UserPassword: userPassword,
@@ -188,10 +190,10 @@ const UpdateEmployee = (prop) => {
     function onEdit() {
         if (userPassword === userPassword2) {
             const body = {
-                Token: token,   
+                Token: token,
                 Key: "UPDATE_USER",
+                UserNameRequest: userName,
                 Data: {
-                    UserNameRequest: userName,
                     UserFullName: userFullName,
                     UserLoginName: userLoginName,
                     UserPassword: userPassword,
@@ -236,7 +238,7 @@ const UpdateEmployee = (prop) => {
             var userNameX = "";
             const listSpellName = userFullName.split(" ");
             for (var i = 0; i < listSpellName.length; i++) {
-                if (i == (listSpellName.length - 1)) {
+                if (i === (listSpellName.length - 1)) {
                     userNameX = listSpellName[i].toLowerCase() + userNameX
                     break
                 } else {
@@ -336,6 +338,7 @@ const UpdateEmployee = (prop) => {
             <br />
             <h4>Tài khoản</h4>
             <Input
+                disabled = {dataSelected}
                 placeholder="xyz"
                 prefix={<UserOutlined />}
                 value={userLoginName}

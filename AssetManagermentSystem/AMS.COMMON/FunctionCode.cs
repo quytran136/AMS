@@ -19,5 +19,9 @@ namespace AMS.COMMON
         public static string DEPARTMENT = "E";
         public static string ORGANIZATIONAL = "F";
         public static string PROCESSFLOW = "G";
+        public static string WAREHOUSE = "H";
+        public static string CONFIG = "I";
+        public static string TICKET = "J";
+        public static string NOTIFICATION = "K";
     }
 }
