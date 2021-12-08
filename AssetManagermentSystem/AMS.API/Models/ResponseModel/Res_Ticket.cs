@@ -10,5 +10,6 @@ namespace AMS.API.Models.ResponseModel
     {
         public request_ticket_history Ticket { get; set; }
         public List<asset_detail> Assets { get; set; }
+        public List<usage_history> UsageList { get; set; }
     }
 }

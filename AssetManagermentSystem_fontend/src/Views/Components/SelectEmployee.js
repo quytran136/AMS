@@ -3,14 +3,15 @@ import { connect, useDispatch } from "react-redux";
 import 'antd/dist/antd.css';
 import '../Access/Css/Common.scss';
 import '../Access/Css/Employee.scss'
-import { Input, Row, Col, Table } from 'antd';
+import { Input, Row, Col, Table, Select } from 'antd';
 import * as amsAction from '../../ReduxSaga/Actions/action';
 
 const SelectEmployee = (prop) => {
-    const {title, selected, onSelected } = prop
+    const { title, type, disabled, selected, onSelected } = prop
 
     const dispatch = useDispatch();
     const [searchContent, setSearchContent] = useState();
+    const [selectList, setSelectList] = useState([]);
     const {
         getUsers
     } = amsAction;
@@ -61,7 +62,23 @@ const SelectEmployee = (prop) => {
         dispatch(getUsers(body))
     }
 
+    function convertUserToSelectList() {
+        if (users) {
+            let us = []
+            users.forEach(element => {
+                us.push({
+                    value: element.ID,
+                    label: element.UserName,
+                })
+            });
+            console.log(us)
+            setSelectList(us)
+        }
+    }
+
     useEffect(getListUser, [])
+
+    useEffect(convertUserToSelectList, [users])
 
     const rowSelection = {
         selectedRowKeys: selected,
@@ -76,37 +93,59 @@ const SelectEmployee = (prop) => {
     };
 
     return (<div className="employee">
-        <div className="employee-header">
-            <h3>{title}</h3>
-        </div>
-        <Row className="employee-tool">
-            <Col span={24} className="tool-left">
-                <Input.Group>
-                    <Input.Search
-                        placeholder="Search..."
-                        onPressEnter={() => getListUser()}
-                        onSearch={() => getListUser()}
-                        onChange={(e) => setSearchContent(e.target.value)}
-                    />
-                </Input.Group >
-            </Col>
-        </Row>
-        <Row>
-            <Col span={24}>
-                <Table
-                    scroll={users ? {
-                        y: 550,
-                        x: '100vw',
-                    } : {}}
-                    dataSource={users}
-                    columns={columns}
-                    pagination={20}
-                    rowSelection={{
-                        type: "checkbox",
-                        ...rowSelection,
-                    }} />
-            </Col>
-        </Row>
+        {type === "Select" ?
+            <Select
+                disabled={disabled}
+                showSearch
+                className="select"
+                placeholder="Chọn 1 người"
+                optionFilterProp="label"
+                options={selectList}
+                value={selected[0]}
+                onChange={(e) => {
+                    onSelected([{
+                        ID: e
+                    }])
+                }}
+            >
+            </Select> :
+            <>
+                <div className="employee-header">
+                    <h3>{title}</h3>
+                </div>
+                <Row className="employee-tool">
+                    <Col span={24} className="tool-left">
+                        <Input.Group>
+                            <Input.Search
+                                disabled={disabled}
+                                placeholder="Search..."
+                                onPressEnter={() => getListUser()}
+                                onSearch={() => getListUser()}
+                                onChange={(e) => setSearchContent(e.target.value)}
+                            />
+                        </Input.Group >
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24}>
+                        <Table
+                            disabled={disabled}
+                            scroll={users ? {
+                                y: 550,
+                                x: '100vw',
+                            } : {}}
+                            dataSource={users}
+                            columns={columns}
+                            pagination={20}
+                            rowSelection={{
+                                type: "checkbox",
+                                ...rowSelection,
+                            }} />
+                    </Col>
+                </Row>
+            </>
+        }
+
     </div>)
 }
 

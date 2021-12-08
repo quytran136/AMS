@@ -188,6 +188,16 @@
           <Property Name="Creator" Type="varchar" MaxLength="64" />
           <Property Name="Detail" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="usage_history">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="TicketID" Type="varchar" MaxLength="64" />
+          <Property Name="AssetID" Type="varchar" MaxLength="64" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="UsageFor" Type="varchar" MaxLength="64" />
+        </EntityType>
         <EntityType Name="user_identifie">
           <Key>
             <PropertyRef Name="ID" />
@@ -390,6 +400,7 @@
           <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="system_log" EntityType="Self.system_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="usage_history" EntityType="Self.usage_history" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user_identifie" EntityType="Self.user_identifie" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="view_page" EntityType="Self.view_page" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_asset_detail_asset_classify" Association="Self.FK_asset_detail_asset_classify">
@@ -467,6 +478,7 @@
           <EntitySet Name="store_Identifie" EntityType="AMS_DBModel.store_Identifie" />
           <EntitySet Name="sysdiagrams" EntityType="AMS_DBModel.sysdiagram" />
           <EntitySet Name="system_log" EntityType="AMS_DBModel.system_log" />
+          <EntitySet Name="usage_history" EntityType="AMS_DBModel.usage_history" />
           <EntitySet Name="user_identifie" EntityType="AMS_DBModel.user_identifie" />
           <EntitySet Name="view_page" EntityType="AMS_DBModel.view_page" />
           <AssociationSet Name="FK_asset_detail_asset_classify" Association="AMS_DBModel.FK_asset_detail_asset_classify">
@@ -653,9 +665,9 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ProcessID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="RequestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_detail_request_ticket_history" FromRole="request_ticket_history" ToRole="asset_detail" />
           <Property Name="IsReject" Type="Boolean" />
           <Property Name="StoreID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_detail_request_ticket_history" FromRole="request_ticket_history" ToRole="asset_detail" />
         </EntityType>
         <EntityType Name="role">
           <Key>
@@ -726,6 +738,16 @@
           <Property Name="Detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="message_list" Relationship="AMS_DBModel.FK_system_log_message_list" FromRole="system_log" ToRole="message_list" />
           <NavigationProperty Name="user_identifie" Relationship="AMS_DBModel.FK_system_log_user_identifie" FromRole="system_log" ToRole="user_identifie" />
+        </EntityType>
+        <EntityType Name="usage_history">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="TicketID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="UsageFor" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="user_identifie">
           <Key>
@@ -1117,6 +1139,17 @@
                 <ScalarProperty Name="Creator" ColumnName="Creator" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="MessageID" ColumnName="MessageID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usage_history">
+            <EntityTypeMapping TypeName="AMS_DBModel.usage_history">
+              <MappingFragment StoreEntitySet="usage_history">
+                <ScalarProperty Name="UsageFor" ColumnName="UsageFor" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+                <ScalarProperty Name="TicketID" ColumnName="TicketID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

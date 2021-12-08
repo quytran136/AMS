@@ -163,12 +163,12 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<List<asset_detail>> GetAsset()
+        public BaseModel<List<asset_detail>> GetAsset(asset_classify assetClassifyID)
         {
             try
             {
                 var db = DBC.Init;
-                List<asset_detail> ad = db.asset_detail.Where(ptr => ptr.IsDelete == false).ToList().Select(ptr => new asset_detail()
+                List<asset_detail> ad = db.asset_detail.Where(ptr => ptr.IsDelete == false && ptr.AssetClassifyID == assetClassifyID.ID).ToList().Select(ptr => new asset_detail()
                 {
                     ID = ptr.ID,
                     AssetClassifyID = ptr.AssetClassifyID,

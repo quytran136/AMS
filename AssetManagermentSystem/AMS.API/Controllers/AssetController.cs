@@ -41,7 +41,7 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_Asset()
                         {
-                            AssetClassifies = ac1.Result
+                            AssetClassifies = ac1.Result,
                         }
                     });
                 case "GET_ASSET_CLASSIFY_DETAIL":
@@ -66,10 +66,13 @@ namespace AMS.API.Controllers
                         Response = new Res_Asset()
                     });
                 case "GET_ASSET":
-                    BaseModel<List<asset_detail>> ad1 = new Asset().GetAsset();
+                    BaseModel<List<asset_detail>> ad1 = new Asset().GetAsset(req.Data.AssetClassify);
                     return new BaseResponse<Res_Asset>().Result(ad1, new BaseResponse<Res_Asset>()
                     {
                         Response = new Res_Asset()
+                        {
+                            AssetDetails = ad1.Result
+                        }
                     });
                 case "GET_ASSET_DETAIL":
                     BaseModel<asset_detail> ad2 = new Asset().GetAsset(req.Data.AssetDetail.ID);

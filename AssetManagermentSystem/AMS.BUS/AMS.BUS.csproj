@@ -138,6 +138,9 @@
     <Compile Include="DBConnect\system_log.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBConnect\usage_history.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBConnect\user_identifie.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>

@@ -86,7 +86,7 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                var users = db.user_identifie.Where(ptr => ptr.DepartmentID == departmentID).ToList();
+                var users = db.user_identifie.Where(ptr => ptr.DepartmentID == departmentID && ptr.IsLock == false && ptr.IsDelete == false).ToList();
                 if (users == null || users.Count == 0)
                 {
                     return new BaseModel<List<user_identifie>>
@@ -121,7 +121,7 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                var users = db.user_identifie.Where(ptr => ptr.OrganizationID == departmentID).ToList();
+                var users = db.user_identifie.Where(ptr => ptr.OrganizationID == departmentID && ptr.IsDelete == false && ptr.IsLock == false).ToList();
                 if (users == null || users.Count == 0)
                 {
                     return new BaseModel<List<user_identifie>>
@@ -192,7 +192,7 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                var user = db.user_identifie.Where(ptr => ptr.UserName == userName).ToList().LastOrDefault();
+                var user = db.user_identifie.Where(ptr => ptr.UserName == userName && ptr.IsDelete == false).ToList().LastOrDefault();
                 if (user == null)
                 {
                     return new BaseModel<user_identifie>()

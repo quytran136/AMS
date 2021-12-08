@@ -145,16 +145,16 @@ function App(prop) {
                     <Report />
                   </Route>
                   <Route path="/Shopping">
-                    <Shopping data={requestID}/>
+                    <Shopping data={requestID} />
                   </Route>
                   <Route exact path="/Liquidation">
-                    <Liquidation />
+                    <Liquidation data={requestID} />
                   </Route>
                   <Route exact path="/Recovery">
-                    <Recovery />
+                    <Recovery data={requestID} />
                   </Route>
                   <Route exact path="/Allocation">
-                    <Allocation />
+                    <Allocation data={requestID} />
                   </Route>
                   <Route exact path="/404Notfound">
                     <Home />

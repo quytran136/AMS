@@ -18,6 +18,7 @@
     <EntitySet Name="store_Identifie" EntityType="AMS_DBModel.store_Identifie" />
     <EntitySet Name="sysdiagrams" EntityType="AMS_DBModel.sysdiagram" />
     <EntitySet Name="system_log" EntityType="AMS_DBModel.system_log" />
+    <EntitySet Name="usage_history" EntityType="AMS_DBModel.usage_history" />
     <EntitySet Name="user_identifie" EntityType="AMS_DBModel.user_identifie" />
     <EntitySet Name="view_page" EntityType="AMS_DBModel.view_page" />
     <AssociationSet Name="FK_asset_detail_asset_classify" Association="AMS_DBModel.FK_asset_detail_asset_classify">
@@ -204,9 +205,9 @@
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="ProcessID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
     <Property Name="RequestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_detail_request_ticket_history" FromRole="request_ticket_history" ToRole="asset_detail" />
     <Property Name="IsReject" Type="Boolean" />
     <Property Name="StoreID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_detail_request_ticket_history" FromRole="request_ticket_history" ToRole="asset_detail" />
   </EntityType>
   <EntityType Name="role">
     <Key>
@@ -277,6 +278,16 @@
     <Property Name="Detail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="message_list" Relationship="AMS_DBModel.FK_system_log_message_list" FromRole="system_log" ToRole="message_list" />
     <NavigationProperty Name="user_identifie" Relationship="AMS_DBModel.FK_system_log_user_identifie" FromRole="system_log" ToRole="user_identifie" />
+  </EntityType>
+  <EntityType Name="usage_history">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="TicketID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="UsageFor" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="user_identifie">
     <Key>

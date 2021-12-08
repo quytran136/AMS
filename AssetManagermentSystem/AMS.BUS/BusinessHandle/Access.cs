@@ -90,7 +90,7 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                var user = db.user_identifie.Where(ptr => ptr.Token == token).ToList().LastOrDefault();
+                var user = db.user_identifie.Where(ptr => ptr.Token == token && ptr.IsDelete == false && ptr.IsLock == false).ToList().LastOrDefault();
                 if (user == null)
                 {
                     return new BaseModel<bool>()

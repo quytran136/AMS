@@ -555,7 +555,9 @@ function* requestTicketSaga(action) {
             switch (action.body.Key) {
                 case "GET_TICKET_SHOPPING":
                     yield put(amsAction.getTicketSuccess(ticket))
-                    yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
+                    break;
+                case "GET_TICKET_ALLOCATION":
+                    yield put(amsAction.getTicketSuccess(ticket))
                     break;
                 default:
                     yield put(amsAction.setMessage("Gửi yêu cầu thành công"))

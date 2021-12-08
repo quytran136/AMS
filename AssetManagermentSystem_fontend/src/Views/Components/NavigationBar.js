@@ -128,21 +128,24 @@ const NavigationBar = (prop) => {
                                 className="item"
                                 onClick={() => {
                                     const ac = JSON.parse(element.Action)
-                                    const body = {
-                                        Token: token,
-                                        Key: "READED_NOTIFICATION",
-                                        UserNameRequest: userName,
-                                        Data: element.ID
-                                    }
-                                    dispatch(requestNotification(body))
                                     const body2 = {
                                         Token: token,
                                         Key: "GET_NOTIFICATION",
                                         UserNameRequest: userName,
                                     }
-                                    dispatch(requestNotification(body2))
-                                    dispatch(setRequestID(ac.Value))
-                                    history.push(ac.Path)
+                                    if (ac.Key !== "REJECT") {
+                                        dispatch(requestNotification(body2))
+                                        dispatch(setRequestID(ac.Value + "|" + element.ID))
+                                        history.push(ac.Path)
+                                    } else {
+                                        const body = {
+                                            Token: token,
+                                            Key: "READED_NOTIFICATION",
+                                            UserNameRequest: userName,
+                                            Data: element.ID
+                                        }
+                                        dispatch(requestNotification(body))
+                                    }
                                 }}>
                                 {element.NotificationContent}
                             </div>

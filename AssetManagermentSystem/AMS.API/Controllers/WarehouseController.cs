@@ -53,6 +53,15 @@ namespace AMS.API.Controllers
                             StoreIdentifie = wh2.Result
                         }
                     });
+                case "GET_WAREHOUSE_DETAIL_2":
+                    BaseModel<Warehouse> wh3 = new Warehouse().GetWarehouse2(req.Data.StoreIdentifie.ID);
+                    return new BaseResponse<Res_Warehouse>().Result(wh3, new BaseResponse<Res_Warehouse>()
+                    {
+                        Response = new Res_Warehouse()
+                        {
+                            Warehouse = wh3.Result
+                        }
+                    });
                 default:
                     return new BaseResponse<Res_Warehouse>()
                     {

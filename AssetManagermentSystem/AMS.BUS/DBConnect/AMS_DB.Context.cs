@@ -42,6 +42,7 @@ namespace AMS.BUS.DBConnect
         public virtual DbSet<store_Identifie> store_Identifie { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<system_log> system_log { get; set; }
+        public virtual DbSet<usage_history> usage_history { get; set; }
         public virtual DbSet<user_identifie> user_identifie { get; set; }
         public virtual DbSet<view_page> view_page { get; set; }
     }

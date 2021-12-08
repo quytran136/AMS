@@ -29,13 +29,13 @@ namespace AMS.API.Controllers
             switch (req.Key)
             {
                 case "CREATE_TICKET_SHOPPING":
-                    BaseModel<string> tickets = new Ticket().CreateShoppingTicket(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.AssetDetails);
+                    BaseModel<string> tickets = new Ticket().CreateTicketShopping(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.AssetDetails);
                     return new BaseResponse<Res_Ticket>().Result(tickets, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
                     });
                 case "GET_TICKET_SHOPPING":
-                    BaseModel<Ticket> tickets1 = new Ticket().GetTicket(req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets1 = new Ticket().GetTicketShopping(req.Data.RequestID, req.Data.RequestType);
                     return new BaseResponse<Res_Ticket>().Result(tickets1, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
@@ -45,24 +45,45 @@ namespace AMS.API.Controllers
                         }
                     });
                 case "APPROVE_TICKET_SHOPPING":
-                    BaseModel<Ticket> tickets2 = new Ticket().ApproveTicket(req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets2 = new Ticket().ApproveTicketShopping(req.Data.RequestID, req.Data.RequestType);
                     return new BaseResponse<Res_Ticket>().Result(tickets2, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
-                        {
-                            Ticket = tickets2.Result.Request,
-                            Assets = tickets2.Result.Assets
-                        }
                     });
                 case "REJECT_TICKET_SHOPPING":
-                    BaseModel<Ticket> tickets3 = new Ticket().ApproveTicket(req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets3 = new Ticket().RejectTicketShopping(req.Data.RequestID, req.Data.RequestType);
                     return new BaseResponse<Res_Ticket>().Result(tickets3, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
+                    });
+                case "CREATE_TICKET_ALLOCATION":
+                    BaseModel<string> tickets4 = new Ticket().CreateTicketAllocation(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.UsageAssetList);
+                    return new BaseResponse<Res_Ticket>().Result(tickets4, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
+                case "GET_TICKET_ALLOCATION":
+                    BaseModel<Ticket> tickets5 = new Ticket().GetTicketAllocation(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(tickets5, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
                         {
-                            Ticket = tickets3.Result.Request,
-                            Assets = tickets3.Result.Assets
+                            Ticket = tickets5.Result.Request,
+                            Assets = tickets5.Result.Assets,
+                            UsageList = tickets5.Result.UsageHistories
                         }
+                    });
+                case "APPROVE_TICKET_ALLOCATION":
+                    BaseModel<Ticket> tickets6 = new Ticket().ApproveTicketAllocation(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(tickets6, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
+                case "REJECT_TICKET_ALLOCATION":
+                    BaseModel<Ticket> tickets7 = new Ticket().RejectTicketAllocation(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(tickets7, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
                     });
                 default:
                     return new BaseResponse<Res_Ticket>()

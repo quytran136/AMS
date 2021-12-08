@@ -14,7 +14,8 @@ function Home(props) {
 
   const {
     setRequestID,
-    setWarehouseAction
+    setWarehouseAction,
+    getTicketSuccess
   } = amsAction;
 
   const {
@@ -48,12 +49,13 @@ function Home(props) {
           return (<Col span={6} key={index}>
             <Card className="ams-card-item"
               onClick={() => {
-                history.push(element.FunctionPath)
                 dispatch(setRequestID(null))
+                dispatch(getTicketSuccess(null))
                 dispatch(setWarehouseAction({
                   key: element.FunctionKey,
                   ProcessID: element.FunctionProcess
                 }))
+                history.push(element.FunctionPath)
               }}>
               {element.FunctionName}
             </Card >

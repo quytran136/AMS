@@ -201,6 +201,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="usage_history">
+      <EntityTypeMapping TypeName="AMS_DBModel.usage_history">
+        <MappingFragment StoreEntitySet="usage_history">
+          <ScalarProperty Name="UsageFor" ColumnName="UsageFor" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="user_identifie">
       <EntityTypeMapping TypeName="AMS_DBModel.user_identifie">
         <MappingFragment StoreEntitySet="user_identifie">

@@ -44,8 +44,8 @@ function ListAsset(props) {
             let listAS = []
             assetClassifies.Response.AssetClassifies.forEach((element) => {
                 listAS.push({
-                    value: element.ID,
-                    label: element.AssetClassifyName,
+                    value: element.Asset_Classify.ID,
+                    label: element.Asset_Classify.AssetClassifyName,
                 })
             })
             setListAssetClassifies(listAS)
@@ -174,6 +174,7 @@ function ListAsset(props) {
                                         className="field-asset"
                                         value={element.AssetClassifyID}
                                         onChange={e => {
+                                            console.log(element)
                                             let item = element
                                             item.AssetClassifyID = e
                                             editItem(item)

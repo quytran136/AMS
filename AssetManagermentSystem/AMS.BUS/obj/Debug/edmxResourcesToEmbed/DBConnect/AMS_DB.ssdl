@@ -183,6 +183,16 @@
     <Property Name="Creator" Type="varchar" MaxLength="64" />
     <Property Name="Detail" Type="nvarchar(max)" />
   </EntityType>
+  <EntityType Name="usage_history">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
+    <Property Name="TicketID" Type="varchar" MaxLength="64" />
+    <Property Name="AssetID" Type="varchar" MaxLength="64" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="UsageFor" Type="varchar" MaxLength="64" />
+  </EntityType>
   <EntityType Name="user_identifie">
     <Key>
       <PropertyRef Name="ID" />
@@ -385,6 +395,7 @@
     <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="system_log" EntityType="Self.system_log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usage_history" EntityType="Self.usage_history" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="user_identifie" EntityType="Self.user_identifie" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="view_page" EntityType="Self.view_page" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_asset_detail_asset_classify" Association="Self.FK_asset_detail_asset_classify">

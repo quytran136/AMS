@@ -18,7 +18,8 @@ function Shopping(props) {
     const {
         requestWarehouse,
         requestTicket,
-        setError
+        setError,
+        requestNotification
     } = amsAction;
 
     const {
@@ -56,8 +57,8 @@ function Shopping(props) {
             listAsset.forEach(element => {
                 AssetDetails.push({
                     StoreID: warehouseSelected,
-                    AssetClassifyID: element.AssetClassify,
-                    AssetFullName: element.AssetName,
+                    AssetClassifyID: element.AssetClassifyID,
+                    AssetFullName: element.AssetFullName,
                     QuantityOriginalStock: element.Quantity,
                     Unit: element.Unit,
                     Description: element.Description,
@@ -98,13 +99,12 @@ function Shopping(props) {
 
     function readRequest() {
         if (data) {
-            console.log(data)
             const body = {
                 Token: token,
                 Key: "GET_TICKET_SHOPPING",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data,
+                    RequestID: data.split('|')[0],
                     RequestType: "SHOPPING"
                 }
             }
@@ -114,13 +114,12 @@ function Shopping(props) {
 
     function sentRequestApprove() {
         if (data) {
-            console.log(data)
             const body = {
                 Token: token,
                 Key: "APPROVE_TICKET_SHOPPING",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data,
+                    RequestID: data.split('|')[0],
                     RequestType: "SHOPPING"
                 }
             }
@@ -130,13 +129,12 @@ function Shopping(props) {
 
     function sentRequestReject() {
         if (data) {
-            console.log(data)
             const body = {
                 Token: token,
                 Key: "REJECT_TICKET_SHOPPING",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data,
+                    RequestID: data.split('|')[0],
                     RequestType: "SHOPPING"
                 }
             }
@@ -175,6 +173,13 @@ function Shopping(props) {
                                         className="ams-btn-default"
                                         type="primary"
                                         onClick={() => {
+                                            const body = {
+                                                Token: token,
+                                                Key: "READED_NOTIFICATION",
+                                                UserNameRequest: userName,
+                                                Data: data.split('|')[1]
+                                            }
+                                            dispatch(requestNotification(body))
                                             sentRequestApprove()
                                             history.push('/Home')
                                         }}
@@ -184,6 +189,13 @@ function Shopping(props) {
                                         type="primary"
                                         danger
                                         onClick={() => {
+                                            const body = {
+                                                Token: token,
+                                                Key: "READED_NOTIFICATION",
+                                                UserNameRequest: userName,
+                                                Data: data.split('|')[1]
+                                            }
+                                            dispatch(requestNotification(body))
                                             sentRequestReject()
                                             history.push('/Home')
                                         }}
@@ -244,6 +256,7 @@ function Shopping(props) {
                             disabled={data ? true : false}
                             dataSource={ticket?.Response?.Assets}
                             onChange={(list) => {
+                                console.log(list)
                                 setListAsset(list)
                             }}
                         />

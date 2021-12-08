@@ -9,6 +9,7 @@ namespace AMS.API.Models.RequestModel
     public class Req_Ticket
     {
         public List<asset_detail> AssetDetails { get; set; }
+        public List<usage_history> UsageAssetList { get; set; }
         public string StoreID { get; set; }
         public string Description { get; set; }
         public string ProcessID { get; set; }
