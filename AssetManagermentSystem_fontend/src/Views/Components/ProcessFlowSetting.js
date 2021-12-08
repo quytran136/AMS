@@ -41,8 +41,8 @@ const ProcessFlowSetting = (props) => {
             const body = {
                 Token: token,
                 Key: "GET_PROCESS_DETAIL",
+                UserNameRequest: userName,
                 Data: {
-                    UserLoginName: userName,
                     ProcessID: dataSelected
                 }
             }
@@ -65,8 +65,8 @@ const ProcessFlowSetting = (props) => {
         const body = {
             Token: token,
             Key: "UPDATE_PROCESS",
+            UserNameRequest: userName,
             Data: {
-                UserLoginName: userName,
                 ProcessID: dataSelected,
                 ProcessName: processName,
                 IsDelete: false,
@@ -300,7 +300,6 @@ const ProcessFlowSetting = (props) => {
                                                         visible = {element.Approvers.length === 0 ? true : false}
                                                         selected={element.Approvers}
                                                         onSelected={(selectedRows) => {
-                                                            console.log(selectedRows)
                                                             element.Approvers = selectedRows
                                                             editStep(element, index)
                                                         }} />

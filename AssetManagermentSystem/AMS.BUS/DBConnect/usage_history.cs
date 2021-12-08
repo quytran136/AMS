@@ -19,5 +19,9 @@ namespace AMS.BUS.DBConnect
         public string AssetID { get; set; }
         public Nullable<int> Quantity { get; set; }
         public string UsageFor { get; set; }
+        public Nullable<bool> IsUsed { get; set; }
+        public Nullable<bool> IsRecovery { get; set; }
+        public Nullable<bool> IsLiquidation { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
     }
 }

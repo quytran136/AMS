@@ -430,7 +430,8 @@ namespace AMS.BUS.BusinessHandle
                 List<asset_detail> assets = (from usa in db.usage_history
                                              join ad in db.asset_detail on usa.AssetID equals ad.ID
                                              where usa.TicketID == request.ID
-                                             select ad).ToList().Select(ptr => new asset_detail() {
+                                             select ad).ToList().Select(ptr => new asset_detail()
+                                             {
                                                  ID = ptr.ID,
                                                  AssetClassifyID = ptr.AssetClassifyID,
                                                  QuantityOriginalStock = ptr.QuantityOriginalStock,
@@ -442,7 +443,8 @@ namespace AMS.BUS.BusinessHandle
                                                  Unit = ptr.Unit
                                              }).ToList();
 
-                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList().Select(ptr => new usage_history() { 
+                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList().Select(ptr => new usage_history()
+                {
                     AssetID = ptr.AssetID,
                     ID = ptr.ID,
                     Quantity = ptr.Quantity,
@@ -497,14 +499,26 @@ namespace AMS.BUS.BusinessHandle
                 List<usage_history> listUsageHistory = new List<usage_history>();
                 foreach (usage_history item in details)
                 {
-                    listUsageHistory.Add(new usage_history()
+                    usage_history us = db.usage_history.Where(ptr => ptr.AssetID == item.AssetID && ptr.UsageFor == item.UsageFor).ToList().FirstOrDefault();
+                    if (us == null)
                     {
-                        ID = Guid.NewGuid().ToString(),
-                        TicketID = id,
-                        AssetID = item.AssetID,
-                        Quantity = item.Quantity,
-                        UsageFor = item.UsageFor
-                    });
+                        listUsageHistory.Add(new usage_history()
+                        {
+                            ID = Guid.NewGuid().ToString(),
+                            TicketID = id,
+                            AssetID = item.AssetID,
+                            Quantity = item.Quantity,
+                            UsageFor = item.UsageFor,
+                            CreateDate = DateTime.Now,
+                            IsLiquidation = false,
+                            IsRecovery = false,
+                            IsUsed = false,
+                        });
+                    }
+                    else
+                    {
+                        us.Quantity = us.Quantity + item.Quantity;
+                    }
                 }
 
                 db.usage_history.AddRange(listUsageHistory);
@@ -596,16 +610,8 @@ namespace AMS.BUS.BusinessHandle
                                 .FirstOrDefault();
                 List<usage_history> usage_Histories = db.usage_history
                                                         .Where(ptr => ptr.TicketID == requestID)
-                                                        .ToList()
-                                                        .Select(ptr => new usage_history()
-                                                        {
-                                                            ID = ptr.ID,
-                                                            AssetID = ptr.AssetID,
-                                                            TicketID = ptr.TicketID,
-                                                            Quantity = ptr.Quantity,
-                                                            UsageFor = ptr.UsageFor
-                                                        }).ToList();
-                
+                                                        .ToList();
+
                 ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
 
                 if (processStep == null)
@@ -614,6 +620,9 @@ namespace AMS.BUS.BusinessHandle
                     request.IsReject = false;
                     foreach (usage_history item in usage_Histories)
                     {
+                        item.IsUsed = true;
+                        item.IsLiquidation = false;
+                        item.IsRecovery = false;
                         var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
                         ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
                         ase.QuantityUsed = ase.QuantityUsed + item.Quantity;
@@ -717,7 +726,7 @@ namespace AMS.BUS.BusinessHandle
                                                 .ToList()
                                                 .FirstOrDefault();
                 ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
-               
+
                 request.IsApprove = false;
                 request.IsReject = true;
 
@@ -789,7 +798,7 @@ namespace AMS.BUS.BusinessHandle
                 List<asset_detail> assets = (from usa in db.usage_history
                                              join ad in db.asset_detail on usa.AssetID equals ad.ID
                                              where usa.TicketID == request.ID
-                                             select new asset_detail()
+                                             select new
                                              {
                                                  ID = ad.ID,
                                                  AssetClassifyID = ad.AssetClassifyID,
@@ -800,9 +809,30 @@ namespace AMS.BUS.BusinessHandle
                                                  Description = ad.Description,
                                                  Price = ad.Price,
                                                  Unit = ad.Unit,
+                                             }).ToList().Select(ptr => new asset_detail()
+                                             {
+                                                 ID = ptr.ID,
+                                                 AssetClassifyID = ptr.AssetClassifyID,
+                                                 QuantityOriginalStock = ptr.QuantityOriginalStock,
+                                                 QuantityUsed = ptr.QuantityUsed,
+                                                 CreateDate = ptr.CreateDate,
+                                                 AssetFullName = ptr.AssetFullName,
+                                                 Description = ptr.Description,
+                                                 Price = ptr.Price,
+                                                 Unit = ptr.Unit,
                                              }).ToList();
 
-                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList();
+                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList().Select(ptr => new usage_history()
+                {
+                    AssetID = ptr.AssetID,
+                    ID = ptr.ID,
+                    IsLiquidation = ptr.IsLiquidation,
+                    IsRecovery = ptr.IsRecovery,
+                    IsUsed = ptr.IsUsed,
+                    Quantity = ptr.Quantity,
+                    TicketID = ptr.TicketID,
+                    UsageFor = ptr.UsageFor
+                }).ToList();
 
                 return new BaseModel<Ticket>()
                 {
@@ -848,20 +878,11 @@ namespace AMS.BUS.BusinessHandle
                     StoreID = storeID
                 });
 
-                List<usage_history> listUsageHistory = new List<usage_history>();
                 foreach (usage_history item in details)
                 {
-                    listUsageHistory.Add(new usage_history()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        TicketID = id,
-                        AssetID = item.AssetID,
-                        Quantity = item.Quantity,
-                        UsageFor = item.UsageFor
-                    });
+                    usage_history us = db.usage_history.Where(ptr => ptr.ID == item.ID).FirstOrDefault();
+                    us.TicketID = id;
                 }
-
-                db.usage_history.AddRange(listUsageHistory);
 
                 List<ams_notification> notifications = new List<ams_notification>();
 
@@ -950,15 +971,7 @@ namespace AMS.BUS.BusinessHandle
                                 .FirstOrDefault();
                 List<usage_history> usage_Histories = db.usage_history
                                                         .Where(ptr => ptr.TicketID == requestID)
-                                                        .ToList()
-                                                        .Select(ptr => new usage_history()
-                                                        {
-                                                            ID = ptr.ID,
-                                                            AssetID = ptr.AssetID,
-                                                            TicketID = ptr.TicketID,
-                                                            Quantity = ptr.Quantity,
-                                                            UsageFor = ptr.UsageFor
-                                                        }).ToList();
+                                                        .ToList();
 
                 ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
 
@@ -971,6 +984,9 @@ namespace AMS.BUS.BusinessHandle
                         var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
                         ase.QuantityInStock = ase.QuantityInStock + item.Quantity;
                         ase.QuantityUsed = ase.QuantityUsed - item.Quantity;
+                        item.IsUsed = false;
+                        item.IsLiquidation = false;
+                        item.IsRecovery = true;
                     }
                     db.SaveChanges();
                 }
@@ -1135,7 +1151,7 @@ namespace AMS.BUS.BusinessHandle
                                                     IsReject = ptr.IsReject,
                                                     ProcessID = ptr.ProcessID,
                                                     RequestType = ptr.RequestType,
-                                                    StoreID = ptr.StoreID
+                                                    StoreID = ptr.StoreID,
                                                 }).
                                                 ToList()
                                                 .FirstOrDefault();
@@ -1143,7 +1159,7 @@ namespace AMS.BUS.BusinessHandle
                 List<asset_detail> assets = (from usa in db.usage_history
                                              join ad in db.asset_detail on usa.AssetID equals ad.ID
                                              where usa.TicketID == request.ID
-                                             select new asset_detail()
+                                             select new
                                              {
                                                  ID = ad.ID,
                                                  AssetClassifyID = ad.AssetClassifyID,
@@ -1154,9 +1170,30 @@ namespace AMS.BUS.BusinessHandle
                                                  Description = ad.Description,
                                                  Price = ad.Price,
                                                  Unit = ad.Unit,
+                                             }).ToList().Select(ptr => new asset_detail()
+                                             {
+                                                 ID = ptr.ID,
+                                                 AssetClassifyID = ptr.AssetClassifyID,
+                                                 QuantityOriginalStock = ptr.QuantityOriginalStock,
+                                                 QuantityUsed = ptr.QuantityUsed,
+                                                 CreateDate = ptr.CreateDate,
+                                                 AssetFullName = ptr.AssetFullName,
+                                                 Description = ptr.Description,
+                                                 Price = ptr.Price,
+                                                 Unit = ptr.Unit,
                                              }).ToList();
 
-                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList();
+                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList().Select(ptr => new usage_history()
+                {
+                    AssetID = ptr.AssetID,
+                    ID = ptr.ID,
+                    IsLiquidation = ptr.IsLiquidation,
+                    IsRecovery = ptr.IsRecovery,
+                    IsUsed = ptr.IsUsed,
+                    Quantity = ptr.Quantity,
+                    TicketID = ptr.TicketID,
+                    UsageFor = ptr.UsageFor
+                }).ToList();
 
                 return new BaseModel<Ticket>()
                 {
@@ -1202,20 +1239,11 @@ namespace AMS.BUS.BusinessHandle
                     StoreID = storeID
                 });
 
-                List<usage_history> listUsageHistory = new List<usage_history>();
                 foreach (usage_history item in details)
                 {
-                    listUsageHistory.Add(new usage_history()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        TicketID = id,
-                        AssetID = item.AssetID,
-                        Quantity = item.Quantity,
-                        UsageFor = item.UsageFor
-                    });
+                    usage_history us = db.usage_history.Where(ptr => ptr.ID == item.ID).FirstOrDefault();
+                    us.TicketID = id;
                 }
-
-                db.usage_history.AddRange(listUsageHistory);
 
                 List<ams_notification> notifications = new List<ams_notification>();
 
@@ -1304,15 +1332,7 @@ namespace AMS.BUS.BusinessHandle
                                 .FirstOrDefault();
                 List<usage_history> usage_Histories = db.usage_history
                                                         .Where(ptr => ptr.TicketID == requestID)
-                                                        .ToList()
-                                                        .Select(ptr => new usage_history()
-                                                        {
-                                                            ID = ptr.ID,
-                                                            AssetID = ptr.AssetID,
-                                                            TicketID = ptr.TicketID,
-                                                            Quantity = ptr.Quantity,
-                                                            UsageFor = ptr.UsageFor
-                                                        }).ToList();
+                                                        .ToList();
 
                 ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
 
@@ -1322,6 +1342,9 @@ namespace AMS.BUS.BusinessHandle
                     request.IsReject = false;
                     foreach (usage_history item in usage_Histories)
                     {
+                        item.IsUsed = false;
+                        item.IsLiquidation = true;
+                        item.IsRecovery = false;
                         var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
                         ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
                         ase.QuantityDestroyed = item.Quantity;
@@ -1468,7 +1491,7 @@ namespace AMS.BUS.BusinessHandle
                 };
             }
         }
-        
+
         public string BUSMessageCode(int id)
         {
             return string.Format("{0}{1}{2}{3}",
@@ -1477,7 +1500,7 @@ namespace AMS.BUS.BusinessHandle
                 FunctionCode.TICKET,
                 id);
         }
-        
+
         public string SYSMessageCode(int id)
         {
             return string.Format("{0}{1}{2}{3}",

@@ -15,6 +15,14 @@
     width  : 100%;
 }
 
+.not-found{
+    background-image : url("../Img/404.jpg");
+    background-color : #fff;
+    height           : 93.5vh;
+    background-size  : cover;
+    background-repeat: no-repeat;
+}
+
 .icon{
     font-size: 23px;
     color: #fff !important;

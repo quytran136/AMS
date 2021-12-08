@@ -107,7 +107,6 @@ export const getDepartmentDetail = (body) => {
 }
 
 export const saveDepartmentDetail = (department) => {
-    console.log(department)
     return {
         type: type.DEPARTMENT_DETAIL,
         department

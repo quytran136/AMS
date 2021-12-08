@@ -8,7 +8,6 @@ namespace AMS.API.Models.RequestModel
 {
     public class Req_Process
     {
-        public string UserLoginName { get; set; }
         public string ProcessName { get; set; }
         public string ProcessID { get; set; }
         public bool IsDelete { get; set; }

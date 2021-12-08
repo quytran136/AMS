@@ -132,7 +132,6 @@ function Asset(props) {
         </Row>
         <Row className="warehouse-body">
           <Col span={24}>
-            {console.log(assetClassifies)}
             {assetClassifies?.Response?.AssetClassifies &&
               assetClassifies?.Response?.AssetClassifies.map((element) => {
                 return (<Card

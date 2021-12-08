@@ -14,7 +14,7 @@ namespace AMS.API.Controllers
         public BaseResponse<Res_Process> ProcessControl(BaseRequest<Req_Process> req)
         {
             // validate token
-            BaseModel<bool> access = new Access().CheckToken(req.Token, req.Data.UserLoginName);
+            BaseModel<bool> access = new Access().CheckToken(req.Token, req.UserNameRequest);
             if (!string.IsNullOrEmpty(access.Exception.Message))
             {
                 return new BaseResponse<Res_Process>()
@@ -25,12 +25,12 @@ namespace AMS.API.Controllers
             }
 
             UserInformation user = new UserInformation();
-            BaseModel<user_identifie> user_info = user.GetUserInfor(req.Data.UserLoginName);
+            BaseModel<user_identifie> user_info = user.GetUserInfor(req.UserNameRequest);
 
             switch (req.Key)
             {
                 case "GET_PROCESS":
-                    BaseModel<List<Process>> list = new ProcessChart().GetProcess();
+                    BaseModel<List<Process>> list = new ProcessChart().GetProcess(req.Data.ProcessName);
 
                     return new BaseResponse<Res_Process>().Result<List<Process>>(list, new BaseResponse<Res_Process>() {
                         Response = new Res_Process()

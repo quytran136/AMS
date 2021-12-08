@@ -85,6 +85,35 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_Ticket()
                     });
+                case "CREATE_TICKET_RECOVERY":
+                    BaseModel<string> recovery = new Ticket().CreateTicketRecovery(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.UsageAssetList);
+                    return new BaseResponse<Res_Ticket>().Result(recovery, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
+                case "GET_TICKET_RECOVERY":
+                    BaseModel<Ticket> recovery1 = new Ticket().GetTicketRecovery(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(recovery1, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                        {
+                            Ticket = recovery1.Result.Request,
+                            Assets = recovery1.Result.Assets,
+                            UsageList = recovery1.Result.UsageHistories
+                        }
+                    });
+                case "APPROVE_TICKET_RECOVERY":
+                    BaseModel<Ticket> recovery2 = new Ticket().ApproveTicketRecovery(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(recovery2, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
+                case "REJECT_TICKET_RECOVERY":
+                    BaseModel<Ticket> recovery3 = new Ticket().RejectTicketRecovery(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(recovery3, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
                 default:
                     return new BaseResponse<Res_Ticket>()
                     {

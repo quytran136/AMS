@@ -14,7 +14,7 @@
     </Key>
     <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
     <Property Name="NotificationContent" Type="nvarchar" MaxLength="128" />
-    <Property Name="CreateDate" Type="date" />
+    <Property Name="CreateDate" Type="datetime" />
     <Property Name="IsRead" Type="bit" />
     <Property Name="Action" Type="nvarchar(max)" />
     <Property Name="NotificationFor" Type="varchar" MaxLength="64" />
@@ -192,6 +192,10 @@
     <Property Name="AssetID" Type="varchar" MaxLength="64" />
     <Property Name="Quantity" Type="int" />
     <Property Name="UsageFor" Type="varchar" MaxLength="64" />
+    <Property Name="IsUsed" Type="bit" />
+    <Property Name="IsRecovery" Type="bit" />
+    <Property Name="IsLiquidation" Type="bit" />
+    <Property Name="CreateDate" Type="datetime" />
   </EntityType>
   <EntityType Name="user_identifie">
     <Key>

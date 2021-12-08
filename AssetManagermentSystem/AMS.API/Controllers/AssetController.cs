@@ -85,6 +85,16 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_Asset()
                     };
+                case "GET_ASSET_ALLOCATION":
+                    BaseModel<List<Asset>> ad3 = new Asset().GetAssetByUser(req.Data.UsageFor);
+                    return new BaseResponse<Res_Asset>().Result(ad3, new BaseResponse<Res_Asset>()
+                    {
+                        Response = new Res_Asset()
+                        {
+                            AssetClassifies = ad3.Result,
+                            UsageFor = req.Data.UsageFor,
+                        }
+                    });
                 default:
                     return new BaseResponse<Res_Asset>()
                     {

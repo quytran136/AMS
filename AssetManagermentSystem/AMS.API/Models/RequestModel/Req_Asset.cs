@@ -12,5 +12,6 @@ namespace AMS.API.Models.RequestModel
         public string Description { get; set; }
         public string ProcessID { get; set; }
         public string RequestID { get; set; }
+        public string UsageFor { get; set; }
     }
 }

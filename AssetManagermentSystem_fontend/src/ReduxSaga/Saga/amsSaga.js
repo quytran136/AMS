@@ -449,7 +449,6 @@ function* requestWarehouseSaga(action) {
                     yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
                     break;
                 case "GET_WAREHOUSE_DETAIL":
-                    console.log(warehouse)
                     yield put(amsAction.getWarehouseSuccess(warehouse))
                     break;
                 default:
@@ -472,30 +471,31 @@ export function* requestWarehouseWatcher() {
 
 function* requestAssetSaga(action) {
     try {
-        const warehouse = yield call(AMS_API.asset, action.body)
-        if (!warehouse) {
+        const asset = yield call(AMS_API.asset, action.body)
+        if (!asset) {
             throw new Error("Thao tác không thành công")
         }
 
-        if (!warehouse.Message) {
+        if (!asset.Message) {
             switch (action.body.Key) {
                 case "UPDATE_ASSET_CLASSIFY":
                     // yield put(amsAction.saveProcessFlow(null))
                     yield put(amsAction.setMessage("Câp nhật dữ liệu thành công"))
                     break;
                 case "GET_ASSET_CLASSIFY":
-                    yield put(amsAction.getAssetClassifiesSuccess(warehouse))
-                    yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
+                    yield put(amsAction.getAssetClassifiesSuccess(asset))
                     break;
                 case "GET_ASSET_CLASSIFY_DETAIL":
-                    console.log(warehouse)
-                    yield put(amsAction.getAssetClassifiesSuccess(warehouse))
+                    yield put(amsAction.getAssetClassifiesSuccess(asset))
+                    break;
+                case "GET_ASSET_ALLOCATION":
+                    yield put(amsAction.getAssetClassifiesSuccess(asset))
                     break;
                 default:
                     break;
             }
         } else {
-            yield put(amsAction.setError(warehouse))
+            yield put(amsAction.setError(asset))
         }
     } catch (ex) {
         yield put(amsAction.setError({
@@ -524,7 +524,6 @@ function* requestConfigCommonSaga(action) {
                     break;
                 case "GET_CONFIG_COMMON":
                     yield put(amsAction.getConfigCommonSuccess(configCommon))
-                    yield put(amsAction.setMessage("Lấy dữ liệu thành công"))
                     break;
                 default:
                     break;
@@ -557,6 +556,9 @@ function* requestTicketSaga(action) {
                     yield put(amsAction.getTicketSuccess(ticket))
                     break;
                 case "GET_TICKET_ALLOCATION":
+                    yield put(amsAction.getTicketSuccess(ticket))
+                    break;
+                case "GET_TICKET_RECOVERY":
                     yield put(amsAction.getTicketSuccess(ticket))
                     break;
                 default:

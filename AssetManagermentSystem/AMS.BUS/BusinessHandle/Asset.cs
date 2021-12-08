@@ -12,9 +12,9 @@ namespace AMS.BUS.BusinessHandle
     {
 
         public asset_classify Asset_Classify { get; set; }
+        public asset_detail Asset_Detail { get; set; }
+        public usage_history Usage_History { get; set; }
         public List<asset_detail> Asset_Details { get; set; }
-        public List<asset_detail> Assets_Allocation { get; set; }
-        public List<asset_detail> Assets_InStock { get; set; }
 
         public BaseModel<asset_classify> UpdateAssetClassify(asset_classify assetclassify)
         {
@@ -237,6 +237,67 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
+        public BaseModel<List<Asset>> GetAssetByUser(string id)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<Asset> ad1 = (from us in db.usage_history
+                                   join ad in db.asset_detail on us.AssetID equals ad.ID
+                                   where us.UsageFor == id && us.IsUsed == true
+                                   select new
+                                   {
+                                       ID = ad.ID,
+                                       AssetClassifyID = ad.AssetClassifyID,
+                                       AssetFullName = ad.AssetFullName,
+                                       CreateDate = ad.CreateDate,
+                                       Price = ad.Price,
+                                       QuantityUsed = us.Quantity,
+                                       StoreID = ad.StoreID,
+                                       IsDelete = ad.IsDelete,
+                                       Description = ad.Description,
+                                       Unit = ad.Unit,
+                                       UsageHistoryID = us.ID,
+                                       CreateDateUsage = us.CreateDate
+                                   }).ToList().Select(ptr => new Asset()
+                                   {
+                                       Asset_Detail = new asset_detail()
+                                       {
+                                           ID = ptr.ID,
+                                           AssetClassifyID = ptr.AssetClassifyID,
+                                           AssetFullName = ptr.AssetFullName,
+                                           CreateDate = ptr.CreateDate,
+                                           Price = ptr.Price,
+                                           QuantityUsed = ptr.QuantityUsed,
+                                           StoreID = ptr.StoreID,
+                                           IsDelete = ptr.IsDelete,
+                                           Description = ptr.Description,
+                                           Unit = ptr.Unit
+                                       },
+                                       Usage_History = new usage_history()
+                                       {
+                                           ID = ptr.UsageHistoryID,
+                                           CreateDate = ptr.CreateDateUsage
+                                       }
+                                   }).ToList();
+
+                return new BaseModel<List<Asset>>()
+                {
+                    Result = ad1
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<List<Asset>>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
         public BaseModel<string> UpdateAsset(asset_detail detail)
         {
             try

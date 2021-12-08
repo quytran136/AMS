@@ -85,7 +85,6 @@ const OrganizationalChart = (prop) => {
             }
         }
         dispatch(saveChangeOrganizationalChart(body))
-        console.log(departmentDetail)
     }
 
     function changeNodeData(organizational, nodeID, value) {

@@ -137,7 +137,7 @@ function SelectAsset(props) {
 
     function readData() {
         if (dataSource) {
-            if (assetClassifies) {
+            if (assetClassifies.Response) {
                 let listAS = []
                 assetClassifies.Response.AssetClassifies.forEach((element) => {
                     listAS.push({
@@ -150,7 +150,6 @@ function SelectAsset(props) {
 
             let list = []
             if (dataSource.Assets) {
-
                 dataSource.UsageList.forEach(u => {
                     let item = {
                         AssetClassifyID: "",
@@ -197,7 +196,7 @@ function SelectAsset(props) {
 
 
     useEffect(getAssetClassify, [])
-    useEffect(readData, [assetClassifies])
+    useEffect(readData, [assetClassifies, dataSource])
 
     return (
         <div className={className}>
@@ -326,10 +325,8 @@ function SelectAsset(props) {
                                         selected={element?.EmployeeID?.split("|")}
                                         type="Select"
                                         onSelected={(selectedRows) => {
-                                            var listApprover = ""
-                                            selectedRows.forEach((element) => listApprover += element.ID + "|")
                                             let item = element
-                                            item.EmployeeID = listApprover
+                                            item.EmployeeID = selectedRows[0].ID
                                             editItem(item)
                                         }}
                                     />

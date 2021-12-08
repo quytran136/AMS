@@ -54,8 +54,9 @@ function ConfigCommon(props) {
         const bodyprocess = {
             Token: token,
             Key: "GET_PROCESS",
-            Data: {
-                UserLoginName: userName
+            UserNameRequest: userName,
+            Data:{
+                ProcessName: ""
             }
         }
 

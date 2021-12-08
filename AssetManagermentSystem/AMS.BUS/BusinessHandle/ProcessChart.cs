@@ -34,14 +34,14 @@ namespace AMS.BUS.BusinessHandle
                 id);
         }
 
-        public BaseModel<List<Process>> GetProcess()
+        public BaseModel<List<Process>> GetProcess(string processName)
         {
             try
             {
                 var db = DBC.Init;
                 return new BaseModel<List<Process>>()
                 {
-                    Result = db.Processes.Where(ptr => ptr.IsDelete == false).ToList().Select(ptr => new Process() {
+                    Result = db.Processes.Where(ptr => ptr.IsDelete == false && ptr.ProcessName.Contains(processName)).ToList().Select(ptr => new Process() {
                         ID = ptr.ID,
                         IsDelete = ptr.IsDelete,
                         IsLock = ptr.IsLock,

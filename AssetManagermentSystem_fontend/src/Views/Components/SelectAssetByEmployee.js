@@ -8,8 +8,9 @@ import {
 } from '@ant-design/icons';
 import { connect, useDispatch } from "react-redux";
 import * as amsAction from '../../ReduxSaga/Actions/action';
+import SelectEmployee from "./SelectEmployee";
 
-function ListAsset(props) {
+function SelectAssetByEmployee(props) {
     const { disabled, className, dataSource, onChange } = props
     const dispatch = useDispatch();
     const {
@@ -22,35 +23,21 @@ function ListAsset(props) {
         assetClassifies,
     } = props.amsStore;
 
-    const [listAsset, setListAsset] = useState();
-    const [listAssetClassifies, setListAssetClassifies] = useState([]);
+    const [listAsset, setListAsset] = useState([]);
 
-    function getAssetClassify() {
+    function getAssetAllocation(employeeID) {
         const body = {
             Token: token,
-            Key: "GET_ASSET_CLASSIFY",
+            Key: "GET_ASSET_ALLOCATION",
             UserNameRequest: userName,
             Data: {
-                AssetClassify: {
-                    AssetClassifyName: "",
-                }
+                UsageFor: employeeID
             }
         }
         dispatch(requestAsset(body))
     }
 
     function addNew() {
-        if (assetClassifies) {
-            let listAS = []
-            assetClassifies.Response.AssetClassifies.forEach((element) => {
-                listAS.push({
-                    value: element.Asset_Classify.ID,
-                    label: element.Asset_Classify.AssetClassifyName,
-                })
-            })
-            setListAssetClassifies(listAS)
-        }
-
         let list = []
         if (listAsset) {
             listAsset.forEach(element => {
@@ -59,12 +46,14 @@ function ListAsset(props) {
         }
         list.push({
             ID: Date.now(),
-            AssetClassifyID: "",
-            AssetFullName: "",
+            Assets: [],
+            AssetID: "",
             Description: "",
-            QuantityOriginalStock: 0,
+            QuantityInStock: 0,
             Unit: "",
-            Price: 0
+            EmployeeID: "",
+            CreateDate: "",
+            UsageID: "",
         })
         setListAsset(list)
         if (onChange) {
@@ -92,6 +81,15 @@ function ListAsset(props) {
         if (listAsset) {
             listAsset.forEach(element => {
                 if (element.ID === item.ID) {
+                    item.Assets.forEach(e => {
+                        if (item.AssetID === e.value) {
+                            item.Unit = e.unit
+                            item.QuantityInStock = e.quantityused
+                            item.Description = e.description
+                            item.CreateDate = e.createdate
+                            item.UsageID = e.usageid
+                        }
+                    });
                     list.push(item)
                 } else {
                     list.push(element)
@@ -99,6 +97,7 @@ function ListAsset(props) {
             });
         }
         setListAsset(list)
+
         if (onChange) {
             onChange(list)
         }
@@ -106,22 +105,64 @@ function ListAsset(props) {
 
     function readData() {
         if (dataSource) {
-            if (assetClassifies) {
-                let listAS = []
-                assetClassifies.Response.AssetClassifies.forEach((element) => {
-                    listAS.push({
-                        value: element.ID,
-                        label: element.AssetClassifyName,
-                    })
-                })
-                setListAssetClassifies(listAS)
+            var list = []
+            dataSource.UsageList.forEach(element => {
+                let item = {
+                    ID: Date.now(),
+                    Assets: [],
+                    AssetID: element.AssetID,
+                    Description: "",
+                    QuantityInStock: element.Quantity,
+                    Unit: "",
+                    EmployeeID: element.UsageFor,
+                    CreateDate: element.CreateDate,
+                    UsageID: element.ID,
+                }
+                dataSource.Assets.forEach(element1 => {
+                    if (element1.ID === element.AssetID) {
+                        item.Unit = element1.Unit
+                        item.Description = element1.Description
+                        item.Assets = []
+                        item.Assets.push({
+                            value: element1.ID,
+                            label: element1.AssetFullName,
+                        })
+                    }
+                });
+
+                list.push(item)
+            });
+            setListAsset(list)
+        } else {
+            if (assetClassifies && listAsset) {
+                let list = []
+                listAsset.forEach(element => {
+                    if (element.EmployeeID === assetClassifies.Response.UsageFor) {
+                        let item = element
+                        item.Assets = []
+                        assetClassifies.Response.AssetClassifies.forEach(e => {
+                            item.Assets.push({
+                                value: e.Asset_Detail.ID,
+                                label: e.Asset_Detail.AssetFullName,
+                                unit: e.Asset_Detail.Unit,
+                                quantityused: e.Asset_Detail.QuantityUsed,
+                                description: e.Asset_Detail.Description,
+                                usageid: e.Usage_History.ID,
+                                createdate: e.Usage_History.CreateDate
+                            })
+                        });
+                        list.push(item)
+                    } else {
+                        list.push(element)
+                    }
+                });
+                setListAsset(list)
             }
-            setListAsset(dataSource)
         }
+
     }
 
-    useEffect(getAssetClassify, [])
-    useEffect(readData, [dataSource])
+    useEffect(readData, [assetClassifies, dataSource])
 
     return (
         <div className={className}>
@@ -141,24 +182,24 @@ function ListAsset(props) {
             <div className="list-asset">
                 <Row>
                     <Col span={5} className="field">
-                        Lớp tài sản
+                        Nhân viên
                     </Col>
                     <Col span={5} className="field">
                         Tên tài sản
                     </Col>
-                    <Col span={3} className="field">
+                    <Col span={2} className="field">
                         Đơn vị
                     </Col>
-                    <Col span={6} className="field">
+                    <Col span={5} className="field">
                         Diễn giải
+                    </Col>
+                    <Col span={3} className="field">
+                        Thời điểm cấp phát
                     </Col>
                     <Col span={2} className="field">
                         Số lượng
                     </Col>
                     <Col span={2} className="field">
-                        Đơn giá
-                    </Col>
-                    <Col span={1} className="field">
 
                     </Col>
                 </Row>
@@ -167,31 +208,33 @@ function ListAsset(props) {
                         listAsset.map((element, index) => {
                             return (<Row className="item-asset" key={index}>
                                 <Col span={5} className="field">
+                                    <SelectEmployee
+                                        disabled={disabled}
+                                        selected={element?.EmployeeID?.split("|")}
+                                        type="Select"
+                                        onSelected={(selectedRow) => {
+                                            getAssetAllocation(selectedRow[0].ID)
+                                            let item = element
+                                            item.EmployeeID = selectedRow[0].ID
+                                            editItem(item)
+                                        }}
+                                    />
+                                </Col>
+                                <Col span={5} className="field">
                                     <Select
                                         disabled={disabled}
-                                        options={listAssetClassifies}
+                                        options={element.Assets}
                                         className="field-asset"
-                                        value={element.AssetClassifyID}
+                                        value={element.AssetID}
                                         onChange={e => {
                                             let item = element
-                                            item.AssetClassifyID = e
+                                            item.AssetID = e
                                             editItem(item)
                                         }}
                                     >
                                     </Select>
                                 </Col>
-                                <Col span={5} className="field">
-                                    <Input
-                                        disabled={disabled}
-                                        value={element.AssetFullName}
-                                        onChange={(e) => {
-                                            let item = element
-                                            item.AssetFullName = e.target.value
-                                            editItem(item)
-                                        }}
-                                    />
-                                </Col>
-                                <Col span={3} className="field">
+                                <Col span={2} className="field">
                                     <Input
                                         disabled={disabled}
                                         value={element.Unit}
@@ -202,48 +245,30 @@ function ListAsset(props) {
                                         }}
                                     />
                                 </Col>
-                                <Col span={6} className="field">
+                                <Col span={5} className="field">
                                     <Input
                                         disabled={disabled}
                                         value={element.Description}
-                                        onChange={(e) => {
-                                            let item = element
-                                            item.Description = e.target.value
-                                            editItem(item)
-                                        }}
+                                    />
+                                </Col>
+                                <Col span={3} className="field">
+                                    <Input
+                                        disabled={disabled}
+                                        value={element.CreateDate}
                                     />
                                 </Col>
                                 <Col span={2} className="field">
                                     <InputNumber
                                         disabled={disabled}
                                         className="field-asset"
-                                        value={element.QuantityOriginalStock}
-                                        min="0"
+                                        value={element.QuantityInStock}
+                                        min={element.QuantityInStock}
+                                        max={element.QuantityInStock}
                                         step="1"
-                                        onChange={(e) => {
-                                            let item = element
-                                            item.QuantityOriginalStock = e
-                                            editItem(item)
-                                        }}
                                         stringMode
                                     />
                                 </Col>
                                 <Col span={2} className="field">
-                                    <InputNumber
-                                        disabled={disabled}
-                                        className="field-asset"
-                                        value={element.Price}
-                                        min="0"
-                                        step="1"
-                                        onChange={(e) => {
-                                            let item = element
-                                            item.Price = e * 1000
-                                            editItem(item)
-                                        }}
-                                        stringMode
-                                    />
-                                </Col>
-                                <Col span={1} className="field">
                                     <Button
                                         disabled={disabled}
                                         type="primary"
@@ -269,4 +294,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(ListAsset);
+export default connect(mapStateToProps)(SelectAssetByEmployee);

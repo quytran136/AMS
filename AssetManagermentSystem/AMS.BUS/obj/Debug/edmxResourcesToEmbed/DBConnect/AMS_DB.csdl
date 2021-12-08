@@ -88,7 +88,7 @@
     </Key>
     <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="NotificationContent" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="CreateDate" Type="DateTime" Precision="0" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
     <Property Name="IsRead" Type="Boolean" />
     <Property Name="Action" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="NotificationFor" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
@@ -288,6 +288,10 @@
     <Property Name="AssetID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
     <Property Name="Quantity" Type="Int32" />
     <Property Name="UsageFor" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
+    <Property Name="IsUsed" Type="Boolean" />
+    <Property Name="IsRecovery" Type="Boolean" />
+    <Property Name="IsLiquidation" Type="Boolean" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="user_identifie">
     <Key>

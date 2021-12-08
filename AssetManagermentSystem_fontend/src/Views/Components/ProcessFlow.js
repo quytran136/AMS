@@ -33,8 +33,9 @@ const ProcessFlow = (props) => {
         const body = {
             Token: token,
             Key: "GET_PROCESS",
+            UserNameRequest: userName,
             Data: {
-                UserLoginName: userName
+                ProcessName: searchContent
             }
         }
 
@@ -45,8 +46,8 @@ const ProcessFlow = (props) => {
         const body = {
             Token: token,
             Key: "UPDATE_PROCESS",
+            UserNameRequest: userName,
             Data: {
-                UserLoginName: userName,
                 ProcessID: processID,
                 IsDelete: true,
                 IsLock: false,

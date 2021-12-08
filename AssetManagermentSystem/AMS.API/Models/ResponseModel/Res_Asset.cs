@@ -9,6 +9,7 @@ namespace AMS.API.Models.ResponseModel
 {
     public class Res_Asset
     {
+        public string UsageFor { get; set; }
         public List<Asset> AssetClassifies { get; set; }
         public List<asset_detail> AssetDetails { get; set; }
         public asset_classify AssetClassify { get; set; }

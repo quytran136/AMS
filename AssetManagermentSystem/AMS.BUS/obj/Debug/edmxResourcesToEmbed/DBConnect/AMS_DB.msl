@@ -204,6 +204,10 @@
     <EntitySetMapping Name="usage_history">
       <EntityTypeMapping TypeName="AMS_DBModel.usage_history">
         <MappingFragment StoreEntitySet="usage_history">
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="IsLiquidation" ColumnName="IsLiquidation" />
+          <ScalarProperty Name="IsRecovery" ColumnName="IsRecovery" />
+          <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
           <ScalarProperty Name="UsageFor" ColumnName="UsageFor" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="AssetID" ColumnName="AssetID" />

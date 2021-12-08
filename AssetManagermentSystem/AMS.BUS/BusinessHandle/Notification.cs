@@ -20,6 +20,7 @@ namespace AMS.BUS.BusinessHandle
                 List<ams_notification> notifications = db.ams_notification
                     .Where(ptr => ptr.NotificationFor == user.ID && ptr.IsRead == false)
                     .ToList()
+                    .OrderByDescending(ptr => ptr.CreateDate)
                     .Select(ptr => new ams_notification()
                     {
                         ID = ptr.ID,

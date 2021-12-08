@@ -71,7 +71,6 @@ const SelectEmployee = (prop) => {
                     label: element.UserName,
                 })
             });
-            console.log(us)
             setSelectList(us)
         }
     }
@@ -103,9 +102,11 @@ const SelectEmployee = (prop) => {
                 options={selectList}
                 value={selected[0]}
                 onChange={(e) => {
-                    onSelected([{
-                        ID: e
-                    }])
+                    if (onSelected) {
+                        onSelected([{
+                            ID: e
+                        }])
+                    }
                 }}
             >
             </Select> :

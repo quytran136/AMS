@@ -51,7 +51,7 @@ const NavigationBar = (prop) => {
     }
 
     const signout = () => {
-        cookieHandle.setCookie("BASE", null, -1);
+        cookieHandle.setCookie("BASE", null, 0);
         dispatch(saveCookie(null))
     }
 
@@ -136,7 +136,9 @@ const NavigationBar = (prop) => {
                                     if (ac.Key !== "REJECT") {
                                         dispatch(requestNotification(body2))
                                         dispatch(setRequestID(ac.Value + "|" + element.ID))
-                                        history.push(ac.Path)
+                                        setTimeout(() => {
+                                            history.push(ac.Path)
+                                        }, 300);
                                     } else {
                                         const body = {
                                             Token: token,
@@ -148,6 +150,7 @@ const NavigationBar = (prop) => {
                                     }
                                 }}>
                                 {element.NotificationContent}
+                                <h4>{element.CreateDate}</h4>
                             </div>
                         )
                     })
@@ -191,7 +194,7 @@ const NavigationBar = (prop) => {
                     {showMenu ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                 </div>
                 <span className="nav-bar-item ams-btn">
-                    LOGO
+                    AMS
                 </span>
                 <span className="nav-bar-item">
                     <Input.Group>

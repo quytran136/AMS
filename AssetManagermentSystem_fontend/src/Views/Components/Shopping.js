@@ -52,14 +52,20 @@ function Shopping(props) {
 
     function sentRequest() {
         if (warehouseSelected) {
-
+            if (!listAsset || listAsset?.length === 0) {
+                dispatch(setError({
+                    Code: "AMS_01",
+                    Message: "Danh sách tài sản trống"
+                }))
+                return;
+            }
             let AssetDetails = []
             listAsset.forEach(element => {
                 AssetDetails.push({
                     StoreID: warehouseSelected,
                     AssetClassifyID: element.AssetClassifyID,
                     AssetFullName: element.AssetFullName,
-                    QuantityOriginalStock: element.Quantity,
+                    QuantityOriginalStock: element.QuantityOriginalStock,
                     Unit: element.Unit,
                     Description: element.Description,
                     Price: element.Price
@@ -256,7 +262,6 @@ function Shopping(props) {
                             disabled={data ? true : false}
                             dataSource={ticket?.Response?.Assets}
                             onChange={(list) => {
-                                console.log(list)
                                 setListAsset(list)
                             }}
                         />

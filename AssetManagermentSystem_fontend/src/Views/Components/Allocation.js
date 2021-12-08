@@ -17,7 +17,8 @@ function Allocation(props) {
     const dispatch = useDispatch();
     const {
         requestTicket,
-        requestNotification
+        requestNotification,
+        setError
     } = amsAction;
 
     const {
@@ -29,11 +30,17 @@ function Allocation(props) {
     } = props.amsStore;
 
     const [listAsset, setListAsset] = useState();
-    const [warehouseSelected, setWarehouseSelected] = useState()
     const [ticketDescription, setTicketDescription] = useState()
 
     function sentRequest() {
         let AssetDetails = []
+        if (!listAsset || listAsset?.length === 0) {
+            dispatch(setError({
+                Code: "AMS_01",
+                Message: "Danh sách tài sản trống"
+            }))
+            return;
+        }
         listAsset.forEach(element => {
             AssetDetails.push({
                 AssetID: element.AssetID,
@@ -47,7 +54,6 @@ function Allocation(props) {
             Key: "CREATE_TICKET_ALLOCATION",
             UserNameRequest: userName,
             Data: {
-                StoreID: warehouseSelected,
                 Description: ticketDescription,
                 ProcessID: warehouseAction.ProcessID,
                 UsageAssetList: AssetDetails
@@ -105,7 +111,6 @@ function Allocation(props) {
     function ticketContent() {
         if (ticket) {
             setTicketDescription(ticket?.Response.Ticket?.Description)
-            console.log(ticket?.Response.Ticket?.Description)
         }
     }
 
@@ -164,7 +169,6 @@ function Allocation(props) {
                                     type="primary"
                                     onClick={() => {
                                         sentRequest()
-                                        history.push('/Home')
                                     }}
                                 >Sent request</Button>
                         }
