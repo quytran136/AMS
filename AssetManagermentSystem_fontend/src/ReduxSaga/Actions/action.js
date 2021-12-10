@@ -301,3 +301,10 @@ export const setRequestID = (requestID) => {
         requestID
     }
 }
+
+export const setFunctionTitle = (functionTitle) => {
+    return{
+        type: type.SET_FUNC_TITLE,
+        functionTitle
+    }
+}

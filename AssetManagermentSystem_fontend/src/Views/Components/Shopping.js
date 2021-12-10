@@ -12,7 +12,7 @@ import * as amsAction from '../../ReduxSaga/Actions/action';
 import ListAsset from "./ListAsset";
 
 function Shopping(props) {
-    const { data } = props;
+    const { data, title } = props;
     const history = useHistory();
     const dispatch = useDispatch();
     const {
@@ -60,7 +60,16 @@ function Shopping(props) {
                 return;
             }
             let AssetDetails = []
+            let breakPoint = false
             listAsset.forEach(element => {
+                if (element.Quantity < 1) {
+                    dispatch(setError({
+                        Code: "AMS_01",
+                        Message: "Tối thiểu phải chọn 1 tài sản"
+                    }))
+                    breakPoint = true
+                    return;
+                }
                 AssetDetails.push({
                     StoreID: warehouseSelected,
                     AssetClassifyID: element.AssetClassifyID,
@@ -71,6 +80,10 @@ function Shopping(props) {
                     Price: element.Price
                 })
             });
+
+            if(breakPoint === true){
+                return;
+            }
 
             const body = {
                 Token: token,
@@ -168,7 +181,7 @@ function Shopping(props) {
                 <Row className="warehouse-tool">
                     <Col span={16} className="tool-left">
                         <h2>
-                            Yêu cầu mua sắm
+                            {title}
                         </h2>
                     </Col>
                     <Col span={8} className="tool-right">
@@ -213,7 +226,6 @@ function Shopping(props) {
                                     type="primary"
                                     onClick={() => {
                                         sentRequest()
-                                        history.push('/Home')
                                     }}
                                 >Sent request</Button>
                         }

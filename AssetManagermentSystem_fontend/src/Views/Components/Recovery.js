@@ -12,12 +12,13 @@ import * as amsAction from '../../ReduxSaga/Actions/action';
 import SelectAssetByEmployee from "./SelectAssetByEmployee";
 
 function Recovery(props) {
-    const { data } = props;
+    const { data, title } = props;
     const history = useHistory();
     const dispatch = useDispatch();
     const {
         requestTicket,
-        requestNotification
+        requestNotification,
+        setError
     } = amsAction;
 
     const {
@@ -33,7 +34,24 @@ function Recovery(props) {
 
     function sentRequest() {
         let AssetDetails = []
+        if (!listAsset || listAsset?.length === 0) {
+            dispatch(setError({
+                Code: "AMS_01",
+                Message: "Danh sách tài sản trống"
+            }))
+            return;
+        }
+        
+        let breakPoint = false
         listAsset.forEach(element => {
+            if(element.Quantity < 1){
+                dispatch(setError({
+                    Code: "AMS_01",
+                    Message: "Tối thiểu phải chọn 1 tài sản"
+                }))
+                breakPoint = true
+                return;
+            }
             AssetDetails.push({
                 AssetID: element.AssetID,
                 Quantity: element.Quantity,
@@ -41,6 +59,10 @@ function Recovery(props) {
                 ID: element.UsageID
             })
         });
+
+        if(breakPoint === true){
+            return;
+        }
 
         const body = {
             Token: token,
@@ -117,7 +139,7 @@ function Recovery(props) {
                 <Row className="warehouse-tool">
                     <Col span={16} className="tool-left">
                         <h2>
-                            Yêu cầu thu hồi tài sản
+                            {title}
                         </h2>
                     </Col>
                     <Col span={8} className="tool-right">
@@ -162,7 +184,6 @@ function Recovery(props) {
                                     type="primary"
                                     onClick={() => {
                                         sentRequest()
-                                        history.push('/Home')
                                     }}
                                 >Sent request</Button>
                         }

@@ -11,7 +11,7 @@ import * as amsAction from '../../ReduxSaga/Actions/action';
 import SelectEmployee from "./SelectEmployee";
 
 function SelectAsset(props) {
-    const { disabled, className, dataSource, onChange } = props
+    const { disabled, className, disabledSelectEmployee, dataSource, onChange } = props
     const dispatch = useDispatch();
     const {
         requestAsset
@@ -137,7 +137,7 @@ function SelectAsset(props) {
 
     function readData() {
         if (dataSource) {
-            if (assetClassifies.Response) {
+            if (assetClassifies?.Response) {
                 let listAS = []
                 assetClassifies.Response.AssetClassifies.forEach((element) => {
                     listAS.push({
@@ -149,7 +149,7 @@ function SelectAsset(props) {
             }
 
             let list = []
-            if (dataSource.Assets) {
+            if (dataSource.UsageList) {
                 dataSource.UsageList.forEach(u => {
                     let item = {
                         AssetClassifyID: "",
@@ -161,33 +161,34 @@ function SelectAsset(props) {
                         Unit: "",
                         EmployeeID: ""
                     }
-                    dataSource.Assets.forEach(a => {
-                        if (u.AssetID === a.ID) {
-
-                            assetClassifies.Response.AssetClassifies.forEach((element) => {
-                                if (a.AssetClassifyID === element.Asset_Classify.ID) {
-                                    element.Asset_Details.forEach(element1 => {
-                                        item.Assets = []
-                                        item.Assets.push({
-                                            value: element1.ID,
-                                            label: element1.AssetFullName,
-                                        })
-                                    });
+                    if (dataSource.Assets) {
+                        dataSource.Assets.forEach(a => {
+                            if (u.AssetID === a.ID) {
+                                if (assetClassifies) {
+                                    assetClassifies.Response.AssetClassifies.forEach((element) => {
+                                        if (a.AssetClassifyID === element.Asset_Classify.ID) {
+                                            element.Asset_Details.forEach(element1 => {
+                                                item.Assets = []
+                                                item.Assets.push({
+                                                    value: element1.ID,
+                                                    label: element1.AssetFullName,
+                                                })
+                                            });
+                                        }
+                                    })
+                                    item.AssetClassifyID = a.AssetClassifyID
+                                    item.AssetID = u.AssetID
+                                    item.Description = a.Description
+                                    item.Quantity = u.Quantity
+                                    item.QuantityInStock = a.QuantityInStock
+                                    item.Unit = a.Unit
+                                    item.EmployeeID = u.UsageFor
                                 }
-                            })
-
-                            item.AssetClassifyID = a.AssetClassifyID
-                            item.AssetID = u.AssetID
-                            item.Description = a.Description
-                            item.Quantity = u.Quantity
-                            item.QuantityInStock = a.QuantityInStock
-                            item.Unit = a.Unit
-                            item.EmployeeID = u.UsageFor
-                        }
-                    });
+                            }
+                        });
+                    }
                     list.push(item)
                 });
-
             }
 
             setListAsset(list)
@@ -233,9 +234,10 @@ function SelectAsset(props) {
                     <Col span={2} className="field">
                         Số lượng
                     </Col>
-                    <Col span={3} className="field">
-                        Cấp phát cho
-                    </Col>
+                    {disabledSelectEmployee === true ? <></> :
+                        <Col span={3} className="field">
+                            Cấp phát cho
+                        </Col>}
                     <Col span={1} className="field">
 
                     </Col>
@@ -319,18 +321,19 @@ function SelectAsset(props) {
                                         stringMode
                                     />
                                 </Col>
-                                <Col span={3} className="field">
-                                    <SelectEmployee
-                                        disabled={disabled}
-                                        selected={element?.EmployeeID?.split("|")}
-                                        type="Select"
-                                        onSelected={(selectedRows) => {
-                                            let item = element
-                                            item.EmployeeID = selectedRows[0].ID
-                                            editItem(item)
-                                        }}
-                                    />
-                                </Col>
+                                {disabledSelectEmployee === true ? <></> :
+                                    <Col span={3} className="field">
+                                        <SelectEmployee
+                                            disabled={disabled}
+                                            selected={element?.EmployeeID?.split("|")}
+                                            type="Select"
+                                            onSelected={(selectedRows) => {
+                                                let item = element
+                                                item.EmployeeID = selectedRows[0].ID
+                                                editItem(item)
+                                            }}
+                                        />
+                                    </Col>}
                                 <Col span={1} className="field">
                                     <Button
                                         disabled={disabled}

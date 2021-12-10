@@ -561,6 +561,9 @@ function* requestTicketSaga(action) {
                 case "GET_TICKET_RECOVERY":
                     yield put(amsAction.getTicketSuccess(ticket))
                     break;
+                case "GET_TICKET_LIQUIDATION":
+                    yield put(amsAction.getTicketSuccess(ticket))
+                    break;
                 default:
                     yield put(amsAction.setMessage("Gửi yêu cầu thành công"))
                     break;

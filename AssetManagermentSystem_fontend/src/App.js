@@ -42,6 +42,7 @@ function App(prop) {
     showMenu,
     message,
     requestID,
+    functionTitle
   } = prop.amsStore;
   const {
     saveCookie,
@@ -158,16 +159,16 @@ function App(prop) {
                     <Report />
                   </Route>
                   <Route path="/Shopping">
-                    <Shopping data={requestID} />
+                    <Shopping data={requestID} title={functionTitle}/>
                   </Route>
                   <Route exact path="/Liquidation">
-                    <Liquidation data={requestID} />
+                    <Liquidation data={requestID} title={functionTitle}/>
                   </Route>
                   <Route exact path="/Recovery">
-                    <Recovery data={requestID} />
+                    <Recovery data={requestID} title={functionTitle}/>
                   </Route>
                   <Route exact path="/Allocation">
-                    <Allocation data={requestID} />
+                    <Allocation data={requestID} title={functionTitle}/>
                   </Route>
                   <Route exact path="/">
                     <Home />

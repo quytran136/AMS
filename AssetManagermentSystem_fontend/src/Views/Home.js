@@ -15,7 +15,8 @@ function Home(props) {
   const {
     setRequestID,
     setWarehouseAction,
-    getTicketSuccess
+    getTicketSuccess,
+    setFunctionTitle
   } = amsAction;
 
   const {
@@ -50,6 +51,7 @@ function Home(props) {
             <Card className="ams-card-item"
               onClick={() => {
                 dispatch(setRequestID(null))
+                dispatch(setFunctionTitle(element.FunctionName))
                 dispatch(getTicketSuccess(null))
                 dispatch(setWarehouseAction({
                   key: element.FunctionKey,

@@ -1238,12 +1238,21 @@ namespace AMS.BUS.BusinessHandle
                     IsReject = false,
                     StoreID = storeID
                 });
-
+                List<usage_history> usage_Histories = new List<usage_history>();
                 foreach (usage_history item in details)
                 {
-                    usage_history us = db.usage_history.Where(ptr => ptr.ID == item.ID).FirstOrDefault();
-                    us.TicketID = id;
+                    usage_Histories.Add(new usage_history()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        AssetID = item.AssetID,
+                        CreateDate = DateTime.Now,
+                        Quantity = item.Quantity,
+                        TicketID = id,
+                        UsageFor = ""
+                    });
                 }
+
+                db.usage_history.AddRange(usage_Histories);
 
                 List<ams_notification> notifications = new List<ams_notification>();
 
@@ -1291,7 +1300,7 @@ namespace AMS.BUS.BusinessHandle
                         ID = Guid.NewGuid().ToString(),
                         CreateDate = DateTime.Now,
                         IsRead = false,
-                        NotificationContent = "Yêu cầu thu hồi tài sản được gửi từ " + new UserInformation().GetUserInfor(requestBy).Result.UserFullName,
+                        NotificationContent = "Yêu cầu thu thanh lý sản được gửi từ " + new UserInformation().GetUserInfor(requestBy).Result.UserFullName,
                         NotificationFor = userid,
                         Action = JsonConvert.SerializeObject(new RequestAction()
                         {
@@ -1347,7 +1356,7 @@ namespace AMS.BUS.BusinessHandle
                         item.IsRecovery = false;
                         var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
                         ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
-                        ase.QuantityDestroyed = item.Quantity;
+                        ase.QuantityDestroyed = ase.QuantityDestroyed + item.Quantity;
                     }
                     db.SaveChanges();
                 }
@@ -1404,7 +1413,7 @@ namespace AMS.BUS.BusinessHandle
                             ID = Guid.NewGuid().ToString(),
                             CreateDate = DateTime.Now,
                             IsRead = false,
-                            NotificationContent = "Yêu cầu thu hồi tài sản được gửi từ " + new UserInformation().GetUserInfor(request.RequestBy).Result.UserFullName,
+                            NotificationContent = "Yêu cầu thanh lý tài sản được gửi từ " + new UserInformation().GetUserInfor(request.RequestBy).Result.UserFullName,
                             NotificationFor = userid,
                             Action = JsonConvert.SerializeObject(new RequestAction()
                             {
@@ -1460,7 +1469,7 @@ namespace AMS.BUS.BusinessHandle
                     ID = Guid.NewGuid().ToString(),
                     CreateDate = DateTime.Now,
                     IsRead = false,
-                    NotificationContent = "Yêu cầu thu hồi tài sản đã bị từ chối bởi " + user.UserFullName,
+                    NotificationContent = "Yêu cầu thanh lý tài sản đã bị từ chối bởi " + user.UserFullName,
                     NotificationFor = user.ID,
                     Action = JsonConvert.SerializeObject(new RequestAction()
                     {

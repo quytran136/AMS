@@ -114,6 +114,36 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_Ticket()
                     });
+
+                case "CREATE_TICKET_LIQUIDATION":
+                    BaseModel<string> Liquidation = new Ticket().CreateTicketLiquidation(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.UsageAssetList);
+                    return new BaseResponse<Res_Ticket>().Result(Liquidation, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
+                case "GET_TICKET_LIQUIDATION":
+                    BaseModel<Ticket> Liquidation1 = new Ticket().GetTicketLiquidation(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(Liquidation1, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                        {
+                            Ticket = Liquidation1.Result.Request,
+                            Assets = Liquidation1.Result.Assets,
+                            UsageList = Liquidation1.Result.UsageHistories
+                        }
+                    });
+                case "APPROVE_TICKET_LIQUIDATION":
+                    BaseModel<Ticket> Liquidation2 = new Ticket().ApproveTicketLiquidation(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(Liquidation2, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
+                case "REJECT_TICKET_LIQUIDATION":
+                    BaseModel<Ticket> Liquidation3 = new Ticket().RejectTicketLiquidation(req.Data.RequestID, req.Data.RequestType);
+                    return new BaseResponse<Res_Ticket>().Result(Liquidation3, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
                 default:
                     return new BaseResponse<Res_Ticket>()
                     {

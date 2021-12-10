@@ -13,7 +13,7 @@ function ConfigCommon(props) {
     const dispatch = useDispatch();
     const {
         requestProcessFlow,
-        requestConfigCommon
+        requestConfigCommon,
     } = amsAction;
 
     const {
@@ -41,6 +41,9 @@ function ConfigCommon(props) {
             }
         }
         dispatch(requestConfigCommon(body))
+        setTimeout(() => {
+            getConfigCommon()
+        }, 2000);
     }
 
     function getConfigCommon() {
@@ -55,7 +58,7 @@ function ConfigCommon(props) {
             Token: token,
             Key: "GET_PROCESS",
             UserNameRequest: userName,
-            Data:{
+            Data: {
                 ProcessName: ""
             }
         }

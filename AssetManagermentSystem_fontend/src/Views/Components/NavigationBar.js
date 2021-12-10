@@ -26,14 +26,16 @@ const NavigationBar = (prop) => {
         getUserInfoLogin,
         setShowMenu,
         setRequestID,
-        requestNotification
+        requestNotification,
+        setFunctionTitle
     } = amsAction;
     const {
         token,
         userName,
         userInfoLogin,
         showMenu,
-        notifications
+        notifications,
+        configCommon
     } = prop.amsStore;
 
     const [countNotification, setCountNotification] = useState(0)
@@ -137,6 +139,22 @@ const NavigationBar = (prop) => {
                                         dispatch(requestNotification(body2))
                                         dispatch(setRequestID(ac.Value + "|" + element.ID))
                                         setTimeout(() => {
+                                            let title = ""
+                                            configCommon.Response.Configs.forEach(element => {
+                                                switch (element.Code) {
+                                                    case "FUNCTION":
+                                                        const funcArray = JSON.parse(element.Value)
+                                                        funcArray.forEach(func => {
+                                                            if(ac.Path === func.FunctionPath){
+                                                                title = func.FunctionName
+                                                            }
+                                                        });
+                                                        break
+                                                    default:
+                                                        break;
+                                                }
+                                            })
+                                            dispatch(setFunctionTitle("Phê duyệt " + title))
                                             history.push(ac.Path)
                                         }, 300);
                                     } else {

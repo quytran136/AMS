@@ -24,7 +24,8 @@ const initialState = {
     configCommon: null,
     ticket: null,
     notifications: null,
-    requestID: null
+    requestID: null,
+    functionTitle: "",
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -154,6 +155,12 @@ export const amsReducer = (state = initialState, action) => {
                 ...state,
                 requestID: action.requestID
             }
+        case type.SET_FUNC_TITLE:
+            return {
+                ...state,
+                functionTitle: action.functionTitle
+            }
+
         default:
             return {
                 ...state,
