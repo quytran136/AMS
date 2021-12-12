@@ -26,6 +26,7 @@ const initialState = {
     notifications: null,
     requestID: null,
     functionTitle: "",
+    report: null
 }
 
 export const amsReducer = (state = initialState, action) => {

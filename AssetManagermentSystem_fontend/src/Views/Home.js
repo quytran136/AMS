@@ -47,8 +47,8 @@ function Home(props) {
       {
         listFunction &&
         listFunction.map((element, index) => {
-          return (<Col span={6} key={index}>
-            <Card className="ams-card-item"
+          return (<Col span={4} key={index} className="ams-func-item">
+            <div
               onClick={() => {
                 dispatch(setRequestID(null))
                 dispatch(setFunctionTitle(element.FunctionName))
@@ -59,8 +59,8 @@ function Home(props) {
                 }))
                 history.push(element.FunctionPath)
               }}>
-              {element.FunctionName}
-            </Card >
+              <h3>{element.FunctionName}</h3>
+            </div >
           </Col>)
         })
       }
@@ -69,7 +69,7 @@ function Home(props) {
 
   return (
     <div className="main-content">
-      <Card className="warehouse">
+      <Card className="home">
         {renderHome(listFunction)}
       </Card>
     </div>
