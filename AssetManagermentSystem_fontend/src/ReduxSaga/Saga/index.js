@@ -18,7 +18,8 @@ import {
     requestAssetWatcher,
     requestConfigCommonWatcher,
     requestTicketWatcher,
-    notificationWatcher
+    notificationWatcher,
+    reportWatcher
 } from "./amsSaga";
 
 export default function* sagas() {
@@ -41,6 +42,7 @@ export default function* sagas() {
         requestAssetWatcher(),
         requestConfigCommonWatcher(),
         requestTicketWatcher(),
-        notificationWatcher()
+        notificationWatcher(),
+        reportWatcher()
     ]);
 }

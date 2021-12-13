@@ -44,6 +44,10 @@ const AMS_API = {
     notification: (body) => {
         const url = "Notification/NotificationControl"
         return request.post(url, body);
+    },
+    report: (body) => {
+        const url = "Report/ReportControl"
+        return request.post(url, body);
     }
 }
 

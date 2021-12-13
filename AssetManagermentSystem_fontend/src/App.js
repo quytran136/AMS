@@ -32,6 +32,10 @@ import Liquidation from './Views/Components/Liquidation';
 import Recovery from './Views/Components/Recovery';
 import Allocation from './Views/Components/Allocation';
 import Notfound from './Views/404Notfound';
+import { hubConnection } from 'signalr-no-jquery'
+import {
+  SERVER_SIGNALR
+} from './Common/server';
 
 function App(prop) {
   const dispatch = useDispatch();
@@ -42,7 +46,8 @@ function App(prop) {
     showMenu,
     message,
     requestID,
-    functionTitle
+    functionTitle,
+    notifications
   } = prop.amsStore;
   const {
     saveCookie,
@@ -51,10 +56,12 @@ function App(prop) {
     setMessage,
     setError,
     requestConfigCommon,
-    requestNotification
+    requestNotification,
+    requestNotificationSuccess
   } = amsAction;
 
-  const [IntervalX, setIntervalX] = useState()
+  const connection = hubConnection(SERVER_SIGNALR)
+  const hubProxy = connection.createHubProxy('amshub')
 
   function load() {
     var cookie = cookieHandle.getCookie("BASE");
@@ -64,13 +71,11 @@ function App(prop) {
         dispatch(saveCookie(cookieData))
         dispatch(saveUserLogin(cookieData.userName))
         dispatch(saveToken(cookieData.token))
-
       }
     }
   }
 
   function loadData() {
-    clearInterval(IntervalX)
     if (cookie) {
       const body = {
         Token: cookie.token,
@@ -78,10 +83,31 @@ function App(prop) {
         UserNameRequest: cookie.userName,
       }
       getConfigCommon(cookie.userName, cookie.token)
-      setIntervalX(setInterval(() => {
-        dispatch(requestNotification(body))
-      }, 500))
+      dispatch(requestNotification(body))
+      console.log(connection.state)
+      initSignalR(cookie.userName)
     }
+  }
+
+  function initSignalR(userName) {
+    connection.logging = true;
+    connection.start({ transport: ['serverSentEvents', 'longPolling'] })
+      .done(() => {
+        hubProxy.invoke('RegistConnect', userName, connection.id);
+      })
+      .fail(() => {
+        console.log('[B-DEBUG]  Could not connect SignalR')
+        connection.stop();
+      })
+    hubProxy.on('OnNotification', (message) => {
+      let notification1 = JSON.parse(message)
+      if (!notification1.Message) {
+        dispatch(requestNotificationSuccess(notification1))
+      } else {
+        dispatch(setError(notification1))
+      }
+    })
+    return connection;
   }
 
   function getConfigCommon(userName, token) {
@@ -159,16 +185,16 @@ function App(prop) {
                     <Report />
                   </Route>
                   <Route path="/Shopping">
-                    <Shopping data={requestID} title={functionTitle}/>
+                    <Shopping data={requestID} title={functionTitle} />
                   </Route>
                   <Route exact path="/Liquidation">
-                    <Liquidation data={requestID} title={functionTitle}/>
+                    <Liquidation data={requestID} title={functionTitle} />
                   </Route>
                   <Route exact path="/Recovery">
-                    <Recovery data={requestID} title={functionTitle}/>
+                    <Recovery data={requestID} title={functionTitle} />
                   </Route>
                   <Route exact path="/Allocation">
-                    <Allocation data={requestID} title={functionTitle}/>
+                    <Allocation data={requestID} title={functionTitle} />
                   </Route>
                   <Route exact path="/">
                     <Home />

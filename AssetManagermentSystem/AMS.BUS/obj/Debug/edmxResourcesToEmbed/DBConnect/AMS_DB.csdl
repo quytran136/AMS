@@ -73,6 +73,16 @@
       <End Role="user_identifie" EntitySet="user_identifie" />
       <End Role="system_log" EntitySet="system_log" />
     </AssociationSet>
+    <FunctionImport Name="sp_BaoCaoTonKho" ReturnType="Collection(AMS_DBModel.sp_BaoCaoTonKho_Result)">
+      <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+      <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+      <Parameter Name="searchContent" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_BaoCaoYeuCauPheDuyet" ReturnType="Collection(AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result)">
+      <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+      <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+      <Parameter Name="searchContent" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <EntityType Name="ams_config">
     <Key>
@@ -202,7 +212,7 @@
     <Property Name="CreateDate" Type="DateTime" Precision="3" />
     <Property Name="StepID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
     <Property Name="IsApprove" Type="Boolean" />
-    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="ProcessID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
     <Property Name="RequestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="IsReject" Type="Boolean" />
@@ -481,4 +491,24 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <ComplexType Name="sp_BaoCaoTonKho_Result">
+    <Property Type="String" Name="Kho_tài_sản" Nullable="true" MaxLength="10" />
+    <Property Type="String" Name="Lớp_tài_sản" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Tên_tài_sản" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="Tổng_lượng_tài_sản" Nullable="true" />
+    <Property Type="Int32" Name="Tổng_lượng_tồn_kho" Nullable="true" />
+    <Property Type="Int32" Name="Tổng_lượng_đã_sử_dụng" Nullable="true" />
+    <Property Type="Int32" Name="Tổng_lượng_đã_thanh_lý" Nullable="true" />
+    <Property Type="Double" Name="Giá_trị" Nullable="true" />
+    <Property Type="String" Name="Ngày_tạo" Nullable="true" MaxLength="30" />
+  </ComplexType>
+  <ComplexType Name="sp_BaoCaoYeuCauPheDuyet_Result">
+    <Property Type="String" Name="Loại_yêu_cầu" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="Người_yêu_cầu" Nullable="true" MaxLength="64" />
+    <Property Type="String" Name="Yêu_cầu_cho" Nullable="false" MaxLength="64" />
+    <Property Type="Int32" Name="Số_lượng_yêu_cầu" Nullable="true" />
+    <Property Type="String" Name="Ghi_chú" Nullable="true" />
+    <Property Type="String" Name="Ngày_yêu_cầu" Nullable="true" MaxLength="30" />
+    <Property Type="String" Name="Tình_trạng_duyệt" Nullable="true" MaxLength="30" />
+  </ComplexType>
 </Schema>

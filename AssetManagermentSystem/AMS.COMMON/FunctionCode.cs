@@ -23,5 +23,6 @@ namespace AMS.COMMON
         public static string CONFIG = "I";
         public static string TICKET = "J";
         public static string NOTIFICATION = "K";
+        public static string REPORT = "L";
     }
 }

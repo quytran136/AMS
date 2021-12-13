@@ -123,7 +123,7 @@
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="StepID" Type="nvarchar" MaxLength="64" />
           <Property Name="IsApprove" Type="bit" />
-          <Property Name="Description" Type="text" />
+          <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="ProcessID" Type="nvarchar" MaxLength="64" />
           <Property Name="RequestType" Type="nvarchar" MaxLength="50" />
           <Property Name="IsReject" Type="bit" />
@@ -386,6 +386,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_BaoCaoTonKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dateStart" Type="datetime" Mode="In" />
+          <Parameter Name="dateEnd" Type="datetime" Mode="In" />
+          <Parameter Name="searchContent" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_BaoCaoYeuCauPheDuyet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dateStart" Type="datetime" Mode="In" />
+          <Parameter Name="dateEnd" Type="datetime" Mode="In" />
+          <Parameter Name="searchContent" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="AMS_DBModelStoreContainer">
           <EntitySet Name="ams_config" EntityType="Self.ams_config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ams_notification" EntityType="Self.ams_notification" Schema="dbo" store:Type="Tables" />
@@ -537,6 +547,16 @@
             <End Role="user_identifie" EntitySet="user_identifie" />
             <End Role="system_log" EntitySet="system_log" />
           </AssociationSet>
+          <FunctionImport Name="sp_BaoCaoTonKho" ReturnType="Collection(AMS_DBModel.sp_BaoCaoTonKho_Result)">
+            <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+            <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="searchContent" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_BaoCaoYeuCauPheDuyet" ReturnType="Collection(AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result)">
+            <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+            <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="searchContent" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="ams_config">
           <Key>
@@ -666,7 +686,7 @@
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="StepID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="IsApprove" Type="Boolean" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ProcessID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="RequestType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsReject" Type="Boolean" />
@@ -945,6 +965,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="sp_BaoCaoTonKho_Result">
+          <Property Type="String" Name="Kho_tài_sản" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="Lớp_tài_sản" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Tên_tài_sản" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="Tổng_lượng_tài_sản" Nullable="true" />
+          <Property Type="Int32" Name="Tổng_lượng_tồn_kho" Nullable="true" />
+          <Property Type="Int32" Name="Tổng_lượng_đã_sử_dụng" Nullable="true" />
+          <Property Type="Int32" Name="Tổng_lượng_đã_thanh_lý" Nullable="true" />
+          <Property Type="Double" Name="Giá_trị" Nullable="true" />
+          <Property Type="String" Name="Ngày_tạo" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="sp_BaoCaoYeuCauPheDuyet_Result">
+          <Property Type="String" Name="Loại_yêu_cầu" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Người_yêu_cầu" Nullable="true" MaxLength="64" />
+          <Property Type="String" Name="Yêu_cầu_cho" Nullable="false" MaxLength="64" />
+          <Property Type="Int32" Name="Số_lượng_yêu_cầu" Nullable="true" />
+          <Property Type="String" Name="Ghi_chú" Nullable="true" />
+          <Property Type="String" Name="Ngày_yêu_cầu" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Tình_trạng_duyệt" Nullable="true" MaxLength="30" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1196,6 +1236,34 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_BaoCaoTonKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoTonKho">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTonKho_Result">
+                <ScalarProperty Name="Kho_tài_sản" ColumnName="Kho tài sản" />
+                <ScalarProperty Name="Lớp_tài_sản" ColumnName="Lớp tài sản" />
+                <ScalarProperty Name="Tên_tài_sản" ColumnName="Tên tài sản" />
+                <ScalarProperty Name="Tổng_lượng_tài_sản" ColumnName="Tổng lượng tài sản" />
+                <ScalarProperty Name="Tổng_lượng_tồn_kho" ColumnName="Tổng lượng tồn kho" />
+                <ScalarProperty Name="Tổng_lượng_đã_sử_dụng" ColumnName="Tổng lượng đã sử dụng" />
+                <ScalarProperty Name="Tổng_lượng_đã_thanh_lý" ColumnName="Tổng lượng đã thanh lý" />
+                <ScalarProperty Name="Giá_trị" ColumnName="Giá trị" />
+                <ScalarProperty Name="Ngày_tạo" ColumnName="Ngày tạo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_BaoCaoYeuCauPheDuyet" FunctionName="AMS_DBModel.Store.sp_BaoCaoYeuCauPheDuyet">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result">
+                <ScalarProperty Name="Loại_yêu_cầu" ColumnName="Loại yêu cầu" />
+                <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+                <ScalarProperty Name="Yêu_cầu_cho" ColumnName="Yêu cầu cho" />
+                <ScalarProperty Name="Số_lượng_yêu_cầu" ColumnName="Số lượng yêu cầu" />
+                <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+                <ScalarProperty Name="Ngày_yêu_cầu" ColumnName="Ngày yêu cầu" />
+                <ScalarProperty Name="Tình_trạng_duyệt" ColumnName="Tình trạng duyệt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

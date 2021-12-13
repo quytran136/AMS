@@ -66,6 +66,7 @@
     <Compile Include="BusinessHandle\Notification.cs" />
     <Compile Include="BusinessHandle\OrganizationalChart.cs" />
     <Compile Include="BusinessHandle\ProcessChart.cs" />
+    <Compile Include="BusinessHandle\ReportManager.cs" />
     <Compile Include="BusinessHandle\Ticket.cs" />
     <Compile Include="BusinessHandle\UserInformation.cs" />
     <Compile Include="BusinessHandle\Warehouse.cs" />
@@ -127,6 +128,12 @@
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\role_view.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\sp_BaoCaoTonKho_Result.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\sp_BaoCaoYeuCauPheDuyet_Result.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\store_Identifie.cs">

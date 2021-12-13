@@ -12,6 +12,8 @@ namespace AMS.BUS.DBConnect
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class AMS_DBEntities : DbContext
     {
@@ -45,5 +47,39 @@ namespace AMS.BUS.DBConnect
         public virtual DbSet<usage_history> usage_history { get; set; }
         public virtual DbSet<user_identifie> user_identifie { get; set; }
         public virtual DbSet<view_page> view_page { get; set; }
+    
+        public virtual ObjectResult<sp_BaoCaoTonKho_Result> sp_BaoCaoTonKho(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent)
+        {
+            var dateStartParameter = dateStart.HasValue ?
+                new ObjectParameter("dateStart", dateStart) :
+                new ObjectParameter("dateStart", typeof(System.DateTime));
+    
+            var dateEndParameter = dateEnd.HasValue ?
+                new ObjectParameter("dateEnd", dateEnd) :
+                new ObjectParameter("dateEnd", typeof(System.DateTime));
+    
+            var searchContentParameter = searchContent != null ?
+                new ObjectParameter("searchContent", searchContent) :
+                new ObjectParameter("searchContent", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoTonKho_Result>("sp_BaoCaoTonKho", dateStartParameter, dateEndParameter, searchContentParameter);
+        }
+    
+        public virtual ObjectResult<sp_BaoCaoYeuCauPheDuyet_Result> sp_BaoCaoYeuCauPheDuyet(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent)
+        {
+            var dateStartParameter = dateStart.HasValue ?
+                new ObjectParameter("dateStart", dateStart) :
+                new ObjectParameter("dateStart", typeof(System.DateTime));
+    
+            var dateEndParameter = dateEnd.HasValue ?
+                new ObjectParameter("dateEnd", dateEnd) :
+                new ObjectParameter("dateEnd", typeof(System.DateTime));
+    
+            var searchContentParameter = searchContent != null ?
+                new ObjectParameter("searchContent", searchContent) :
+                new ObjectParameter("searchContent", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoYeuCauPheDuyet_Result>("sp_BaoCaoYeuCauPheDuyet", dateStartParameter, dateEndParameter, searchContentParameter);
+        }
     }
 }

@@ -308,3 +308,17 @@ export const setFunctionTitle = (functionTitle) => {
         functionTitle
     }
 }
+
+export const getReport = (body) => {
+    return{
+        type: type.GET_REPORT,
+        body
+    }
+}
+
+export const getReportSuccess = (result) => {
+    return{
+        type: type.GET_REPORT_SUCCESS,
+        result
+    }
+}

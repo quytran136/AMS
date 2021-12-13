@@ -585,6 +585,7 @@ export function* requestTicketWatcher() {
 
 function* notificationSaga(action) {
     try {
+        const reducer = yield select()
         const notification = yield call(AMS_API.notification, action.body)
         if (!notification) {
             throw new Error("Thao tác không thành công")
@@ -592,7 +593,9 @@ function* notificationSaga(action) {
 
         if (!notification.Message) {
             if (action.body.Key === "GET_NOTIFICATION") {
-                yield put(amsAction.requestNotificationSuccess(notification))
+                if (reducer?.amsReducer?.notifications?.Response?.Notifications.length !== notification?.Response?.Notifications.length) {
+                    yield put(amsAction.requestNotificationSuccess(notification))
+                }
             }
         } else {
             yield put(amsAction.setError(notification))
@@ -607,4 +610,29 @@ function* notificationSaga(action) {
 
 export function* notificationWatcher() {
     yield takeLatest(type.GET_NOTIFICATION, notificationSaga);
+}
+
+function* reportSaga(action) {
+    try {
+        const report = yield call(AMS_API.report, action.body)
+        if (!report) {
+            throw new Error("Thao tác không thành công")
+        }
+
+        if (!report.Message) {
+            console.log(report)
+            yield put(amsAction.getReportSuccess(report))
+        } else {
+            yield put(amsAction.setError(report))
+        }
+    } catch (ex) {
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+export function* reportWatcher() {
+    yield takeLatest(type.GET_REPORT, reportSaga);
 }

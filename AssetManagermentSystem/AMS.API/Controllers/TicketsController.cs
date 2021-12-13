@@ -1,4 +1,5 @@
-﻿using AMS.API.Models.RequestModel;
+﻿using AMS.API.ChatHubManager;
+using AMS.API.Models.RequestModel;
 using AMS.API.Models.ResponseModel;
 using AMS.BUS.BusinessHandle;
 using AMS.BUS.BusModels;
@@ -114,7 +115,6 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_Ticket()
                     });
-
                 case "CREATE_TICKET_LIQUIDATION":
                     BaseModel<string> Liquidation = new Ticket().CreateTicketLiquidation(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.UsageAssetList);
                     return new BaseResponse<Res_Ticket>().Result(Liquidation, new BaseResponse<Res_Ticket>()

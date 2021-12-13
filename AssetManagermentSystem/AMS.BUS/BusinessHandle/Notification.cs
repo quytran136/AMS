@@ -50,6 +50,44 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
+        public BaseModel<List<ams_notification>> GetNotificationByUserID(string id)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<ams_notification> notifications = db.ams_notification
+                    .Where(ptr => ptr.NotificationFor == id && ptr.IsRead == false)
+                    .ToList()
+                    .OrderByDescending(ptr => ptr.CreateDate)
+                    .Select(ptr => new ams_notification()
+                    {
+                        ID = ptr.ID,
+                        Action = ptr.Action,
+                        CreateDate = ptr.CreateDate,
+                        NotificationContent = ptr.NotificationContent,
+                        IsRead = ptr.IsRead,
+                        NotificationFor = ptr.NotificationFor
+                    })
+                    .ToList();
+
+                return new BaseModel<List<ams_notification>>()
+                {
+                    Result = notifications
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<List<ams_notification>>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
         public BaseModel<string> ReadNotificationByUser(string notiID)
         {
             try

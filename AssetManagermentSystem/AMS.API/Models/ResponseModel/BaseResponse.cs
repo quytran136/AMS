@@ -1,4 +1,5 @@
-﻿using AMS.BUS.BusModels;
+﻿using AMS.API.ChatHubManager;
+using AMS.BUS.BusModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

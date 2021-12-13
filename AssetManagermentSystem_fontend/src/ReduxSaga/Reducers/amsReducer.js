@@ -26,7 +26,8 @@ const initialState = {
     notifications: null,
     requestID: null,
     functionTitle: "",
-    report: null
+    report: null,
+    result: null
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -147,9 +148,11 @@ export const amsReducer = (state = initialState, action) => {
                 ticket: action.ticket
             }
         case type.GET_NOTIFICATION_SUCCESS:
-            return {
-                ...state,
-                notifications: action.notifications
+            if(state.notifications?.Response?.Notifications.length !== action.notifications?.Response?.Notifications.length){
+                return {
+                    ...state,
+                    notifications: action.notifications
+                }
             }
         case type.REQUEST_ID:
             return {
@@ -161,7 +164,11 @@ export const amsReducer = (state = initialState, action) => {
                 ...state,
                 functionTitle: action.functionTitle
             }
-
+        case type.GET_REPORT_SUCCESS:
+            return{
+                ...state,
+                result: action.result
+            }
         default:
             return {
                 ...state,

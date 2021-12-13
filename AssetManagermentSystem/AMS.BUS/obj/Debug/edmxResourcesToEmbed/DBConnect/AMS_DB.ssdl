@@ -118,7 +118,7 @@
     <Property Name="CreateDate" Type="datetime" />
     <Property Name="StepID" Type="nvarchar" MaxLength="64" />
     <Property Name="IsApprove" Type="bit" />
-    <Property Name="Description" Type="text" />
+    <Property Name="Description" Type="nvarchar(max)" />
     <Property Name="ProcessID" Type="nvarchar" MaxLength="64" />
     <Property Name="RequestType" Type="nvarchar" MaxLength="50" />
     <Property Name="IsReject" Type="bit" />
@@ -381,6 +381,16 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="sp_BaoCaoTonKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="dateStart" Type="datetime" Mode="In" />
+    <Parameter Name="dateEnd" Type="datetime" Mode="In" />
+    <Parameter Name="searchContent" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_BaoCaoYeuCauPheDuyet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="dateStart" Type="datetime" Mode="In" />
+    <Parameter Name="dateEnd" Type="datetime" Mode="In" />
+    <Parameter Name="searchContent" Type="nvarchar" Mode="In" />
+  </Function>
   <EntityContainer Name="AMS_DBModelStoreContainer">
     <EntitySet Name="ams_config" EntityType="Self.ams_config" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ams_notification" EntityType="Self.ams_notification" Schema="dbo" store:Type="Tables" />

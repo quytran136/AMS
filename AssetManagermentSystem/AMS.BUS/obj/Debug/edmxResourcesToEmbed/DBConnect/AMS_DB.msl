@@ -246,5 +246,33 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoTonKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoTonKho">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTonKho_Result">
+          <ScalarProperty Name="Kho_tài_sản" ColumnName="Kho tài sản" />
+          <ScalarProperty Name="Lớp_tài_sản" ColumnName="Lớp tài sản" />
+          <ScalarProperty Name="Tên_tài_sản" ColumnName="Tên tài sản" />
+          <ScalarProperty Name="Tổng_lượng_tài_sản" ColumnName="Tổng lượng tài sản" />
+          <ScalarProperty Name="Tổng_lượng_tồn_kho" ColumnName="Tổng lượng tồn kho" />
+          <ScalarProperty Name="Tổng_lượng_đã_sử_dụng" ColumnName="Tổng lượng đã sử dụng" />
+          <ScalarProperty Name="Tổng_lượng_đã_thanh_lý" ColumnName="Tổng lượng đã thanh lý" />
+          <ScalarProperty Name="Giá_trị" ColumnName="Giá trị" />
+          <ScalarProperty Name="Ngày_tạo" ColumnName="Ngày tạo" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoYeuCauPheDuyet" FunctionName="AMS_DBModel.Store.sp_BaoCaoYeuCauPheDuyet">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result">
+          <ScalarProperty Name="Loại_yêu_cầu" ColumnName="Loại yêu cầu" />
+          <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+          <ScalarProperty Name="Yêu_cầu_cho" ColumnName="Yêu cầu cho" />
+          <ScalarProperty Name="Số_lượng_yêu_cầu" ColumnName="Số lượng yêu cầu" />
+          <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+          <ScalarProperty Name="Ngày_yêu_cầu" ColumnName="Ngày yêu cầu" />
+          <ScalarProperty Name="Tình_trạng_duyệt" ColumnName="Tình trạng duyệt" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>
