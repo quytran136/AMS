@@ -43,7 +43,7 @@ const UpdateEmployee = (prop) => {
     const [userPassword, setUserPassword] = useState("");
     const [userPassword2, setUserPassword2] = useState("");
     const [userFullName, setUserFullName] = useState();
-    const [DOB, setDOB] = useState();
+    const [DOB, setDOB] = useState(new Date().toISOString());
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
 
@@ -55,7 +55,7 @@ const UpdateEmployee = (prop) => {
         setUserPassword(null)
         setUserPassword2(null)
         setUserFullName(null)
-        setDOB(null)
+        setDOB(new Date().toISOString())
         setEmail(null)
         setPhone(null)
         setShowUserInfo(visible)
@@ -314,9 +314,9 @@ const UpdateEmployee = (prop) => {
             <DatePicker
                 size="default"
                 className="select"
-                format="DD/MM/yyyy"
-                defaultPickerValue={moment(DOB, "DD/MM/yyyy")}
-                // value={DOB}
+                format="YYYY/MM/DD"
+                defaultPickerValue={moment(DOB, "YYYY/MM/DD")}
+                value={moment(DOB, "YYYY/MM/DD")}
                 onChange={(e) => setDOB(e)}
             />
             <br />

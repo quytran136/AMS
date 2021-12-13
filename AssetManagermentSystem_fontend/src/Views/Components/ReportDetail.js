@@ -6,9 +6,10 @@ import {
 } from '@ant-design/icons';
 import { connect, useDispatch } from "react-redux";
 import * as amsAction from '../../ReduxSaga/Actions/action';
+import moment from 'moment';
 
 function ReportDetail(props) {
-    const { key } = props
+    const { data } = props
     const dispatch = useDispatch()
 
     const {
@@ -21,13 +22,18 @@ function ReportDetail(props) {
         result
     } = props.amsStore;
 
-    const [dateChoice, setDateChoice] = useState();
+    const [dateChoice, setDateChoice] = useState(
+        [
+            new Date().toISOString(),
+            new Date().toISOString()
+        ]
+    );
     const [searchContent, setSearchContent] = useState('');
     const [dataTable, setDataTable] = useState();
     const [columns, setColumns] = useState();
 
     function search() {
-        if (key === "R1") {
+        if (data === "R1") {
             const body = {
                 Token: token,
                 Key: "REPORT_1",
@@ -55,7 +61,7 @@ function ReportDetail(props) {
     }
 
     function readDataTable() {
-        if(result){
+        if (result) {
             let columns1 = []
             result.Response.Headers.forEach(element => {
                 columns1.push({
@@ -69,15 +75,19 @@ function ReportDetail(props) {
         }
     }
 
-    function init(){
-        console.log(key)
-        setDateChoice()
-        setSearchContent()
+    function init() {
+        console.log(dateChoice)
+        console.log(data)
+        setDateChoice([
+            new Date().toISOString(),
+            new Date().toISOString()
+        ])
+        setSearchContent('')
         setDataTable()
         setColumns()
     }
 
-    useEffect(init,[key])
+    useEffect(init, [data])
 
     useEffect(readDataTable, [result])
 
@@ -85,10 +95,12 @@ function ReportDetail(props) {
         <div>
             <Row>
                 <Col span={12}>
-                    <DatePicker.RangePicker onChange={(e, dateString) => {
-                        console.log(dateString)
-                        setDateChoice(dateString)
-                    }} />
+                    <DatePicker.RangePicker
+                        value={[moment(dateChoice[0], "YYYY/MM/DD"), moment(dateChoice[1], "YYYY/MM/DD")]}
+                        onChange={(e, dateString) => {
+                            console.log(dateString)
+                            setDateChoice(dateString)
+                        }} />
                 </Col>
                 <Col span={12}>
                     <Input.Group>
@@ -102,7 +114,7 @@ function ReportDetail(props) {
                     <Button
                         type="primary"
                         onClick={() => search()}>
-                        Add new
+                        Read
                     </Button>
                 </Col>
             </Row>
@@ -110,7 +122,7 @@ function ReportDetail(props) {
                 <Col span={24}>
                     <Table
                         scroll={dataTable ? {
-                            y: 550,
+                            y: '70vh',
                             x: '100vw',
                         } : {}}
                         dataSource={dataTable}

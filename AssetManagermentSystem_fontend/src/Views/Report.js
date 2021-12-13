@@ -11,24 +11,25 @@ function Report() {
     {
       key: "R1",
       value: "Báo cáo tồn kho",
-      component: <ReportDetail key="R1"/>,
+      component: <ReportDetail data="R1"/>,
     },
     {
       key: "R2",
       value: "Báo cáo mua sắm tài sản",
-      component: <ReportDetail key="R2"/>,
+      component: <ReportDetail data="R2"/>,
     }
   ]
   const [currentMenu, setCurrentMenu] = useState(tabList[0].key);
 
-  const renderTab = () => {
-    var tab
+  const renderTab = (key) => {
+    console.log(key)
+    var component
     tabList.forEach(element => {
-      if (currentMenu === element.key) {
-        tab = element.component
+      if (key === element.key) {
+        component = element.component
       }
     });
-    return tab
+    return component
   }
 
   const renderMenu = () => {
@@ -38,7 +39,9 @@ function Report() {
         <Menu.Item
           key={element.key}
           icon={element.icon}
-          onClick={() => setCurrentMenu(element.key)}
+          onClick={() => {
+            setCurrentMenu(element.key)
+          }}
         >
           {element.value}
         </Menu.Item>)
@@ -57,7 +60,7 @@ function Report() {
           {renderMenu()}
         </Menu>
         <div className="report-body">
-          {renderTab()}
+          {renderTab(currentMenu)}
         </div>
       </Card>
     </div>
