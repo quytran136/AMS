@@ -10,6 +10,7 @@ import {
 import { connect, useDispatch } from "react-redux";
 import * as amsAction from '../../ReduxSaga/Actions/action';
 import ListAsset from "./ListAsset";
+import VotingHistory from "./VotingHistory";
 
 function Shopping(props) {
     const { data, title } = props;
@@ -81,7 +82,7 @@ function Shopping(props) {
                 })
             });
 
-            if(breakPoint === true){
+            if (breakPoint === true) {
                 return;
             }
 
@@ -164,6 +165,7 @@ function Shopping(props) {
     function ticketContent() {
         if (ticket) {
             setWarehouseSelected(ticket.Response.Ticket.StoreID)
+            setTicketDescription(ticket?.Response.Ticket?.Description)
         }
     }
 
@@ -260,15 +262,38 @@ function Shopping(props) {
                 </Row>
                 <Row>
                     <Col span={24}>
-                        <h4>Diễn giải</h4>
-                        <Input.TextArea
-                            disabled={data ? true : false}
-                            placeholder="Diễn giải"
-                            allowClear
-                            className="text-area input"
-                            onChange={(e) => {
-                                setTicketDescription(e.target.value)
-                            }} />
+                        {data ?
+                            <Row>
+                                <Col span={12}>
+                                    <h4>Diễn giải</h4>
+                                    <Input.TextArea
+                                        disabled={data ? true : false}
+                                        placeholder="Diễn giải"
+                                        allowClear
+                                        value={ticketDescription}
+                                        className="text-area input"
+                                        onChange={(e) => {
+                                            setTicketDescription(e.target.value)
+                                        }} />
+                                </Col>
+                                <Col span={12}>
+                                    <h4>Tiến trình duyệt</h4>
+                                    <VotingHistory dataSource={ticket?.Response.VotingHistory} />
+                                </Col>
+                            </Row> :
+                            <>
+                                <h4>Diễn giải</h4>
+                                <Input.TextArea
+                                    disabled={data ? true : false}
+                                    placeholder="Diễn giải"
+                                    allowClear
+                                    value={ticketDescription}
+                                    className="text-area input"
+                                    onChange={(e) => {
+                                        setTicketDescription(e.target.value)
+                                    }} />
+                            </>
+                        }
                         <h4>Danh sách tài sản</h4>
                         <ListAsset
                             disabled={data ? true : false}

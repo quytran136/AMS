@@ -10,6 +10,7 @@ import {
 import { connect, useDispatch } from "react-redux";
 import * as amsAction from '../../ReduxSaga/Actions/action';
 import SelectAsset from "./SelectAsset";
+import VotingHistory from "./VotingHistory";
 
 function LIQUIDATION(props) {
     const { data, title } = props;
@@ -44,7 +45,7 @@ function LIQUIDATION(props) {
 
         let breakPoint = false
         listAsset.forEach(element => {
-            if(element.Quantity < 1){
+            if (element.Quantity < 1) {
                 dispatch(setError({
                     Code: "AMS_01",
                     Message: "Tối thiểu phải chọn 1 tài sản"
@@ -59,7 +60,7 @@ function LIQUIDATION(props) {
             })
         });
 
-        if(breakPoint === true){
+        if (breakPoint === true) {
             return;
         }
 
@@ -206,16 +207,38 @@ function LIQUIDATION(props) {
                 </Row>
                 <Row>
                     <Col span={24}>
-                        <h4>Diễn giải</h4>
-                        <Input.TextArea
-                            disabled={data ? true : false}
-                            placeholder="Diễn giải"
-                            allowClear
-                            value={ticketDescription}
-                            className="text-area input"
-                            onChange={(e) => {
-                                setTicketDescription(e.target.value)
-                            }} />
+                        {data ?
+                            <Row>
+                                <Col span={12}>
+                                    <h4>Diễn giải</h4>
+                                    <Input.TextArea
+                                        disabled={data ? true : false}
+                                        placeholder="Diễn giải"
+                                        allowClear
+                                        value={ticketDescription}
+                                        className="text-area input"
+                                        onChange={(e) => {
+                                            setTicketDescription(e.target.value)
+                                        }} />
+                                </Col>
+                                <Col span={12}>
+                                    <h4>Tiến trình duyệt</h4>
+                                    <VotingHistory dataSource={ticket?.Response.VotingHistory} />
+                                </Col>
+                            </Row> :
+                            <>
+                                <h4>Diễn giải</h4>
+                                <Input.TextArea
+                                    disabled={data ? true : false}
+                                    placeholder="Diễn giải"
+                                    allowClear
+                                    value={ticketDescription}
+                                    className="text-area input"
+                                    onChange={(e) => {
+                                        setTicketDescription(e.target.value)
+                                    }} />
+                            </>
+                        }
                         <h4>Danh sách tài sản</h4>
                         <SelectAsset
                             disabledSelectEmployee={true}

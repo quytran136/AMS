@@ -160,6 +160,9 @@
     <Compile Include="DBConnect\view_page.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBConnect\voting_history.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

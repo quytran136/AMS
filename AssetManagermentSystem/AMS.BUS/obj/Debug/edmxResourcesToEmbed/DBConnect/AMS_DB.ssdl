@@ -46,7 +46,7 @@
     <Property Name="TicketID" Type="nvarchar" MaxLength="64" />
     <Property Name="IsActive" Type="bit" />
     <Property Name="Unit" Type="nvarchar" MaxLength="50" />
-    <Property Name="Description" Type="text" />
+    <Property Name="Description" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Department">
     <Key>
@@ -224,6 +224,17 @@
     <Property Name="ID" Type="varchar" MaxLength="64" Nullable="false" />
     <Property Name="ViewName" Type="nvarchar" MaxLength="128" />
     <Property Name="ViewKey" Type="varchar" MaxLength="64" />
+  </EntityType>
+  <EntityType Name="voting_history">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
+    <Property Name="TicketID" Type="nvarchar" MaxLength="64" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Actor" Type="nvarchar" MaxLength="64" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="Action" Type="nvarchar" MaxLength="64" />
   </EntityType>
   <Association Name="FK_asset_detail_asset_classify">
     <End Role="asset_classify" Type="Self.asset_classify" Multiplicity="0..1" />
@@ -444,6 +455,7 @@
     <EntitySet Name="usage_history" EntityType="Self.usage_history" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="user_identifie" EntityType="Self.user_identifie" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="view_page" EntityType="Self.view_page" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="voting_history" EntityType="Self.voting_history" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_asset_detail_asset_classify" Association="Self.FK_asset_detail_asset_classify">
       <End Role="asset_classify" EntitySet="asset_classify" />
       <End Role="asset_detail" EntitySet="asset_detail" />

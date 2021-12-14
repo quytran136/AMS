@@ -47,6 +47,7 @@ namespace AMS.BUS.DBConnect
         public virtual DbSet<usage_history> usage_history { get; set; }
         public virtual DbSet<user_identifie> user_identifie { get; set; }
         public virtual DbSet<view_page> view_page { get; set; }
+        public virtual DbSet<voting_history> voting_history { get; set; }
     
         public virtual ObjectResult<sp_BaoCaoTonKho_Result> sp_BaoCaoTonKho(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent)
         {

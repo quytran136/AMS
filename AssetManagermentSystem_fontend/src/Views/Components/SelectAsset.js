@@ -95,8 +95,8 @@ function SelectAsset(props) {
         if (listAsset) {
             assetClassifies.Response.AssetClassifies.forEach((element) => {
                 if (item.AssetClassifyID === element.Asset_Classify.ID) {
+                    item.Assets = []
                     element.Asset_Details.forEach(element1 => {
-                        item.Assets = []
                         item.Assets.push({
                             value: element1.ID,
                             label: element1.AssetFullName,
@@ -104,7 +104,6 @@ function SelectAsset(props) {
                     });
                 }
             })
-
             assetClassifies.Response.AssetClassifies.forEach((element) => {
                 if (item.AssetClassifyID === element.Asset_Classify.ID) {
                     element.Asset_Details.forEach(element1 => {
@@ -112,18 +111,14 @@ function SelectAsset(props) {
                             item.QuantityInStock = element1.QuantityInStock
                             item.Unit = element1.Unit
                             item.Description = element1.Description
-                        } else {
-                            item.QuantityInStock = ""
-                            item.Unit = ""
-                            item.Description = ""
                         }
                     });
                 }
             })
-
             listAsset.forEach(element => {
                 if (element.ID === item.ID) {
                     list.push(item)
+                    console.log(item)
                 } else {
                     list.push(element)
                 }
@@ -167,8 +162,8 @@ function SelectAsset(props) {
                                 if (assetClassifies) {
                                     assetClassifies.Response.AssetClassifies.forEach((element) => {
                                         if (a.AssetClassifyID === element.Asset_Classify.ID) {
+                                            item.Assets = []
                                             element.Asset_Details.forEach(element1 => {
-                                                item.Assets = []
                                                 item.Assets.push({
                                                     value: element1.ID,
                                                     label: element1.AssetFullName,

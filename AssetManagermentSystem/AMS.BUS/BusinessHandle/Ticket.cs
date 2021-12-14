@@ -15,6 +15,52 @@ namespace AMS.BUS.BusinessHandle
         public request_ticket_history Request { get; set; }
         public List<asset_detail> Assets { get; set; }
         public List<usage_history> UsageHistories { get; set; }
+        public List<VotingHistory> VotingHistory { get; set; }
+
+        private void saveVotingHistory(string tiketID, string actor, string note, string action)
+        {
+            try
+            {
+                var db = DBC.Init;
+                db.voting_history.Add(new voting_history()
+                {
+                    ID = Guid.NewGuid().ToString(),
+                    Action = action,
+                    Actor = actor,
+                    CreateDate = DateTime.Now,
+                    Description = note,
+                    TicketID = tiketID
+                });
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<VotingHistory> getVotingHistory(string ticketID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<VotingHistory> voting = (from a in db.voting_history
+                                               join b in db.user_identifie on a.Actor equals b.ID
+                                               where a.TicketID == ticketID
+                                               orderby a.CreateDate descending
+                                               select new VotingHistory()
+                                               {
+                                                   CreateDate = a.CreateDate,
+                                                   Creator = b.UserFullName,
+                                                   Message = a.Description
+                                               }).ToList();
+                return voting;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         // yêu cầu mua sắm
         public BaseModel<string> CreateTicketShopping(string requestBy, string storeID, string description, string processID, List<asset_detail> details)
@@ -122,8 +168,9 @@ namespace AMS.BUS.BusinessHandle
                 }
 
                 db.ams_notification.AddRange(notis);
-
                 db.SaveChanges();
+                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", "SHOPPING");
                 return new BaseModel<string>();
             }
             catch (Exception ex)
@@ -182,6 +229,7 @@ namespace AMS.BUS.BusinessHandle
                     {
                         Request = request,
                         Assets = assets,
+                        VotingHistory = getVotingHistory(requestID)
                     }
                 };
             }
@@ -198,7 +246,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> ApproveTicketShopping(string requestID, string requestType)
+        public BaseModel<Ticket> ApproveTicketShopping(string requestBy, string requestID, string requestType)
         {
             try
             {
@@ -251,6 +299,8 @@ namespace AMS.BUS.BusinessHandle
 
                     db.ams_notification.Add(noti);
                     db.SaveChanges();
+                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "SHOPPING");
                 }
                 else
                 {
@@ -319,6 +369,8 @@ namespace AMS.BUS.BusinessHandle
 
                     db.ams_notification.AddRange(notis);
                     db.SaveChanges();
+                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "SHOPPING");
                 }
 
                 return new BaseModel<Ticket>()
@@ -339,7 +391,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> RejectTicketShopping(string requestID, string requestType)
+        public BaseModel<Ticket> RejectTicketShopping(string requestBy,string requestID, string requestType)
         {
             try
             {
@@ -382,7 +434,8 @@ namespace AMS.BUS.BusinessHandle
                 db.ams_notification.Add(noti);
 
                 db.SaveChanges();
-
+                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                saveVotingHistory(requestID, user1.ID, "Từ chối", "SHOPPING");
                 return new BaseModel<Ticket>()
                 {
                     Result = new Ticket()
@@ -457,7 +510,8 @@ namespace AMS.BUS.BusinessHandle
                     {
                         Request = request,
                         Assets = assets,
-                        UsageHistories = usages
+                        UsageHistories = usages,
+                        VotingHistory = getVotingHistory(requestID)
                     }
                 };
             }
@@ -583,6 +637,8 @@ namespace AMS.BUS.BusinessHandle
                 db.ams_notification.AddRange(notis);
 
                 db.SaveChanges();
+                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", "ALLOCATION");
                 return new BaseModel<string>();
             }
             catch (Exception ex)
@@ -598,7 +654,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> ApproveTicketAllocation(string requestID, string requestType)
+        public BaseModel<Ticket> ApproveTicketAllocation(string requestBy, string requestID, string requestType)
         {
             try
             {
@@ -644,6 +700,8 @@ namespace AMS.BUS.BusinessHandle
 
                     db.ams_notification.Add(noti);
                     db.SaveChanges();
+                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "ALLOCATION");
                 }
                 else
                 {
@@ -712,6 +770,8 @@ namespace AMS.BUS.BusinessHandle
 
                     db.ams_notification.AddRange(notis);
                     db.SaveChanges();
+                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "ALLOCATION");
                 }
 
                 return new BaseModel<Ticket>()
@@ -732,7 +792,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> RejectTicketAllocation(string requestID, string requestType)
+        public BaseModel<Ticket> RejectTicketAllocation(string requestBy, string requestID, string requestType)
         {
             try
             {
@@ -767,7 +827,8 @@ namespace AMS.BUS.BusinessHandle
                 db.ams_notification.Add(noti);
 
                 db.SaveChanges();
-
+                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                saveVotingHistory(requestID, user1.ID, "Từ chối", "ALLOCATION");
                 return new BaseModel<Ticket>()
                 {
                     Result = new Ticket()
@@ -856,7 +917,8 @@ namespace AMS.BUS.BusinessHandle
                     {
                         Request = request,
                         Assets = assets,
-                        UsageHistories = usages
+                        UsageHistories = usages,
+                        VotingHistory = getVotingHistory(requestID)
                     }
                 };
             }
@@ -961,6 +1023,8 @@ namespace AMS.BUS.BusinessHandle
                 db.ams_notification.AddRange(notis);
 
                 db.SaveChanges();
+                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", "RECOVERY");
                 return new BaseModel<string>();
             }
             catch (Exception ex)
@@ -976,7 +1040,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> ApproveTicketRecovery(string requestID, string requestType)
+        public BaseModel<Ticket> ApproveTicketRecovery(string requestBy, string requestID, string requestType)
         {
             try
             {
@@ -1022,6 +1086,8 @@ namespace AMS.BUS.BusinessHandle
 
                     db.ams_notification.Add(noti);
                     db.SaveChanges();
+                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "RECOVERY");
                 }
                 else
                 {
@@ -1090,6 +1156,8 @@ namespace AMS.BUS.BusinessHandle
 
                     db.ams_notification.AddRange(notis);
                     db.SaveChanges();
+                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "RECOVERY");
                 }
 
                 return new BaseModel<Ticket>()
@@ -1110,7 +1178,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> RejectTicketRecovery(string requestID, string requestType)
+        public BaseModel<Ticket> RejectTicketRecovery(string requestBy, string requestID, string requestType)
         {
             try
             {
@@ -1145,7 +1213,8 @@ namespace AMS.BUS.BusinessHandle
                 db.ams_notification.Add(noti);
 
                 db.SaveChanges();
-
+                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                saveVotingHistory(requestID, user1.ID, "Từ chối", "RECOVERY");
                 return new BaseModel<Ticket>()
                 {
                     Result = new Ticket()
@@ -1234,7 +1303,8 @@ namespace AMS.BUS.BusinessHandle
                     {
                         Request = request,
                         Assets = assets,
-                        UsageHistories = usages
+                        UsageHistories = usages,
+                        VotingHistory = getVotingHistory(requestID)
                     }
                 };
             }
@@ -1348,6 +1418,8 @@ namespace AMS.BUS.BusinessHandle
                 db.ams_notification.AddRange(notis);
 
                 db.SaveChanges();
+                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", "LIQUIDATION");
                 return new BaseModel<string>();
             }
             catch (Exception ex)
@@ -1363,7 +1435,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> ApproveTicketLiquidation(string requestID, string requestType)
+        public BaseModel<Ticket> ApproveTicketLiquidation(string requestBy, string requestID, string requestType)
         {
             try
             {
@@ -1409,6 +1481,8 @@ namespace AMS.BUS.BusinessHandle
 
                     db.ams_notification.Add(noti);
                     db.SaveChanges();
+                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "LIQUIDATION");
                 }
                 else
                 {
@@ -1477,6 +1551,8 @@ namespace AMS.BUS.BusinessHandle
 
                     db.ams_notification.AddRange(notis);
                     db.SaveChanges();
+                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "LIQUIDATION");
                 }
 
                 return new BaseModel<Ticket>()
@@ -1497,7 +1573,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> RejectTicketLiquidation(string requestID, string requestType)
+        public BaseModel<Ticket> RejectTicketLiquidation(string requestBy, string requestID, string requestType)
         {
             try
             {
@@ -1532,7 +1608,8 @@ namespace AMS.BUS.BusinessHandle
                 db.ams_notification.Add(noti);
 
                 db.SaveChanges();
-
+                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
+                saveVotingHistory(requestID, user1.ID, "Từ chối", "LIQUIDATION");
                 return new BaseModel<Ticket>()
                 {
                     Result = new Ticket()
@@ -1575,5 +1652,12 @@ namespace AMS.BUS.BusinessHandle
         public string Key { get; set; }
         public string Value { get; set; }
         public string Path { get; set; }
+    }
+
+    public class VotingHistory
+    {
+        public DateTime? CreateDate { get; set; }
+        public string Creator { get; set; }
+        public string Message { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AMS.BUS.DBConnect;
+﻿using AMS.BUS.BusinessHandle;
+using AMS.BUS.DBConnect;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace AMS.API.Models.ResponseModel
         public request_ticket_history Ticket { get; set; }
         public List<asset_detail> Assets { get; set; }
         public List<usage_history> UsageList { get; set; }
+        public List<VotingHistory> VotingHistory { get; set; }
     }
 }
