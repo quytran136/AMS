@@ -206,20 +206,6 @@ namespace AMS.BUS.BusinessHandle
                 request_ticket_history request = db.request_ticket_history
                                 .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
                                 .ToList()
-                                .Select(ptr => new request_ticket_history()
-                                {
-                                    ID = ptr.ID,
-                                    RequestBy = ptr.RequestBy,
-                                    StepID = ptr.StepID,
-                                    IsApprove = ptr.IsApprove,
-                                    CreateDate = ptr.CreateDate,
-                                    Description = ptr.Description,
-                                    IsReject = ptr.IsReject,
-                                    ProcessID = ptr.ProcessID,
-                                    RequestType = ptr.RequestType,
-                                    StoreID = ptr.StoreID
-                                })
-                                .ToList()
                                 .FirstOrDefault();
                 List<asset_detail> assets = db.asset_detail
                                             .Where(ptr => ptr.TicketID == requestID)
@@ -247,6 +233,23 @@ namespace AMS.BUS.BusinessHandle
                         ase.IsActive = true;
                         ase.QuantityInStock = item.QuantityOriginalStock;
                     }
+                    user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
+                    ams_notification noti = new ams_notification()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        CreateDate = DateTime.Now,
+                        IsRead = false,
+                        NotificationContent = "Yêu cầu mua sắm tài sản đã được phê duyệt",
+                        NotificationFor = user.ID,
+                        Action = JsonConvert.SerializeObject(new RequestAction()
+                        {
+                            Key = "REJECT",
+                            Value = request.ID,
+                            Path = "/Shopping"
+                        }),
+                    };
+
+                    db.ams_notification.Add(noti);
                     db.SaveChanges();
                 }
                 else
@@ -321,10 +324,6 @@ namespace AMS.BUS.BusinessHandle
                 return new BaseModel<Ticket>()
                 {
                     Result = new Ticket()
-                    {
-                        Request = request,
-                        Assets = assets
-                    }
                 };
             }
             catch (Exception ex)
@@ -627,6 +626,23 @@ namespace AMS.BUS.BusinessHandle
                         ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
                         ase.QuantityUsed = ase.QuantityUsed + item.Quantity;
                     }
+                    user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
+                    ams_notification noti = new ams_notification()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        CreateDate = DateTime.Now,
+                        IsRead = false,
+                        NotificationContent = "Yêu cầu cấp phát tài sản đã được phê duyệt",
+                        NotificationFor = user.ID,
+                        Action = JsonConvert.SerializeObject(new RequestAction()
+                        {
+                            Key = "REJECT",
+                            Value = request.ID,
+                            Path = ""
+                        }),
+                    };
+
+                    db.ams_notification.Add(noti);
                     db.SaveChanges();
                 }
                 else
@@ -988,6 +1004,23 @@ namespace AMS.BUS.BusinessHandle
                         item.IsLiquidation = false;
                         item.IsRecovery = true;
                     }
+                    user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
+                    ams_notification noti = new ams_notification()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        CreateDate = DateTime.Now,
+                        IsRead = false,
+                        NotificationContent = "Yêu cầu thu hồi tài sản đã được phê duyệt",
+                        NotificationFor = user.ID,
+                        Action = JsonConvert.SerializeObject(new RequestAction()
+                        {
+                            Key = "REJECT",
+                            Value = request.ID,
+                            Path = ""
+                        }),
+                    };
+
+                    db.ams_notification.Add(noti);
                     db.SaveChanges();
                 }
                 else
@@ -1358,6 +1391,23 @@ namespace AMS.BUS.BusinessHandle
                         ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
                         ase.QuantityDestroyed = ase.QuantityDestroyed + item.Quantity;
                     }
+                    user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
+                    ams_notification noti = new ams_notification()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        CreateDate = DateTime.Now,
+                        IsRead = false,
+                        NotificationContent = "Yêu cầu thanh lý tài sản đã được phê duyệt",
+                        NotificationFor = user.ID,
+                        Action = JsonConvert.SerializeObject(new RequestAction()
+                        {
+                            Key = "REJECT",
+                            Value = request.ID,
+                            Path = ""
+                        }),
+                    };
+
+                    db.ams_notification.Add(noti);
                     db.SaveChanges();
                 }
                 else

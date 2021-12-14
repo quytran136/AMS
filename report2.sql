@@ -1,6 +1,6 @@
 USE [AMS_DB]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BaoCaoTonKho]    Script Date: 2021-12-13 9:51:26 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_BaoCaoTonKho]    Script Date: 2021-12-14 11:11:11 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

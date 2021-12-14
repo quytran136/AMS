@@ -590,7 +590,7 @@ function* notificationSaga(action) {
         if (!notification) {
             throw new Error("Thao tác không thành công")
         }
-
+        yield put(amsAction.requestNotificationSuccess(null))
         if (!notification.Message) {
             if (action.body.Key === "GET_NOTIFICATION") {
                 if (reducer?.amsReducer?.notifications?.Response?.Notifications.length !== notification?.Response?.Notifications.length) {
