@@ -1,6 +1,8 @@
-﻿using System;
+﻿using AMS.API.Jobs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -13,6 +15,7 @@ namespace AMS.API
     {
         protected void Application_Start()
         {
+            Task.Run(() => JobScheduler.Start());
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

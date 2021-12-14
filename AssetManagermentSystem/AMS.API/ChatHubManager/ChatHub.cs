@@ -58,7 +58,7 @@ namespace AMS.API.ChatHubManager
         public void OnNotification(string userid)
         {
             var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-            var user = new UserInformation().GetUserInfor(userid);
+            var user = new UserInformation().GetUserInforByID(userid);
             if (user.Result == null)
             {
                 return;

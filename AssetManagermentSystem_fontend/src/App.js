@@ -101,8 +101,11 @@ function App(prop) {
       })
     hubProxy.on('OnNotification', (message) => {
       let notification1 = JSON.parse(message)
+      console.log(message)
       if (!notification1.Message) {
-        dispatch(requestNotificationSuccess(notification1))
+        if(notification1.Response){
+          dispatch(requestNotificationSuccess(notification1))
+        }
       } else {
         dispatch(setError(notification1))
       }

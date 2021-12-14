@@ -549,7 +549,7 @@ function* requestTicketSaga(action) {
         if (!ticket) {
             throw new Error("Thao tác không thành công")
         }
-
+        yield put(amsAction.requestNotificationSuccess(null))
         if (!ticket.Message) {
             switch (action.body.Key) {
                 case "GET_TICKET_SHOPPING":

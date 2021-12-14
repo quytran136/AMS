@@ -148,11 +148,9 @@ export const amsReducer = (state = initialState, action) => {
                 ticket: action.ticket
             }
         case type.GET_NOTIFICATION_SUCCESS:
-            if(state.notifications?.Response?.Notifications.length !== action.notifications?.Response?.Notifications.length){
-                return {
-                    ...state,
-                    notifications: action.notifications
-                }
+            return {
+                ...state,
+                notifications: action.notifications
             }
         case type.REQUEST_ID:
             return {
@@ -165,7 +163,7 @@ export const amsReducer = (state = initialState, action) => {
                 functionTitle: action.functionTitle
             }
         case type.GET_REPORT_SUCCESS:
-            return{
+            return {
                 ...state,
                 result: action.result
             }

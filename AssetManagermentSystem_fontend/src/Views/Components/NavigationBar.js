@@ -49,6 +49,8 @@ const NavigationBar = (prop) => {
                 }
             });
             setCountNotification(count)
+        }else{
+            setCountNotification(0)
         }
     }
 
