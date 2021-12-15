@@ -1,6 +1,6 @@
 USE [AMS_DB]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BaoCaoYeuCauPheDuyet]    Script Date: 2021-12-14 11:10:28 AM ******/
+/****** Object:  StoredProcedure [dbo].[sp_BaoCaoYeuCauPheDuyet]    Script Date: 2021-12-15 8:56:08 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8,8 +8,9 @@ GO
 ALTER PROCEDURE [dbo].[sp_BaoCaoYeuCauPheDuyet]
 	@dateStart datetime,
 	@dateEnd datetime,
-	@searchContent NVARCHAR
+	@searchContent NVARCHAR(MAX)
 AS
+-- [dbo].[sp_BaoCaoYeuCauPheDuyet] '2021-10-14 09:57:50.200', '2021-12-14 09:57:50.200', 'Mua'
 	SELECT 
 	rt.RequestType [Loại yêu cầu],
 	rt.RequestBy [Người yêu cầu],
