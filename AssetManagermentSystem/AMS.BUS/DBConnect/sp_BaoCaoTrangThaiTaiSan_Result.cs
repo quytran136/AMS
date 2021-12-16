@@ -11,12 +11,11 @@ namespace AMS.BUS.DBConnect
 {
     using System;
     
-    public partial class sp_helpdiagrams_Result
+    public partial class sp_BaoCaoTrangThaiTaiSan_Result
     {
-        public string Database { get; set; }
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public string Owner { get; set; }
-        public int OwnerID { get; set; }
+        public Nullable<int> requestShopping { get; set; }
+        public Nullable<int> requestAllocation { get; set; }
+        public Nullable<int> requestRecovery { get; set; }
+        public Nullable<int> requestLiquidation { get; set; }
     }
 }

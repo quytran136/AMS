@@ -98,5 +98,71 @@ namespace AMS.BUS.BusinessHandle
                 };
             }
         }
+    
+        public BaseModel<ReportManager> GetReport3()
+        {
+            try
+            {
+                var db = DBC.Init;
+                var result = db.sp_BaoCaoTrangThaiTaiSan().ToList();
+                List<string> header = new List<string>();
+                foreach (var index in typeof(sp_BaoCaoTrangThaiTaiSan_Result).GetProperties())
+                {
+                    header.Add(index.Name);
+                }
+                return new BaseModel<ReportManager>()
+                {
+                    Result = new ReportManager()
+                    {
+                        Headers = header,
+                        Result = JsonConvert.SerializeObject(result)
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<ReportManager>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public BaseModel<ReportManager> GetReport4()
+        {
+            try
+            {
+                var db = DBC.Init;
+                var result = db.sp_BaoCaoTinhTrangSuDung().ToList();
+                List<string> header = new List<string>();
+                foreach (var index in typeof(sp_BaoCaoTinhTrangSuDung_Result).GetProperties())
+                {
+                    header.Add(index.Name);
+                }
+                return new BaseModel<ReportManager>()
+                {
+                    Result = new ReportManager()
+                    {
+                        Headers = header,
+                        Result = JsonConvert.SerializeObject(result)
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<ReportManager>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
     }
 }

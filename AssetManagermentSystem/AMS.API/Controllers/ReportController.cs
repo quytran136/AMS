@@ -49,6 +49,28 @@ namespace AMS.API.Controllers
                             Result = result1.Result.Result
                         }
                     });
+                case "REPORT_3":
+                    BaseModel<ReportManager> result2 = report.GetReport3();
+                    BaseModel<ReportManager> result3 = report.GetReport4();
+                    List<Res_Report> res_s = new List<Res_Report>();
+                    res_s.Add(new Res_Report()
+                    {
+                        Headers = result2.Result.Headers,
+                        Result = result2.Result.Result
+                    });
+                    res_s.Add(new Res_Report()
+                    {
+                        Headers = result3.Result.Headers,
+                        Result = result3.Result.Result
+                    });
+                    return new BaseResponse<Res_Report>().Result(result3, new BaseResponse<Res_Report>()
+                    {
+                        Response = new Res_Report()
+                        {
+                            Res_Reports = res_s
+                        }
+                    });
+                case "REPORT_4":
                 default:
                     return new BaseResponse<Res_Report>()
                     {

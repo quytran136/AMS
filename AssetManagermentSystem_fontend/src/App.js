@@ -84,7 +84,6 @@ function App(prop) {
       }
       getConfigCommon(cookie.userName, cookie.token)
       dispatch(requestNotification(body))
-      console.log(connection.state)
       initSignalR(cookie.userName)
     }
   }
@@ -101,7 +100,6 @@ function App(prop) {
       })
     hubProxy.on('OnNotification', (message) => {
       let notification1 = JSON.parse(message)
-      console.log(message)
       if (!notification1.Message) {
         if(notification1.Response){
           dispatch(requestNotificationSuccess(notification1))

@@ -130,16 +130,16 @@
     <Compile Include="DBConnect\role_view.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBConnect\sp_BaoCaoTinhTrangSuDung_Result.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBConnect\sp_BaoCaoTonKho_Result.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBConnect\sp_BaoCaoTrangThaiTaiSan_Result.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBConnect\sp_BaoCaoYeuCauPheDuyet_Result.cs">
-      <DependentUpon>AMS_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBConnect\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>AMS_DB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DBConnect\sp_helpdiagrams_Result.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\store_Identifie.cs">

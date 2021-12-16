@@ -9,5 +9,6 @@ namespace AMS.API.Models.ResponseModel
     {
         public List<string> Headers { get; set; }
         public string Result { get; set; }
+        public List<Res_Report> Res_Reports { get; set; }
     }
 }

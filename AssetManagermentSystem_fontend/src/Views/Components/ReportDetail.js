@@ -61,7 +61,7 @@ function ReportDetail(props) {
     }
 
     function readDataTable() {
-        if (result) {
+        if (result && result.Response.Headers) {
             let columns1 = []
             result.Response.Headers.forEach(element => {
                 columns1.push({
