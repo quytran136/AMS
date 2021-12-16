@@ -25,8 +25,8 @@ function* signinSaga(action) {
             }), 1)
             var cookie = JSON.parse(cookieHandle.getCookie("BASE"))
             yield put(amsAction.saveToken(token.Response.TokenString));
-            yield put(amsAction.saveCookie(cookie));
             yield put(amsAction.saveUserLogin(action.body.Data.UserName))
+            yield put(amsAction.saveCookie(cookie));
         }
     } catch (ex) {
         yield put(amsAction.setError({

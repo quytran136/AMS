@@ -37,7 +37,7 @@ namespace AMS.BUS.BusinessHandle
                 {
                     string token = TokenHandle.Init(userName, userPassword);
                     BaseModel<string> savetoken = SaveToken(token, user.ID);
-                    if (!string.IsNullOrEmpty(savetoken?    .Exception?.Message))
+                    if (!string.IsNullOrEmpty(savetoken?.Exception?.Message))
                     {
                         return savetoken;
                     }

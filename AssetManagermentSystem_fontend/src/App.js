@@ -46,8 +46,7 @@ function App(prop) {
     showMenu,
     message,
     requestID,
-    functionTitle,
-    notifications
+    functionTitle
   } = prop.amsStore;
   const {
     saveCookie,
