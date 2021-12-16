@@ -124,6 +124,10 @@ namespace AMS.BUS.BusinessHandle
                         users.Add(element.ID);
                     }
                 }
+                else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
+                {
+                    users.Add(Approvers[0]);
+                }
 
                 foreach (string item in Approvers)
                 {
@@ -320,7 +324,7 @@ namespace AMS.BUS.BusinessHandle
                             users.Add(element.ID);
                         }
                     }
-                    else if (Approvers[1] == "")
+                    else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
                     {
                         users.Add(Approvers[0]);
                     }
@@ -591,6 +595,10 @@ namespace AMS.BUS.BusinessHandle
                         users.Add(element.ID);
                     }
                 }
+                else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
+                {
+                    users.Add(Approvers[0]);
+                }
 
                 foreach (string item in Approvers)
                 {
@@ -721,7 +729,7 @@ namespace AMS.BUS.BusinessHandle
                             users.Add(element.ID);
                         }
                     }
-                    else if (Approvers[1] == "")
+                    else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
                     {
                         users.Add(Approvers[0]);
                     }
@@ -977,6 +985,10 @@ namespace AMS.BUS.BusinessHandle
                         users.Add(element.ID);
                     }
                 }
+                else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
+                {
+                    users.Add(Approvers[0]);
+                }
 
                 foreach (string item in Approvers)
                 {
@@ -1107,7 +1119,7 @@ namespace AMS.BUS.BusinessHandle
                             users.Add(element.ID);
                         }
                     }
-                    else if (Approvers[1] == "")
+                    else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
                     {
                         users.Add(Approvers[0]);
                     }
@@ -1372,6 +1384,10 @@ namespace AMS.BUS.BusinessHandle
                         users.Add(element.ID);
                     }
                 }
+                else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
+                {
+                    users.Add(Approvers[0]);
+                }
 
                 foreach (string item in Approvers)
                 {
@@ -1502,7 +1518,7 @@ namespace AMS.BUS.BusinessHandle
                             users.Add(element.ID);
                         }
                     }
-                    else if (Approvers[1] == "")
+                    else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
                     {
                         users.Add(Approvers[0]);
                     }
