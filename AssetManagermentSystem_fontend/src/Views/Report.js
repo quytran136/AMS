@@ -15,7 +15,7 @@ function Report() {
     },
     {
       key: "R2",
-      value: "Báo cáo mua sắm tài sản",
+      value: "Báo cáo tổng hợp các yêu cầu",
       component: <ReportDetail data="R2"/>,
     }
   ]

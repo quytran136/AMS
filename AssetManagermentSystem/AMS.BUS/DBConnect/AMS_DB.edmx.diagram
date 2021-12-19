@@ -6,25 +6,25 @@
     <edmx:Diagrams>
       <Diagram DiagramId="60b1598cf69f4c1d81151293c49e22d3" Name="Diagram1" ZoomLevel="88" ShowGrid="true">
         <EntityTypeShape EntityType="AMS_DBModel.ams_config" Width="1.5" PointX="5.75" PointY="1.875" />
-        <EntityTypeShape EntityType="AMS_DBModel.ams_notification" Width="1.5" PointX="5.75" PointY="9.875" />
-        <EntityTypeShape EntityType="AMS_DBModel.asset_classify" Width="1.5" PointX="8.75" PointY="12.125" />
+        <EntityTypeShape EntityType="AMS_DBModel.ams_notification" Width="1.5" PointX="10.75" PointY="11.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.asset_classify" Width="1.5" PointX="8.75" PointY="6.875" />
         <EntityTypeShape EntityType="AMS_DBModel.asset_detail" Width="1.5" PointX="11" PointY="2.125" />
-        <EntityTypeShape EntityType="AMS_DBModel.Department" Width="1.5" PointX="10.75" PointY="13.125" />
-        <EntityTypeShape EntityType="AMS_DBModel.function" Width="1.5" PointX="3.75" PointY="13.375" />
+        <EntityTypeShape EntityType="AMS_DBModel.Department" Width="1.5" PointX="10.75" PointY="8.125" />
+        <EntityTypeShape EntityType="AMS_DBModel.function" Width="1.5" PointX="0.75" PointY="10.5" />
         <EntityTypeShape EntityType="AMS_DBModel.message_list" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="AMS_DBModel.Organizational" Width="1.5" PointX="13" PointY="13" />
-        <EntityTypeShape EntityType="AMS_DBModel.Process" Width="1.5" PointX="10.75" PointY="8.625" />
-        <EntityTypeShape EntityType="AMS_DBModel.ProcessStep" Width="1.5" PointX="13" PointY="8" />
-        <EntityTypeShape EntityType="AMS_DBModel.request_ticket_history" Width="1.5" PointX="8.75" PointY="8.25" />
-        <EntityTypeShape EntityType="AMS_DBModel.role" Width="1.5" PointX="3.75" PointY="10.5" />
-        <EntityTypeShape EntityType="AMS_DBModel.role_function" Width="1.5" PointX="6" PointY="5.5" />
-        <EntityTypeShape EntityType="AMS_DBModel.role_view" Width="1.5" PointX="3" PointY="5.5" />
-        <EntityTypeShape EntityType="AMS_DBModel.store_Identifie" Width="1.5" PointX="8.75" PointY="3.25" />
-        <EntityTypeShape EntityType="AMS_DBModel.sysdiagram" Width="1.5" PointX="0.75" PointY="12.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.Organizational" Width="1.5" PointX="13" PointY="8" />
+        <EntityTypeShape EntityType="AMS_DBModel.Process" Width="1.5" PointX="2.75" PointY="12.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.ProcessStep" Width="1.5" PointX="5" PointY="12" />
+        <EntityTypeShape EntityType="AMS_DBModel.request_ticket_history" Width="1.5" PointX="8.75" PointY="2.75" />
+        <EntityTypeShape EntityType="AMS_DBModel.role" Width="1.5" PointX="0.75" PointY="13" />
+        <EntityTypeShape EntityType="AMS_DBModel.role_function" Width="1.5" PointX="3" PointY="5.5" />
+        <EntityTypeShape EntityType="AMS_DBModel.role_view" Width="1.5" PointX="6" PointY="5.5" />
+        <EntityTypeShape EntityType="AMS_DBModel.store_Identifie" Width="1.5" PointX="8.75" PointY="10.625" />
+        <EntityTypeShape EntityType="AMS_DBModel.sysdiagram" Width="1.5" PointX="7.75" PointY="13.875" />
         <EntityTypeShape EntityType="AMS_DBModel.system_log" Width="1.5" PointX="3" PointY="1.625" />
-        <EntityTypeShape EntityType="AMS_DBModel.usage_history" Width="1.5" PointX="5.75" PointY="12.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.usage_history" Width="1.5" PointX="12.75" PointY="11.875" />
         <EntityTypeShape EntityType="AMS_DBModel.user_identifie" Width="1.5" PointX="0.75" PointY="4.625" />
-        <EntityTypeShape EntityType="AMS_DBModel.view_page" Width="1.5" PointX="0.75" PointY="9.875" />
+        <EntityTypeShape EntityType="AMS_DBModel.view_page" Width="1.5" PointX="3.75" PointY="8.875" />
         <EntityTypeShape EntityType="AMS_DBModel.voting_history" Width="1.5" PointX="13.75" PointY="1.875" />
         <AssociationConnector Association="AMS_DBModel.FK_asset_detail_asset_classify" />
         <AssociationConnector Association="AMS_DBModel.FK_asset_detail_request_ticket_history" />

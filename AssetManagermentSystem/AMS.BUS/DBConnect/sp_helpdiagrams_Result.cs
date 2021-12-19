@@ -11,10 +11,12 @@ namespace AMS.BUS.DBConnect
 {
     using System;
     
-    public partial class sp_BaoCaoTinhTrangSuDung_Result
+    public partial class sp_helpdiagrams_Result
     {
-        public Nullable<int> Tồn_Kho { get; set; }
-        public Nullable<int> Đang_Sử_Dụng { get; set; }
-        public Nullable<int> Đã_Thanh_Lý { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

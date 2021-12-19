@@ -13,9 +13,9 @@ namespace AMS.BUS.DBConnect
     
     public partial class sp_BaoCaoTrangThaiTaiSan_Result
     {
-        public Nullable<int> requestShopping { get; set; }
-        public Nullable<int> requestAllocation { get; set; }
-        public Nullable<int> requestRecovery { get; set; }
-        public Nullable<int> requestLiquidation { get; set; }
+        public Nullable<int> Mua_Sắm { get; set; }
+        public Nullable<int> Cấp_Phát { get; set; }
+        public Nullable<int> Thu_hồi { get; set; }
+        public Nullable<int> Thanh_Lý { get; set; }
     }
 }

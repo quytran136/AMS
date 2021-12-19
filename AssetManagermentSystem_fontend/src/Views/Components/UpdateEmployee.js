@@ -306,7 +306,7 @@ const UpdateEmployee = (prop) => {
                     style={{ width: '80%' }}
                     value={userFullName}
                     onChange={(e) => setUserFullName(e.target.value)} />
-                <Button type="primary" style={{ width: '20%' }} onClick={() => generateUserName()}>
+                <Button disabled = {dataSelected} type="primary" style={{ width: '20%' }} onClick={() => generateUserName()}>
                     Tạo TK
                 </Button>
             </Input.Group>
