@@ -5,7 +5,8 @@ export const setCookie = (name, value, days) => {
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    // document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    localStorage.setItem(name, value)
 }
 
 export const getCookie = (name) => {
@@ -17,5 +18,5 @@ export const getCookie = (name) => {
         if (c.indexOf(nameEQ) === 0) 
         return c.substring(nameEQ.length, c.length);
     }
-    return null;
+    return localStorage.getItem(name);
 }

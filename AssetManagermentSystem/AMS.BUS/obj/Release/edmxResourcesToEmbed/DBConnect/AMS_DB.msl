@@ -1,17 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="AMS_DBModelStoreContainer" CdmEntityContainer="AMS_DBEntities">
-    <EntitySetMapping Name="asset_allocation_history">
-      <EntityTypeMapping TypeName="AMS_DBModel.asset_allocation_history">
-        <MappingFragment StoreEntitySet="asset_allocation_history">
-          <ScalarProperty Name="IsReject" ColumnName="IsReject" />
-          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
-          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
-          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
-          <ScalarProperty Name="AllocationBy" ColumnName="AllocationBy" />
+    <EntitySetMapping Name="ams_config">
+      <EntityTypeMapping TypeName="AMS_DBModel.ams_config">
+        <MappingFragment StoreEntitySet="ams_config">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ams_notification">
+      <EntityTypeMapping TypeName="AMS_DBModel.ams_notification">
+        <MappingFragment StoreEntitySet="ams_notification">
+          <ScalarProperty Name="NotificationFor" ColumnName="NotificationFor" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="AllocationFor" ColumnName="AllocationFor" />
-          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="NotificationContent" ColumnName="NotificationContent" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -21,7 +27,7 @@
         <MappingFragment StoreEntitySet="asset_classify">
           <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+          <ScalarProperty Name="AssetClassifyName" ColumnName="AssetClassifyName" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -29,49 +35,20 @@
     <EntitySetMapping Name="asset_detail">
       <EntityTypeMapping TypeName="AMS_DBModel.asset_detail">
         <MappingFragment StoreEntitySet="asset_detail">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="QuantityDestroyed" ColumnName="QuantityDestroyed" />
           <ScalarProperty Name="QuantityInStock" ColumnName="QuantityInStock" />
           <ScalarProperty Name="QuantityUsed" ColumnName="QuantityUsed" />
-          <ScalarProperty Name="Unit" ColumnName="Unit" />
           <ScalarProperty Name="QuantityOriginalStock" ColumnName="QuantityOriginalStock" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
           <ScalarProperty Name="AssetFullName" ColumnName="AssetFullName" />
           <ScalarProperty Name="AssetClassifyID" ColumnName="AssetClassifyID" />
           <ScalarProperty Name="StoreID" ColumnName="StoreID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="asset_recovery_history">
-      <EntityTypeMapping TypeName="AMS_DBModel.asset_recovery_history">
-        <MappingFragment StoreEntitySet="asset_recovery_history">
-          <ScalarProperty Name="isApprove1" ColumnName="isApprove1" />
-          <ScalarProperty Name="LocalStep1" ColumnName="LocalStep1" />
-          <ScalarProperty Name="RequestBy1" ColumnName="RequestBy1" />
-          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
-          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
-          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
-          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="RecoveryBy" ColumnName="RecoveryBy" />
-          <ScalarProperty Name="RecoveryFor" ColumnName="RecoveryFor" />
-          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="assets_liquidation_history">
-      <EntityTypeMapping TypeName="AMS_DBModel.assets_liquidation_history">
-        <MappingFragment StoreEntitySet="assets_liquidation_history">
-          <ScalarProperty Name="RecoveryPrice" ColumnName="RecoveryPrice" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="isApprove" ColumnName="isApprove" />
-          <ScalarProperty Name="LocalStep" ColumnName="LocalStep" />
-          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
-          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="LiquidationBy" ColumnName="LiquidationBy" />
-          <ScalarProperty Name="LiquidationFor" ColumnName="LiquidationFor" />
-          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -120,19 +97,41 @@
     <EntitySetMapping Name="Processes">
       <EntityTypeMapping TypeName="AMS_DBModel.Process">
         <MappingFragment StoreEntitySet="Process">
-          <ScalarProperty Name="ParentStepID" ColumnName="ParentStepID" />
-          <ScalarProperty Name="OrganizationalID" ColumnName="OrganizationalID" />
+          <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ranks">
-      <EntityTypeMapping TypeName="AMS_DBModel.rank">
-        <MappingFragment StoreEntitySet="rank">
+    <EntitySetMapping Name="ProcessSteps">
+      <EntityTypeMapping TypeName="AMS_DBModel.ProcessStep">
+        <MappingFragment StoreEntitySet="ProcessStep">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="StepName" ColumnName="StepName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsUseExpiredTime" ColumnName="IsUseExpiredTime" />
+          <ScalarProperty Name="ExpiredTime" ColumnName="ExpiredTime" />
+          <ScalarProperty Name="Approvers" ColumnName="Approvers" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="ProcessID" ColumnName="ProcessID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="request_ticket_history">
+      <EntityTypeMapping TypeName="AMS_DBModel.request_ticket_history">
+        <MappingFragment StoreEntitySet="request_ticket_history">
+          <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+          <ScalarProperty Name="IsReject" ColumnName="IsReject" />
+          <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+          <ScalarProperty Name="ProcessID" ColumnName="ProcessID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsApprove" ColumnName="IsApprove" />
+          <ScalarProperty Name="StepID" ColumnName="StepID" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-          <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
-          <ScalarProperty Name="RankParent" ColumnName="RankParent" />
-          <ScalarProperty Name="RankName" ColumnName="RankName" />
+          <ScalarProperty Name="RequestBy" ColumnName="RequestBy" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -172,6 +171,7 @@
     <EntitySetMapping Name="store_Identifie">
       <EntityTypeMapping TypeName="AMS_DBModel.store_Identifie">
         <MappingFragment StoreEntitySet="store_Identifie">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="Owner" ColumnName="Owner" />
           <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
           <ScalarProperty Name="StoreName" ColumnName="StoreName" />
@@ -201,11 +201,26 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="usage_history">
+      <EntityTypeMapping TypeName="AMS_DBModel.usage_history">
+        <MappingFragment StoreEntitySet="usage_history">
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="IsLiquidation" ColumnName="IsLiquidation" />
+          <ScalarProperty Name="IsRecovery" ColumnName="IsRecovery" />
+          <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+          <ScalarProperty Name="UsageFor" ColumnName="UsageFor" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="AssetID" ColumnName="AssetID" />
+          <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="user_identifie">
       <EntityTypeMapping TypeName="AMS_DBModel.user_identifie">
         <MappingFragment StoreEntitySet="user_identifie">
-          <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="DOB" ColumnName="DOB" />
           <ScalarProperty Name="OrganizationID" ColumnName="OrganizationID" />
           <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
@@ -231,5 +246,89 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="voting_history">
+      <EntityTypeMapping TypeName="AMS_DBModel.voting_history">
+        <MappingFragment StoreEntitySet="voting_history">
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Actor" ColumnName="Actor" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="TicketID" ColumnName="TicketID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AMS_DBModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoTinhTrangSuDung" FunctionName="AMS_DBModel.Store.sp_BaoCaoTinhTrangSuDung">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTinhTrangSuDung_Result">
+          <ScalarProperty Name="Tồn_Kho" ColumnName="Tồn Kho" />
+          <ScalarProperty Name="Đang_Sử_Dụng" ColumnName="Đang Sử Dụng" />
+          <ScalarProperty Name="Đã_Thanh_Lý" ColumnName="Đã Thanh Lý" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoTonKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoTonKho">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTonKho_Result">
+          <ScalarProperty Name="Kho_tài_sản" ColumnName="Kho tài sản" />
+          <ScalarProperty Name="Lớp_tài_sản" ColumnName="Lớp tài sản" />
+          <ScalarProperty Name="Tên_tài_sản" ColumnName="Tên tài sản" />
+          <ScalarProperty Name="Tổng_lượng_tài_sản" ColumnName="Tổng lượng tài sản" />
+          <ScalarProperty Name="Tổng_lượng_tồn_kho" ColumnName="Tổng lượng tồn kho" />
+          <ScalarProperty Name="Tổng_lượng_đã_sử_dụng" ColumnName="Tổng lượng đã sử dụng" />
+          <ScalarProperty Name="Tổng_lượng_đã_thanh_lý" ColumnName="Tổng lượng đã thanh lý" />
+          <ScalarProperty Name="Giá_trị" ColumnName="Giá trị" />
+          <ScalarProperty Name="Ngày_tạo" ColumnName="Ngày tạo" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoTrangThaiTaiSan" FunctionName="AMS_DBModel.Store.sp_BaoCaoTrangThaiTaiSan">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTrangThaiTaiSan_Result">
+          <ScalarProperty Name="Mua_Sắm" ColumnName="Mua Sắm" />
+          <ScalarProperty Name="Cấp_Phát" ColumnName="Cấp Phát" />
+          <ScalarProperty Name="Thu_hồi" ColumnName="Thu hồi" />
+          <ScalarProperty Name="Thanh_Lý" ColumnName="Thanh Lý" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoYeuCauPheDuyet" FunctionName="AMS_DBModel.Store.sp_BaoCaoYeuCauPheDuyet">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result">
+          <ScalarProperty Name="Loại_yêu_cầu" ColumnName="Loại yêu cầu" />
+          <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+          <ScalarProperty Name="Yêu_cầu_cho" ColumnName="Yêu cầu cho" />
+          <ScalarProperty Name="Số_lượng_yêu_cầu" ColumnName="Số lượng yêu cầu" />
+          <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+          <ScalarProperty Name="Ngày_yêu_cầu" ColumnName="Ngày yêu cầu" />
+          <ScalarProperty Name="Tình_trạng_duyệt" ColumnName="Tình trạng duyệt" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AMS_DBModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AMS_DBModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="AMS_DBModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="AMS_DBModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_NewNotification" FunctionName="AMS_DBModel.Store.sp_NewNotification" />
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AMS_DBModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AMS_DBModel.Store.sp_upgraddiagrams" />
   </EntityContainerMapping>
 </Mapping>
