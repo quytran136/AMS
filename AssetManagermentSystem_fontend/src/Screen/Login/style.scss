@@ -1,0 +1,81 @@
+@import "src/Access/Css/Constant.scss";
+
+.login-body {
+    width  : 100%;
+    padding: unset;
+    margin : unset;
+}
+
+.Left-panel {
+    background-color : #fff;
+    height           : 100vh;
+    background-image : url("/src/Access/Img/bg-login.png");
+    background-size  : cover;
+    background-repeat: no-repeat;
+
+    .company {
+        position: relative;
+        left    : 10vh;
+        top     : 80vh;
+        color   : #fff;
+
+        .company-logo {}
+
+        .company-name {
+            font-weight: bold;
+        }
+
+        .company-sologan {}
+    }
+}
+
+.right-panel {
+    height          : 100vh;
+    background-color: #323247;
+    color           : #fff;
+
+    .login-form {
+        position     : relative;
+        padding-top  : 30vh;
+        padding-left : 10vh;
+        padding-right: 10vh;
+
+        .header {
+            font-weight   : bold;
+            text-align    : center;
+            padding-bottom: 10px;
+        }
+
+        .button-login {
+            width: 100%;
+        }
+
+        .message{
+            color: red;
+        }
+    }
+
+    .register-form {
+        position: relative;
+        font-size    : 80%;
+        color        : #fff;
+
+        .register-link {
+            position: absolute;
+            left: auto;
+        }
+
+        .forget-password-link {
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    .version{
+        color: #fff;
+        position: absolute;
+        font-size: 50%;
+        bottom: 0;
+        right: 0;
+    }
+}

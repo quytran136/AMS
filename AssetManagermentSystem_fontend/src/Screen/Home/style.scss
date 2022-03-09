@@ -1,0 +1,23 @@
+@import "src/Access/Css/Constant.scss";
+.home {
+    width : 100%;
+    height: ($max-vh/20) * 18.5;
+
+    .home-body {
+        padding-top: 10px;
+        width      : 100%;
+
+        .ams-func-item {
+            margin    : auto;
+            display   : inline-block;
+            cursor    : pointer;
+            padding   : 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 1px 0px 0 rgba(0, 0, 0, 0.19);
+
+            &:hover {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            }
+        }
+    }
+}

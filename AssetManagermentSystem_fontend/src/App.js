@@ -1,13 +1,12 @@
-import './App.css';
+import './App.scss';
 import React, { useEffect, useState } from "react";
-import Home from './Views/Home';
-import Login from './Views/Login';
-import User from './Views/User';
-import Config from './Views/Config';
-import Warehousing from './Views/Warehousing';
-import Asset from './Views/Asset';
-import Report from './Views/Report';
-import "./Views/Access/Css/Common.scss";
+import Home from './Screen/Home';
+import Login from './Screen/Login';
+import User from './Screen/User';
+import Config from './Screen/Config';
+import Warehousing from './Screen/Warehousing';
+import Asset from './Screen/Asset';
+import Report from './Screen/Report';
 import * as cookieHandle from "./Common/Cookie";
 import {
   BrowserRouter as Router,
@@ -20,18 +19,16 @@ import {
   WarningOutlined,
   CheckCircleOutlined
 } from '@ant-design/icons';
-import OpenNotification from "./Views/Components/OpenNotification";
+import OpenNotification from "./Components/OpenNotification";
 import * as messageType from './Common/messageCode';
 import { connect, useDispatch } from "react-redux";
-import * as amsAction from './ReduxSaga/Actions/action';
-import NavigationBar from './Views/Components/NavigationBar';
-import AMSMenu from "./Views/Components/Menu";
+import * as amsAction from './ReduxSaga/Actions';
+import NavigationBar from './Components/NavigationBar';
+import AMSMenu from "./Components/Menu";
 import { Row, Col } from 'antd';
-import Shopping from './Views/Components/Shopping';
-import Liquidation from './Views/Components/Liquidation';
-import Recovery from './Views/Components/Recovery';
-import Allocation from './Views/Components/Allocation';
-import Notfound from './Views/404Notfound';
+import Shopping from './Components/Shopping';
+import Allocation from './Components/Allocation';
+import Notfound from './Screen/404Notfound';
 import { hubConnection } from 'signalr-no-jquery'
 import {
   SERVER_SIGNALR
@@ -94,13 +91,12 @@ function App(prop) {
         hubProxy.invoke('RegistConnect', userName, connection.id);
       })
       .fail(() => {
-        console.log('[B-DEBUG]  Could not connect SignalR')
         connection.stop();
       })
     hubProxy.on('OnNotification', (message) => {
       let notification1 = JSON.parse(message)
       if (!notification1.Message) {
-        if(notification1.Response){
+        if (notification1.Response) {
           dispatch(requestNotificationSuccess(notification1))
         }
       } else {
@@ -157,7 +153,6 @@ function App(prop) {
     <Router>
       <div className="common">
         {cookie ? <>
-          <Redirect to={"/"} />
           <NavigationBar />
           <div className="body-content">
             <Row>
@@ -187,12 +182,6 @@ function App(prop) {
                   <Route path="/Shopping">
                     <Shopping data={requestID} title={functionTitle} />
                   </Route>
-                  <Route exact path="/Liquidation">
-                    <Liquidation data={requestID} title={functionTitle} />
-                  </Route>
-                  <Route exact path="/Recovery">
-                    <Recovery data={requestID} title={functionTitle} />
-                  </Route>
                   <Route exact path="/Allocation">
                     <Allocation data={requestID} title={functionTitle} />
                   </Route>
@@ -207,10 +196,13 @@ function App(prop) {
             </Row>
           </div>
         </>
-          : <><Redirect to='/Login' />
+          : <>
             <Switch>
               <Route exact path="/Login">
                 <Login />
+              </Route>
+              <Route path="/">
+                <Notfound />
               </Route>
             </Switch></>}
       </div>

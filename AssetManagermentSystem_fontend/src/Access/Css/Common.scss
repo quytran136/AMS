@@ -1,0 +1,100 @@
+@import "src/Access/Css/Constant.scss";
+
+.warnign-message {
+    color: $orange-color !important;
+}
+
+.error-message {
+    color: $red-color !important;
+}
+
+.success-message {
+    color: $green-color !important;
+}
+
+.main-content {
+    height: ($max-vh/20) * 19;
+    padding: 20px 10px 0px 10px;
+    width  : 100%;
+}
+
+.not-found {
+    background-image : url("../Img/404.jpg");
+    background-color : #fff;
+    height           : 93.5vh;
+    background-size  : cover;
+    background-repeat: no-repeat;
+}
+
+.icon {
+    font-size: 23px;
+    color    : #fff !important;
+}
+
+.input {
+    margin-bottom: 1vh;
+}
+
+.select {
+    width: 100%;
+}
+
+.group {
+    padding-top: 1vh;
+}
+
+.ams-card {
+    margin: 1vh !important;
+}
+
+.ams-card-item {
+    @extend .ams-card;
+    width     : 50ch;
+    display   : inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.col {
+    padding: 1vh;
+}
+
+.text-area {
+    min-height: 23vh !important;
+}
+
+.link {
+    color : #fff;
+    cursor: pointer;
+}
+
+.ams-btn {
+    color : $white-color !important;
+    margin-right: $margin;
+}
+
+.ams-btn-default {
+    @extend .ams-btn;
+}
+
+.ams-btn-success {
+    // @extend .ams-btn-default;
+    border-color    : $green-color !important;
+    background-color: $green-color !important;
+}
+
+.ams-btn-cancel {
+    // @extend .ams-btn-default;
+    border-color    : $red-color !important;
+    background-color: $red-color !important;
+}
+
+.ams-btn-warning {
+    // @extend .ams-btn-default;
+    border-color    : $orange-color !important;
+    background-color: $orange-color !important;
+}
+
+.body-content {
+    width           : auto;
+    background-color: $white-color;
+}

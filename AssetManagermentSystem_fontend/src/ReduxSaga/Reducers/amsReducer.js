@@ -1,4 +1,4 @@
-import { getAssetSuccess } from "../Actions/action";
+import { getAssetSuccess } from "../Actions";
 import * as type from "../Type";
 
 const initialState = {

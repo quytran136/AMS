@@ -1,7 +1,7 @@
 import * as type from '../Type';
 import AMS_API from '../../ControlRequest/amsAPI';
 import { call, put, takeLatest, select } from "redux-saga/effects";
-import * as amsAction from '../Actions/action';
+import * as amsAction from '../Actions';
 import * as cookieHandle from "../../Common/Cookie";
 
 function* signinSaga(action) {
@@ -620,7 +620,6 @@ function* reportSaga(action) {
         }
 
         if (!report.Message) {
-            console.log(report)
             yield put(amsAction.getReportSuccess(report))
         } else {
             yield put(amsAction.setError(report))

@@ -1,0 +1,28 @@
+@import "src/Access/Css/Constant.scss";
+.board-info {
+    .menu-item {
+        cursor    : pointer;
+        text-align: start;
+        width     : auto;
+        height    : auto;
+
+        &:hover {
+            background-color: rgb(233, 248, 198);
+        }
+
+        .menu-label {
+            margin      : auto;
+            padding-left: 20px;
+        }
+    }
+}
+
+.notification-board {
+    .item {
+        padding-bottom: 10px;
+
+        &:hover {
+            background-color: rgb(233, 248, 198);
+        }
+    }
+}

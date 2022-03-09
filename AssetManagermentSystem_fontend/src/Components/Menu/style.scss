@@ -1,0 +1,6 @@
+@import "src/Access/Css/Constant.scss";
+.menu {
+    height    : ($max-vh/20) * 19;
+    max-width: 100%;
+    overflow-y: auto;
+}
