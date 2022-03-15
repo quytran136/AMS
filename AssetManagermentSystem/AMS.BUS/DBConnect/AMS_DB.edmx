@@ -52,6 +52,7 @@
           <Property Name="IsActive" Type="bit" />
           <Property Name="Unit" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="SupplierID" Type="nvarchar" MaxLength="64" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -168,6 +169,18 @@
           <Property Name="Owner" Type="nvarchar" MaxLength="128" />
           <Property Name="IsDelete" Type="bit" />
         </EntityType>
+        <EntityType Name="supplier">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="128" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="IsDelete" Type="bit" />
+          <Property Name="Email" Type="nvarchar" MaxLength="128" />
+          <Property Name="Image" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
@@ -214,7 +227,7 @@
           <Property Name="IsDelete" Type="bit" />
           <Property Name="Role" Type="varchar" MaxLength="64" />
           <Property Name="UserFullName" Type="nvarchar" MaxLength="128" />
-          <Property Name="Image" Type="nvarchar" MaxLength="128" />
+          <Property Name="Image" Type="nvarchar(max)" />
           <Property Name="Token" Type="nvarchar" MaxLength="128" />
           <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
           <Property Name="OrganizationID" Type="varchar" MaxLength="64" />
@@ -274,6 +287,18 @@
             </Principal>
             <Dependent Role="asset_detail">
               <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_asset_detail_supplier">
+          <End Role="supplier" Type="Self.supplier" Multiplicity="0..1" />
+          <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_detail">
+              <PropertyRef Name="SupplierID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -457,6 +482,7 @@
           <EntitySet Name="role_function" EntityType="Self.role_function" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role_view" EntityType="Self.role_view" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="supplier" EntityType="Self.supplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="system_log" EntityType="Self.system_log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usage_history" EntityType="Self.usage_history" Schema="dbo" store:Type="Tables" />
@@ -473,6 +499,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_asset_detail_store_Identifie" Association="Self.FK_asset_detail_store_Identifie">
             <End Role="store_Identifie" EntitySet="store_Identifie" />
+            <End Role="asset_detail" EntitySet="asset_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_asset_detail_supplier" Association="Self.FK_asset_detail_supplier">
+            <End Role="supplier" EntitySet="supplier" />
             <End Role="asset_detail" EntitySet="asset_detail" />
           </AssociationSet>
           <AssociationSet Name="FK_Organizational_Department" Association="Self.FK_Organizational_Department">
@@ -637,6 +667,11 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="suppliers" EntityType="AMS_DBModel.supplier" />
+          <AssociationSet Name="FK_asset_detail_supplier" Association="AMS_DBModel.FK_asset_detail_supplier">
+            <End Role="supplier" EntitySet="suppliers" />
+            <End Role="asset_detail" EntitySet="asset_detail" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ams_config">
           <Key>
@@ -689,6 +724,8 @@
           <NavigationProperty Name="asset_classify" Relationship="AMS_DBModel.FK_asset_detail_asset_classify" FromRole="asset_detail" ToRole="asset_classify" />
           <NavigationProperty Name="request_ticket_history" Relationship="AMS_DBModel.FK_asset_detail_request_ticket_history" FromRole="asset_detail" ToRole="request_ticket_history" />
           <NavigationProperty Name="store_Identifie" Relationship="AMS_DBModel.FK_asset_detail_store_Identifie" FromRole="asset_detail" ToRole="store_Identifie" />
+          <Property Name="SupplierID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="supplier" Relationship="AMS_DBModel.FK_asset_detail_supplier" FromRole="asset_detail" ToRole="supplier" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -869,7 +906,7 @@
           <Property Name="IsDelete" Type="Boolean" />
           <Property Name="Role" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="UserFullName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Image" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Token" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="DepartmentID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="OrganizationID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
@@ -1098,6 +1135,31 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="supplier">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="asset_detail" Relationship="AMS_DBModel.FK_asset_detail_supplier" FromRole="supplier" ToRole="asset_detail" />
+          <Property Name="IsDelete" Type="Boolean" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_asset_detail_supplier">
+          <End Type="AMS_DBModel.supplier" Role="supplier" Multiplicity="0..1" />
+          <End Type="AMS_DBModel.asset_detail" Role="asset_detail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="asset_detail">
+              <PropertyRef Name="SupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1138,6 +1200,7 @@
           <EntitySetMapping Name="asset_detail">
             <EntityTypeMapping TypeName="AMS_DBModel.asset_detail">
               <MappingFragment StoreEntitySet="asset_detail">
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -1433,6 +1496,19 @@
           <FunctionImportMapping FunctionImportName="sp_NewNotification" FunctionName="AMS_DBModel.Store.sp_NewNotification" />
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AMS_DBModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AMS_DBModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="suppliers">
+            <EntityTypeMapping TypeName="AMS_DBModel.supplier">
+              <MappingFragment StoreEntitySet="supplier">
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

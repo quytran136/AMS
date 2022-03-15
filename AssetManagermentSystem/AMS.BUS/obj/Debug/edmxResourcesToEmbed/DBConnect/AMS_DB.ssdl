@@ -47,6 +47,7 @@
     <Property Name="IsActive" Type="bit" />
     <Property Name="Unit" Type="nvarchar" MaxLength="50" />
     <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="SupplierID" Type="nvarchar" MaxLength="64" />
   </EntityType>
   <EntityType Name="Department">
     <Key>
@@ -163,6 +164,18 @@
     <Property Name="Owner" Type="nvarchar" MaxLength="128" />
     <Property Name="IsDelete" Type="bit" />
   </EntityType>
+  <EntityType Name="supplier">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="128" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="128" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="IsDelete" Type="bit" />
+    <Property Name="Email" Type="nvarchar" MaxLength="128" />
+    <Property Name="Image" Type="nvarchar(max)" />
+  </EntityType>
   <EntityType Name="sysdiagrams">
     <Key>
       <PropertyRef Name="diagram_id" />
@@ -209,7 +222,7 @@
     <Property Name="IsDelete" Type="bit" />
     <Property Name="Role" Type="varchar" MaxLength="64" />
     <Property Name="UserFullName" Type="nvarchar" MaxLength="128" />
-    <Property Name="Image" Type="nvarchar" MaxLength="128" />
+    <Property Name="Image" Type="nvarchar(max)" />
     <Property Name="Token" Type="nvarchar" MaxLength="128" />
     <Property Name="DepartmentID" Type="varchar" MaxLength="64" />
     <Property Name="OrganizationID" Type="varchar" MaxLength="64" />
@@ -269,6 +282,18 @@
       </Principal>
       <Dependent Role="asset_detail">
         <PropertyRef Name="StoreID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_asset_detail_supplier">
+    <End Role="supplier" Type="Self.supplier" Multiplicity="0..1" />
+    <End Role="asset_detail" Type="Self.asset_detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="supplier">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="asset_detail">
+        <PropertyRef Name="SupplierID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -452,6 +477,7 @@
     <EntitySet Name="role_function" EntityType="Self.role_function" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="role_view" EntityType="Self.role_view" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="store_Identifie" EntityType="Self.store_Identifie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="supplier" EntityType="Self.supplier" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="system_log" EntityType="Self.system_log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="usage_history" EntityType="Self.usage_history" Schema="dbo" store:Type="Tables" />
@@ -468,6 +494,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_asset_detail_store_Identifie" Association="Self.FK_asset_detail_store_Identifie">
       <End Role="store_Identifie" EntitySet="store_Identifie" />
+      <End Role="asset_detail" EntitySet="asset_detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asset_detail_supplier" Association="Self.FK_asset_detail_supplier">
+      <End Role="supplier" EntitySet="supplier" />
       <End Role="asset_detail" EntitySet="asset_detail" />
     </AssociationSet>
     <AssociationSet Name="FK_Organizational_Department" Association="Self.FK_Organizational_Department">

@@ -12,17 +12,20 @@ function ListAsset(props) {
     const { disabled, className, dataSource, onChange } = props
     const dispatch = useDispatch();
     const {
-        requestAsset
+        requestAsset,
+        requestSupplier
     } = amsAction;
 
     const {
         token,
         userName,
         assetClassifies,
+        supplier
     } = props.amsStore;
 
     const [listAsset, setListAsset] = useState();
     const [listAssetClassifies, setListAssetClassifies] = useState([]);
+    const [suppliers, setSuppliers] = useState([]);
 
     function getAssetClassify() {
         const body = {
@@ -36,6 +39,21 @@ function ListAsset(props) {
             }
         }
         dispatch(requestAsset(body))
+        getSupplier()
+    }
+
+    function getSupplier() {
+        const body = {
+            Token: token,
+            Key: "GET_SUPPLIER",
+            UserNameRequest: userName,
+            Data: {
+                Supplier: {
+                    Name: "",
+                }
+            }
+        }
+        dispatch(requestSupplier(body))
     }
 
     function addNew() {
@@ -63,7 +81,8 @@ function ListAsset(props) {
             Description: "",
             QuantityOriginalStock: 0,
             Unit: "",
-            Price: 0
+            Price: 0,
+            SupplierID: ""
         })
         setListAsset(list)
         if (onChange) {
@@ -109,8 +128,8 @@ function ListAsset(props) {
                 let listAS = []
                 assetClassifies.Response.AssetClassifies.forEach((element) => {
                     listAS.push({
-                        value: element.ID,
-                        label: element.AssetClassifyName,
+                        value: element.Asset_Classify.ID,
+                        label: element.Asset_Classify.AssetClassifyName,
                     })
                 })
                 setListAssetClassifies(listAS)
@@ -119,7 +138,21 @@ function ListAsset(props) {
         }
     }
 
+    function convertDataToSelect() {
+        if (supplier && supplier.Response && supplier.Response.Suppliers) {
+            var list = []
+            supplier.Response.Suppliers.forEach((element) => {
+                list.push({
+                    label: element.Name,
+                    value: element.ID
+                })
+            })
+            setSuppliers(list)
+        }
+    }
+
     useEffect(getAssetClassify, [])
+    useEffect(convertDataToSelect, [supplier])
     useEffect(readData, [dataSource])
 
     return (
@@ -146,15 +179,18 @@ function ListAsset(props) {
                         Tên tài sản
                     </Col>
                     <Col span={3} className="field">
-                        Đơn vị
+                        Đơn vị tính
                     </Col>
-                    <Col span={6} className="field">
+                    <Col span={3} className="field">
+                        Đơn vị cung cấp
+                    </Col>
+                    <Col span={5} className="field">
                         Diễn giải
                     </Col>
-                    <Col span={2} className="field">
+                    <Col span={1} className="field">
                         Số lượng
                     </Col>
-                    <Col span={2} className="field">
+                    <Col span={1} className="field">
                         Đơn giá
                     </Col>
                     <Col span={1} className="field">
@@ -201,7 +237,21 @@ function ListAsset(props) {
                                         }}
                                     />
                                 </Col>
-                                <Col span={6} className="field">
+                                <Col span={3} className="field">
+                                    <Select
+                                        disabled={disabled}
+                                        options={suppliers}
+                                        className="field-asset"
+                                        value={element.SupplierID}
+                                        onChange={e => {
+                                            let item = element
+                                            item.SupplierID = e
+                                            editItem(item)
+                                        }}
+                                    >
+                                    </Select>
+                                </Col>
+                                <Col span={5} className="field">
                                     <Input
                                         disabled={disabled}
                                         value={element.Description}
@@ -212,7 +262,7 @@ function ListAsset(props) {
                                         }}
                                     />
                                 </Col>
-                                <Col span={2} className="field">
+                                <Col span={1} className="field">
                                     <InputNumber
                                         disabled={disabled}
                                         className="field-asset"
@@ -227,7 +277,7 @@ function ListAsset(props) {
                                         stringMode
                                     />
                                 </Col>
-                                <Col span={2} className="field">
+                                <Col span={1} className="field">
                                     <InputNumber
                                         disabled={disabled}
                                         className="field-asset"

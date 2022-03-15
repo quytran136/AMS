@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import 'antd/dist/antd.css';
 import './style.scss'
-import { Input, Row, Col, Table, Select } from 'antd';
+import { Input, Row, Col, Table, Select, Avatar } from 'antd';
 import * as amsAction from '../../ReduxSaga/Actions';
 
 const SelectEmployee = (prop) => {
@@ -26,6 +26,14 @@ const SelectEmployee = (prop) => {
             title: 'Họ tên',
             dataIndex: 'UserFullName',
             key: 'UserFullName',
+            render: (text, record, index) => {
+                return(
+                    <div className="flex">
+                        <Avatar size={32} shape="circle" className="item" src={record.Image} />
+                        {record.UserFullName}
+                    </div>
+                )
+            }
         },
         {
             title: 'Tài khoản',

@@ -48,6 +48,7 @@ namespace AMS.BUS.DBConnect
         public virtual DbSet<user_identifie> user_identifie { get; set; }
         public virtual DbSet<view_page> view_page { get; set; }
         public virtual DbSet<voting_history> voting_history { get; set; }
+        public virtual DbSet<supplier> suppliers { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

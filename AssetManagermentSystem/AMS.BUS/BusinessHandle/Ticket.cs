@@ -1,6 +1,7 @@
 ﻿using AMS.BUS.BusModels;
 using AMS.BUS.DBConnect;
 using AMS.COMMON;
+using AMS.COMMON.Constands;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -45,15 +46,15 @@ namespace AMS.BUS.BusinessHandle
             {
                 var db = DBC.Init;
                 List<VotingHistory> voting = (from a in db.voting_history
-                                               join b in db.user_identifie on a.Actor equals b.ID
-                                               where a.TicketID == ticketID
-                                               orderby a.CreateDate descending
-                                               select new VotingHistory()
-                                               {
-                                                   CreateDate = a.CreateDate,
-                                                   Creator = b.UserFullName,
-                                                   Message = a.Description
-                                               }).ToList();
+                                              join b in db.user_identifie on a.Actor equals b.ID
+                                              where a.TicketID == ticketID
+                                              orderby a.CreateDate descending
+                                              select new VotingHistory()
+                                              {
+                                                  CreateDate = a.CreateDate,
+                                                  Creator = b.UserFullName,
+                                                  Message = a.Description
+                                              }).ToList();
                 return voting;
             }
             catch (Exception ex)
@@ -62,8 +63,14 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        // yêu cầu mua sắm
-        public BaseModel<string> CreateTicketShopping(string requestBy, string storeID, string description, string processID, List<asset_detail> details)
+        // yêu cầu
+        public BaseModel<string> CreateTicket(
+            string requestType,
+            string requestBy,
+            string storeID,
+            string description,
+            string processID,
+            Action<string> func)
         {
             try
             {
@@ -79,35 +86,10 @@ namespace AMS.BUS.BusinessHandle
                     ID = id,
                     IsApprove = false,
                     StepID = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().ID,
-                    RequestType = "SHOPPING",
+                    RequestType = requestType,
                     IsReject = false,
                     StoreID = storeID
                 });
-
-                List<asset_detail> listAsset = new List<asset_detail>();
-                foreach (asset_detail item in details)
-                {
-                    listAsset.Add(new asset_detail()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        AssetClassifyID = item.AssetClassifyID,
-                        CreateDate = DateTime.Now,
-                        AssetFullName = item.AssetFullName,
-                        Description = item.Description,
-                        Price = item.Price,
-                        IsDelete = false,
-                        IsActive = false,
-                        TicketID = id,
-                        StoreID = storeID,
-                        QuantityDestroyed = 0,
-                        QuantityInStock = 0,
-                        QuantityOriginalStock = item.QuantityOriginalStock,
-                        QuantityUsed = 0,
-                        Unit = item.Unit
-                    });
-                }
-
-                db.asset_detail.AddRange(listAsset);
 
                 List<ams_notification> notifications = new List<ams_notification>();
 
@@ -150,31 +132,12 @@ namespace AMS.BUS.BusinessHandle
                     }
                 }
 
-                List<ams_notification> notis = new List<ams_notification>();
-
-                foreach (string userid in users)
-                {
-                    ams_notification noti = new ams_notification()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
-                        IsRead = false,
-                        NotificationContent = "Yêu cầu mua sắm tài sản được gửi từ " + new UserInformation().GetUserInfor(requestBy).Result.UserFullName,
-                        NotificationFor = userid,
-                        Action = JsonConvert.SerializeObject(new RequestAction()
-                        {
-                            Key = "SHOPPING",
-                            Value = id,
-                            Path = "/Shopping"
-                        }),
-                    };
-                    notis.Add(noti);
-                }
-
-                db.ams_notification.AddRange(notis);
+                Notification notification = new Notification();
+                notification.SentNotificationByUser(users, id, requestBy, requestType, RequestType.GetMessageByName(requestType).Message);
                 db.SaveChanges();
+                func(id);
                 user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", "SHOPPING");
+                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", requestType);
                 return new BaseModel<string>();
             }
             catch (Exception ex)
@@ -190,7 +153,10 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> GetTicketShopping(string requestID, string requestType)
+        public BaseModel<Ticket> GetTicket(
+            string requestType, 
+            string requestID, 
+            Func<List<asset_detail>> func)
         {
             try
             {
@@ -213,19 +179,8 @@ namespace AMS.BUS.BusinessHandle
                                                 }).
                                                 ToList()
                                                 .FirstOrDefault();
-                List<asset_detail> assets = db.asset_detail.Where(ptr => ptr.TicketID == requestID)
-                    .ToList()
-                    .Select(ptr => new asset_detail()
-                    {
-                        ID = ptr.ID,
-                        AssetClassifyID = ptr.AssetClassifyID,
-                        QuantityOriginalStock = ptr.QuantityOriginalStock,
-                        CreateDate = ptr.CreateDate,
-                        AssetFullName = ptr.AssetFullName,
-                        Description = ptr.Description,
-                        Price = ptr.Price,
-                        Unit = ptr.Unit
-                    }).ToList();
+                List<asset_detail> assets = func();
+
 
                 return new BaseModel<Ticket>()
                 {
@@ -250,7 +205,11 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> ApproveTicketShopping(string requestBy, string requestID, string requestType)
+        public BaseModel<Ticket> ApproveTicket(
+            string requestType,
+            string requestBy,
+            string requestID,
+            Action func)
         {
             try
             {
@@ -259,52 +218,27 @@ namespace AMS.BUS.BusinessHandle
                                 .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
                                 .ToList()
                                 .FirstOrDefault();
-                List<asset_detail> assets = db.asset_detail
-                                            .Where(ptr => ptr.TicketID == requestID)
-                                            .ToList()
-                                            .Select(ptr => new asset_detail()
-                                            {
-                                                ID = ptr.ID,
-                                                AssetClassifyID = ptr.AssetClassifyID,
-                                                QuantityOriginalStock = ptr.QuantityOriginalStock,
-                                                CreateDate = ptr.CreateDate,
-                                                AssetFullName = ptr.AssetFullName,
-                                                Description = ptr.Description,
-                                                Price = ptr.Price,
-                                                Unit = ptr.Unit
-                                            }).ToList();
+
                 ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
 
                 if (processStep == null)
                 {
                     request.IsApprove = true;
                     request.IsReject = false;
-                    foreach (asset_detail item in assets)
-                    {
-                        var ase = db.asset_detail.Where(ptr => ptr.ID == item.ID).ToList().FirstOrDefault();
-                        ase.IsActive = true;
-                        ase.QuantityInStock = item.QuantityOriginalStock;
-                    }
+                    func();
                     user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
-                    ams_notification noti = new ams_notification()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
-                        IsRead = false,
-                        NotificationContent = "Yêu cầu mua sắm tài sản đã được phê duyệt",
-                        NotificationFor = user.ID,
-                        Action = JsonConvert.SerializeObject(new RequestAction()
-                        {
-                            Key = "REJECT",
-                            Value = request.ID,
-                            Path = "/Shopping"
-                        }),
-                    };
-
-                    db.ams_notification.Add(noti);
+                    Notification notification = new Notification();
+                    notification.SentNotificationByUser(new List<string>()
+                                                        {
+                                                            user.ID
+                                                        },
+                                                        request.ID, 
+                                                        requestBy, 
+                                                        requestType,
+                                                        string.Format("{0} {1}", RequestType.GetMessageByName(requestType).Message, "chấp thuận"));
                     db.SaveChanges();
                     user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "SHOPPING");
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", requestType);
                 }
                 else
                 {
@@ -352,29 +286,31 @@ namespace AMS.BUS.BusinessHandle
                         }
                     }
 
-                    foreach (string userid in users)
-                    {
-                        ams_notification noti = new ams_notification()
-                        {
-                            ID = Guid.NewGuid().ToString(),
-                            CreateDate = DateTime.Now,
-                            IsRead = false,
-                            NotificationContent = "Yêu cầu mua sắm tài sản được gửi từ " + new UserInformation().GetUserInfor(request.RequestBy).Result.UserFullName,
-                            NotificationFor = userid,
-                            Action = JsonConvert.SerializeObject(new RequestAction()
-                            {
-                                Key = request.RequestType,
-                                Value = request.ID,
-                                Path = "/Shopping"
-                            }),
-                        };
-                        notis.Add(noti);
-                    }
+                    //foreach (string userid in users)
+                    //{
+                    //    ams_notification noti = new ams_notification()
+                    //    {
+                    //        ID = Guid.NewGuid().ToString(),
+                    //        CreateDate = DateTime.Now,
+                    //        IsRead = false,
+                    //        NotificationContent = "Yêu cầu mua sắm tài sản được gửi từ " + new UserInformation().GetUserInfor(request.RequestBy).Result.UserFullName,
+                    //        NotificationFor = userid,
+                    //        Action = JsonConvert.SerializeObject(new RequestAction()
+                    //        {
+                    //            Key = request.RequestType,
+                    //            Value = request.ID,
+                    //            Path = "/Shopping"
+                    //        }),
+                    //    };
+                    //    notis.Add(noti);
+                    //}
 
-                    db.ams_notification.AddRange(notis);
+                    //db.ams_notification.AddRange(notis);
+                    Notification notification = new Notification();
+                    notification.SentNotificationByUser(users, request.ID, requestBy, requestType, RequestType.GetMessageByName(requestType).Message);
                     db.SaveChanges();
                     user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "SHOPPING");
+                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", requestType);
                 }
 
                 return new BaseModel<Ticket>()
@@ -395,412 +331,11 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> RejectTicketShopping(string requestBy,string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                                .ToList()
-                                                .FirstOrDefault();
-                List<asset_detail> assets = db.asset_detail
-                                            .Where(ptr => ptr.TicketID == requestID)
-                                            .ToList();
-                ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
-
-                request.IsApprove = false;
-                request.IsReject = true;
-                foreach (asset_detail item in assets)
-                {
-                    item.IsActive = false;
-                    item.IsDelete = true;
-                }
-
-                user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
-
-                // tạo request
-                ams_notification noti = new ams_notification()
-                {
-                    ID = Guid.NewGuid().ToString(),
-                    CreateDate = DateTime.Now,
-                    IsRead = false,
-                    NotificationContent = "Yêu cầu mua sắm tài sản đã bị từ chối bởi " + user.UserFullName,
-                    NotificationFor = user.ID,
-                    Action = JsonConvert.SerializeObject(new RequestAction()
-                    {
-                        Key = "REJECT",
-                        Value = request.ID,
-                        Path = "/Shopping"
-                    }),
-                };
-
-                db.ams_notification.Add(noti);
-
-                db.SaveChanges();
-                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                saveVotingHistory(requestID, user1.ID, "Từ chối", "SHOPPING");
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        // Yêu cầu cấp phát
-        public BaseModel<Ticket> GetTicketAllocation(string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                                .ToList()
-                                                .Select(ptr => new request_ticket_history()
-                                                {
-                                                    ID = ptr.ID,
-                                                    RequestBy = ptr.RequestBy,
-                                                    StepID = ptr.StepID,
-                                                    IsApprove = ptr.IsApprove,
-                                                    CreateDate = ptr.CreateDate,
-                                                    Description = ptr.Description,
-                                                    IsReject = ptr.IsReject,
-                                                    ProcessID = ptr.ProcessID,
-                                                    RequestType = ptr.RequestType,
-                                                    StoreID = ptr.StoreID
-                                                }).
-                                                ToList()
-                                                .FirstOrDefault();
-
-                List<asset_detail> assets = (from usa in db.usage_history
-                                             join ad in db.asset_detail on usa.AssetID equals ad.ID
-                                             where usa.TicketID == request.ID
-                                             select ad).ToList().Select(ptr => new asset_detail()
-                                             {
-                                                 ID = ptr.ID,
-                                                 AssetClassifyID = ptr.AssetClassifyID,
-                                                 QuantityOriginalStock = ptr.QuantityOriginalStock,
-                                                 CreateDate = ptr.CreateDate,
-                                                 AssetFullName = ptr.AssetFullName,
-                                                 Description = ptr.Description,
-                                                 Price = ptr.Price,
-                                                 QuantityInStock = ptr.QuantityInStock,
-                                                 Unit = ptr.Unit
-                                             }).ToList();
-
-                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList().Select(ptr => new usage_history()
-                {
-                    AssetID = ptr.AssetID,
-                    ID = ptr.ID,
-                    Quantity = ptr.Quantity,
-                    TicketID = ptr.TicketID,
-                    UsageFor = ptr.UsageFor
-                }).ToList();
-
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                    {
-                        Request = request,
-                        Assets = assets,
-                        UsageHistories = usages,
-                        VotingHistory = getVotingHistory(requestID)
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<string> CreateTicketAllocation(string requestBy, string storeID, string description, string processID, List<usage_history> details)
-        {
-            try
-            {
-                var db = DBC.Init;
-                Process process = db.Processes.Where(ptr => ptr.ID == processID && ptr.IsDelete == false).ToList().FirstOrDefault();
-                string id = Guid.NewGuid().ToString();
-                db.request_ticket_history.Add(new request_ticket_history()
-                {
-                    RequestBy = requestBy,
-                    CreateDate = DateTime.Now,
-                    ProcessID = process.ID,
-                    Description = description,
-                    ID = id,
-                    IsApprove = false,
-                    StepID = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().ID,
-                    RequestType = "ALLOCATION",
-                    IsReject = false,
-                    StoreID = storeID
-                });
-
-                List<usage_history> listUsageHistory = new List<usage_history>();
-                foreach (usage_history item in details)
-                {
-                    usage_history us = db.usage_history.Where(ptr => ptr.AssetID == item.AssetID && ptr.UsageFor == item.UsageFor).ToList().FirstOrDefault();
-                    if (us == null)
-                    {
-                        listUsageHistory.Add(new usage_history()
-                        {
-                            ID = Guid.NewGuid().ToString(),
-                            TicketID = id,
-                            AssetID = item.AssetID,
-                            Quantity = item.Quantity,
-                            UsageFor = item.UsageFor,
-                            CreateDate = DateTime.Now,
-                            IsLiquidation = false,
-                            IsRecovery = false,
-                            IsUsed = false,
-                        });
-                    }
-                    else
-                    {
-                        us.Quantity = us.Quantity + item.Quantity;
-                    }
-                }
-
-                db.usage_history.AddRange(listUsageHistory);
-
-                List<ams_notification> notifications = new List<ams_notification>();
-
-                string[] Approvers = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().Approvers.Split('|');
-
-                List<string> users = new List<string>();
-
-                if (Approvers[0].Length == 0)
-                {
-                    user_identifie user = new UserInformation().GetUserInfor(requestBy).Result;
-                    Organizational org = new OrganizationalChart().GetChart(user.DepartmentID).Result.Node;
-                    foreach (user_identifie element in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                    {
-                        users.Add(element.ID);
-                    }
-                }
-                else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
-                {
-                    users.Add(Approvers[0]);
-                }
-
-                foreach (string item in Approvers)
-                {
-                    if (item.Contains("DEP"))
-                    {
-                        string DepID = item.Split('/')[1];
-                        Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
-                        foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                        {
-                            users.Add(user.ID);
-                        }
-                    }
-                    else if (item.Contains("ORG"))
-                    {
-                        string orgID = item.Split('/')[1];
-                        foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
-                        {
-                            users.Add(user.ID);
-                        }
-                    }
-                }
-
-                List<ams_notification> notis = new List<ams_notification>();
-
-                foreach (string userid in users)
-                {
-                    ams_notification noti = new ams_notification()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
-                        IsRead = false,
-                        NotificationContent = "Yêu cầu cấp phát tài sản được gửi từ " + new UserInformation().GetUserInfor(requestBy).Result.UserFullName,
-                        NotificationFor = userid,
-                        Action = JsonConvert.SerializeObject(new RequestAction()
-                        {
-                            Key = "ALLOCATION",
-                            Value = id,
-                            Path = "/Allocation"
-                        }),
-                    };
-                    notis.Add(noti);
-                }
-
-                db.ams_notification.AddRange(notis);
-
-                db.SaveChanges();
-                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", "ALLOCATION");
-                return new BaseModel<string>();
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<string>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<Ticket> ApproveTicketAllocation(string requestBy, string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                .ToList()
-                                .FirstOrDefault();
-                List<usage_history> usage_Histories = db.usage_history
-                                                        .Where(ptr => ptr.TicketID == requestID)
-                                                        .ToList();
-
-                ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
-
-                if (processStep == null)
-                {
-                    request.IsApprove = true;
-                    request.IsReject = false;
-                    foreach (usage_history item in usage_Histories)
-                    {
-                        item.IsUsed = true;
-                        item.IsLiquidation = false;
-                        item.IsRecovery = false;
-                        var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
-                        ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
-                        ase.QuantityUsed = ase.QuantityUsed + item.Quantity;
-                    }
-                    user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
-                    ams_notification noti = new ams_notification()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
-                        IsRead = false,
-                        NotificationContent = "Yêu cầu cấp phát tài sản đã được phê duyệt",
-                        NotificationFor = user.ID,
-                        Action = JsonConvert.SerializeObject(new RequestAction()
-                        {
-                            Key = "REJECT",
-                            Value = request.ID,
-                            Path = ""
-                        }),
-                    };
-
-                    db.ams_notification.Add(noti);
-                    db.SaveChanges();
-                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "ALLOCATION");
-                }
-                else
-                {
-                    request_ticket_history req = db.request_ticket_history.Where(ptr => ptr.ID == request.ID).ToList().FirstOrDefault();
-                    req.StepID = processStep.ID;
-                    db.SaveChanges();
-                    List<ams_notification> notis = new List<ams_notification>();
-                    string[] Approvers = processStep.Approvers.Split('|');
-                    List<string> users = new List<string>();
-
-                    if (Approvers[0].Length == 0)
-                    {
-                        user_identifie user = new UserInformation().GetUserInforByID(request.RequestBy).Result;
-                        Organizational org = new OrganizationalChart().GetChart(user.DepartmentID).Result.Node;
-                        foreach (user_identifie element in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                        {
-                            users.Add(element.ID);
-                        }
-                    }
-                    else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
-                    {
-                        users.Add(Approvers[0]);
-                    }
-
-                    foreach (string item in Approvers)
-                    {
-                        if (item.Contains("DEP"))
-                        {
-                            string DepID = item.Split('/')[1];
-                            Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
-                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                            {
-                                users = new List<string>();
-                                users.Add(user.ID);
-                            }
-                        }
-                        else if (item.Contains("ORG"))
-                        {
-                            string orgID = item.Split('/')[1];
-                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
-                            {
-                                users = new List<string>();
-                                users.Add(user.ID);
-                            }
-                        }
-                    }
-
-                    foreach (string userid in users)
-                    {
-                        ams_notification noti = new ams_notification()
-                        {
-                            ID = Guid.NewGuid().ToString(),
-                            CreateDate = DateTime.Now,
-                            IsRead = false,
-                            NotificationContent = "Yêu cầu cấp phát tài sản được gửi từ " + new UserInformation().GetUserInfor(request.RequestBy).Result.UserFullName,
-                            NotificationFor = userid,
-                            Action = JsonConvert.SerializeObject(new RequestAction()
-                            {
-                                Key = request.RequestType,
-                                Value = request.ID,
-                                Path = "/Allocation"
-                            }),
-                        };
-                        notis.Add(noti);
-                    }
-
-                    db.ams_notification.AddRange(notis);
-                    db.SaveChanges();
-                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "ALLOCATION");
-                }
-
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<Ticket> RejectTicketAllocation(string requestBy, string requestID, string requestType)
+        public BaseModel<Ticket> RejectTicket(
+            string requestType, 
+            string requestBy, 
+            string requestID, 
+            Action func)
         {
             try
             {
@@ -814,818 +349,16 @@ namespace AMS.BUS.BusinessHandle
                 request.IsApprove = false;
                 request.IsReject = true;
 
-                user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
-
-                // tạo request
-                ams_notification noti = new ams_notification()
-                {
-                    ID = Guid.NewGuid().ToString(),
-                    CreateDate = DateTime.Now,
-                    IsRead = false,
-                    NotificationContent = "Yêu cầu cấp phát tài sản đã bị từ chối bởi " + user.UserFullName,
-                    NotificationFor = user.ID,
-                    Action = JsonConvert.SerializeObject(new RequestAction()
-                    {
-                        Key = "REJECT",
-                        Value = request.ID,
-                        Path = "/Allocation"
-                    }),
-                };
-
-                db.ams_notification.Add(noti);
-
-                db.SaveChanges();
-                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                saveVotingHistory(requestID, user1.ID, "Từ chối", "ALLOCATION");
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        // Yêu cầu thu hồi
-        public BaseModel<Ticket> GetTicketRecovery(string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                                .ToList()
-                                                .Select(ptr => new request_ticket_history()
-                                                {
-                                                    ID = ptr.ID,
-                                                    RequestBy = ptr.RequestBy,
-                                                    StepID = ptr.StepID,
-                                                    IsApprove = ptr.IsApprove,
-                                                    CreateDate = ptr.CreateDate,
-                                                    Description = ptr.Description,
-                                                    IsReject = ptr.IsReject,
-                                                    ProcessID = ptr.ProcessID,
-                                                    RequestType = ptr.RequestType,
-                                                    StoreID = ptr.StoreID
-                                                }).
-                                                ToList()
-                                                .FirstOrDefault();
-
-                List<asset_detail> assets = (from usa in db.usage_history
-                                             join ad in db.asset_detail on usa.AssetID equals ad.ID
-                                             where usa.TicketID == request.ID
-                                             select new
-                                             {
-                                                 ID = ad.ID,
-                                                 AssetClassifyID = ad.AssetClassifyID,
-                                                 QuantityOriginalStock = ad.QuantityOriginalStock,
-                                                 QuantityUsed = usa.Quantity,
-                                                 CreateDate = ad.CreateDate,
-                                                 AssetFullName = ad.AssetFullName,
-                                                 Description = ad.Description,
-                                                 Price = ad.Price,
-                                                 Unit = ad.Unit,
-                                             }).ToList().Select(ptr => new asset_detail()
-                                             {
-                                                 ID = ptr.ID,
-                                                 AssetClassifyID = ptr.AssetClassifyID,
-                                                 QuantityOriginalStock = ptr.QuantityOriginalStock,
-                                                 QuantityUsed = ptr.QuantityUsed,
-                                                 CreateDate = ptr.CreateDate,
-                                                 AssetFullName = ptr.AssetFullName,
-                                                 Description = ptr.Description,
-                                                 Price = ptr.Price,
-                                                 Unit = ptr.Unit,
-                                             }).ToList();
-
-                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList().Select(ptr => new usage_history()
-                {
-                    AssetID = ptr.AssetID,
-                    ID = ptr.ID,
-                    IsLiquidation = ptr.IsLiquidation,
-                    IsRecovery = ptr.IsRecovery,
-                    IsUsed = ptr.IsUsed,
-                    Quantity = ptr.Quantity,
-                    TicketID = ptr.TicketID,
-                    UsageFor = ptr.UsageFor
-                }).ToList();
-
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                    {
-                        Request = request,
-                        Assets = assets,
-                        UsageHistories = usages,
-                        VotingHistory = getVotingHistory(requestID)
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<string> CreateTicketRecovery(string requestBy, string storeID, string description, string processID, List<usage_history> details)
-        {
-            try
-            {
-                var db = DBC.Init;
-                Process process = db.Processes.Where(ptr => ptr.ID == processID && ptr.IsDelete == false).ToList().FirstOrDefault();
-                string id = Guid.NewGuid().ToString();
-                db.request_ticket_history.Add(new request_ticket_history()
-                {
-                    RequestBy = requestBy,
-                    CreateDate = DateTime.Now,
-                    ProcessID = process.ID,
-                    Description = description,
-                    ID = id,
-                    IsApprove = false,
-                    StepID = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().ID,
-                    RequestType = "RECOVERY",
-                    IsReject = false,
-                    StoreID = storeID
-                });
-
-                foreach (usage_history item in details)
-                {
-                    usage_history us = db.usage_history.Where(ptr => ptr.ID == item.ID).FirstOrDefault();
-                    us.TicketID = id;
-                }
-
-                List<ams_notification> notifications = new List<ams_notification>();
-
-                string[] Approvers = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().Approvers.Split('|');
-
-                List<string> users = new List<string>();
-
-                if (Approvers[0].Length == 0)
-                {
-                    user_identifie user = new UserInformation().GetUserInfor(requestBy).Result;
-                    Organizational org = new OrganizationalChart().GetChart(user.DepartmentID).Result.Node;
-                    foreach (user_identifie element in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                    {
-                        users.Add(element.ID);
-                    }
-                }
-                else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
-                {
-                    users.Add(Approvers[0]);
-                }
-
-                foreach (string item in Approvers)
-                {
-                    if (item.Contains("DEP"))
-                    {
-                        string DepID = item.Split('/')[1];
-                        Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
-                        foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                        {
-                            users.Add(user.ID);
-                        }
-                    }
-                    else if (item.Contains("ORG"))
-                    {
-                        string orgID = item.Split('/')[1];
-                        foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
-                        {
-                            users.Add(user.ID);
-                        }
-                    }
-                }
-
-                List<ams_notification> notis = new List<ams_notification>();
-
-                foreach (string userid in users)
-                {
-                    ams_notification noti = new ams_notification()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
-                        IsRead = false,
-                        NotificationContent = "Yêu cầu thu hồi tài sản được gửi từ " + new UserInformation().GetUserInfor(requestBy).Result.UserFullName,
-                        NotificationFor = userid,
-                        Action = JsonConvert.SerializeObject(new RequestAction()
-                        {
-                            Key = "RECOVERY",
-                            Value = id,
-                            Path = "/Recovery"
-                        }),
-                    };
-                    notis.Add(noti);
-                }
-
-                db.ams_notification.AddRange(notis);
-
-                db.SaveChanges();
-                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", "RECOVERY");
-                return new BaseModel<string>();
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<string>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<Ticket> ApproveTicketRecovery(string requestBy, string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                .ToList()
-                                .FirstOrDefault();
-                List<usage_history> usage_Histories = db.usage_history
-                                                        .Where(ptr => ptr.TicketID == requestID)
-                                                        .ToList();
-
-                ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
-
-                if (processStep == null)
-                {
-                    request.IsApprove = true;
-                    request.IsReject = false;
-                    foreach (usage_history item in usage_Histories)
-                    {
-                        var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
-                        ase.QuantityInStock = ase.QuantityInStock + item.Quantity;
-                        ase.QuantityUsed = ase.QuantityUsed - item.Quantity;
-                        item.IsUsed = false;
-                        item.IsLiquidation = false;
-                        item.IsRecovery = true;
-                    }
-                    user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
-                    ams_notification noti = new ams_notification()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
-                        IsRead = false,
-                        NotificationContent = "Yêu cầu thu hồi tài sản đã được phê duyệt",
-                        NotificationFor = user.ID,
-                        Action = JsonConvert.SerializeObject(new RequestAction()
-                        {
-                            Key = "REJECT",
-                            Value = request.ID,
-                            Path = ""
-                        }),
-                    };
-
-                    db.ams_notification.Add(noti);
-                    db.SaveChanges();
-                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "RECOVERY");
-                }
-                else
-                {
-                    request_ticket_history req = db.request_ticket_history.Where(ptr => ptr.ID == request.ID).ToList().FirstOrDefault();
-                    req.StepID = processStep.ID;
-                    db.SaveChanges();
-                    List<ams_notification> notis = new List<ams_notification>();
-                    string[] Approvers = processStep.Approvers.Split('|');
-                    List<string> users = new List<string>();
-
-                    if (Approvers[0].Length == 0)
-                    {
-                        user_identifie user = new UserInformation().GetUserInforByID(request.RequestBy).Result;
-                        Organizational org = new OrganizationalChart().GetChart(user.DepartmentID).Result.Node;
-                        foreach (user_identifie element in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                        {
-                            users.Add(element.ID);
-                        }
-                    }
-                    else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
-                    {
-                        users.Add(Approvers[0]);
-                    }
-
-                    foreach (string item in Approvers)
-                    {
-                        if (item.Contains("DEP"))
-                        {
-                            string DepID = item.Split('/')[1];
-                            Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
-                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                            {
-                                users = new List<string>();
-                                users.Add(user.ID);
-                            }
-                        }
-                        else if (item.Contains("ORG"))
-                        {
-                            string orgID = item.Split('/')[1];
-                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
-                            {
-                                users = new List<string>();
-                                users.Add(user.ID);
-                            }
-                        }
-                    }
-
-                    foreach (string userid in users)
-                    {
-                        ams_notification noti = new ams_notification()
-                        {
-                            ID = Guid.NewGuid().ToString(),
-                            CreateDate = DateTime.Now,
-                            IsRead = false,
-                            NotificationContent = "Yêu cầu thu hồi tài sản được gửi từ " + new UserInformation().GetUserInfor(request.RequestBy).Result.UserFullName,
-                            NotificationFor = userid,
-                            Action = JsonConvert.SerializeObject(new RequestAction()
-                            {
-                                Key = request.RequestType,
-                                Value = request.ID,
-                                Path = "/Recovery"
-                            }),
-                        };
-                        notis.Add(noti);
-                    }
-
-                    db.ams_notification.AddRange(notis);
-                    db.SaveChanges();
-                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "RECOVERY");
-                }
-
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<Ticket> RejectTicketRecovery(string requestBy, string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                                .ToList()
-                                                .FirstOrDefault();
-                ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
-
-                request.IsApprove = false;
-                request.IsReject = true;
+                func();
 
                 user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
 
-                // tạo request
-                ams_notification noti = new ams_notification()
-                {
-                    ID = Guid.NewGuid().ToString(),
-                    CreateDate = DateTime.Now,
-                    IsRead = false,
-                    NotificationContent = "Yêu cầu thu hồi tài sản đã bị từ chối bởi " + user.UserFullName,
-                    NotificationFor = user.ID,
-                    Action = JsonConvert.SerializeObject(new RequestAction()
-                    {
-                        Key = "REJECT",
-                        Value = request.ID,
-                        Path = "/Recovery"
-                    }),
-                };
-
-                db.ams_notification.Add(noti);
+                Notification notification = new Notification();
+                notification.SentNotificationByUser(new List<string>() { user.ID }, request.ID, requestBy, requestType, RequestType.GetMessageByName(requestType).Message);
 
                 db.SaveChanges();
                 user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                saveVotingHistory(requestID, user1.ID, "Từ chối", "RECOVERY");
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        // Yêu cầu thu hồi
-        public BaseModel<Ticket> GetTicketLiquidation(string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                                .ToList()
-                                                .Select(ptr => new request_ticket_history()
-                                                {
-                                                    ID = ptr.ID,
-                                                    RequestBy = ptr.RequestBy,
-                                                    StepID = ptr.StepID,
-                                                    IsApprove = ptr.IsApprove,
-                                                    CreateDate = ptr.CreateDate,
-                                                    Description = ptr.Description,
-                                                    IsReject = ptr.IsReject,
-                                                    ProcessID = ptr.ProcessID,
-                                                    RequestType = ptr.RequestType,
-                                                    StoreID = ptr.StoreID,
-                                                }).
-                                                ToList()
-                                                .FirstOrDefault();
-
-                List<asset_detail> assets = (from usa in db.usage_history
-                                             join ad in db.asset_detail on usa.AssetID equals ad.ID
-                                             where usa.TicketID == request.ID
-                                             select new
-                                             {
-                                                 ID = ad.ID,
-                                                 AssetClassifyID = ad.AssetClassifyID,
-                                                 QuantityOriginalStock = ad.QuantityOriginalStock,
-                                                 QuantityUsed = usa.Quantity,
-                                                 CreateDate = ad.CreateDate,
-                                                 AssetFullName = ad.AssetFullName,
-                                                 Description = ad.Description,
-                                                 Price = ad.Price,
-                                                 Unit = ad.Unit,
-                                             }).ToList().Select(ptr => new asset_detail()
-                                             {
-                                                 ID = ptr.ID,
-                                                 AssetClassifyID = ptr.AssetClassifyID,
-                                                 QuantityOriginalStock = ptr.QuantityOriginalStock,
-                                                 QuantityUsed = ptr.QuantityUsed,
-                                                 CreateDate = ptr.CreateDate,
-                                                 AssetFullName = ptr.AssetFullName,
-                                                 Description = ptr.Description,
-                                                 Price = ptr.Price,
-                                                 Unit = ptr.Unit,
-                                             }).ToList();
-
-                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == request.ID).ToList().Select(ptr => new usage_history()
-                {
-                    AssetID = ptr.AssetID,
-                    ID = ptr.ID,
-                    IsLiquidation = ptr.IsLiquidation,
-                    IsRecovery = ptr.IsRecovery,
-                    IsUsed = ptr.IsUsed,
-                    Quantity = ptr.Quantity,
-                    TicketID = ptr.TicketID,
-                    UsageFor = ptr.UsageFor
-                }).ToList();
-
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                    {
-                        Request = request,
-                        Assets = assets,
-                        UsageHistories = usages,
-                        VotingHistory = getVotingHistory(requestID)
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<string> CreateTicketLiquidation(string requestBy, string storeID, string description, string processID, List<usage_history> details)
-        {
-            try
-            {
-                var db = DBC.Init;
-                Process process = db.Processes.Where(ptr => ptr.ID == processID && ptr.IsDelete == false).ToList().FirstOrDefault();
-                string id = Guid.NewGuid().ToString();
-                db.request_ticket_history.Add(new request_ticket_history()
-                {
-                    RequestBy = requestBy,
-                    CreateDate = DateTime.Now,
-                    ProcessID = process.ID,
-                    Description = description,
-                    ID = id,
-                    IsApprove = false,
-                    StepID = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().ID,
-                    RequestType = "LIQUIDATION",
-                    IsReject = false,
-                    StoreID = storeID
-                });
-                List<usage_history> usage_Histories = new List<usage_history>();
-                foreach (usage_history item in details)
-                {
-                    usage_Histories.Add(new usage_history()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        AssetID = item.AssetID,
-                        CreateDate = DateTime.Now,
-                        Quantity = item.Quantity,
-                        TicketID = id,
-                        UsageFor = ""
-                    });
-                }
-
-                db.usage_history.AddRange(usage_Histories);
-
-                List<ams_notification> notifications = new List<ams_notification>();
-
-                string[] Approvers = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().Approvers.Split('|');
-
-                List<string> users = new List<string>();
-
-                if (Approvers[0].Length == 0)
-                {
-                    user_identifie user = new UserInformation().GetUserInfor(requestBy).Result;
-                    Organizational org = new OrganizationalChart().GetChart(user.DepartmentID).Result.Node;
-                    foreach (user_identifie element in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                    {
-                        users.Add(element.ID);
-                    }
-                }
-                else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
-                {
-                    users.Add(Approvers[0]);
-                }
-
-                foreach (string item in Approvers)
-                {
-                    if (item.Contains("DEP"))
-                    {
-                        string DepID = item.Split('/')[1];
-                        Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
-                        foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                        {
-                            users.Add(user.ID);
-                        }
-                    }
-                    else if (item.Contains("ORG"))
-                    {
-                        string orgID = item.Split('/')[1];
-                        foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
-                        {
-                            users.Add(user.ID);
-                        }
-                    }
-                }
-
-                List<ams_notification> notis = new List<ams_notification>();
-
-                foreach (string userid in users)
-                {
-                    ams_notification noti = new ams_notification()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
-                        IsRead = false,
-                        NotificationContent = "Yêu cầu thu thanh lý sản được gửi từ " + new UserInformation().GetUserInfor(requestBy).Result.UserFullName,
-                        NotificationFor = userid,
-                        Action = JsonConvert.SerializeObject(new RequestAction()
-                        {
-                            Key = "LIQUIDATION",
-                            Value = id,
-                            Path = "/Liquidation"
-                        }),
-                    };
-                    notis.Add(noti);
-                }
-
-                db.ams_notification.AddRange(notis);
-
-                db.SaveChanges();
-                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                saveVotingHistory(id, user1.ID, "Tạo yêu cầu", "LIQUIDATION");
-                return new BaseModel<string>();
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<string>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<Ticket> ApproveTicketLiquidation(string requestBy, string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                .ToList()
-                                .FirstOrDefault();
-                List<usage_history> usage_Histories = db.usage_history
-                                                        .Where(ptr => ptr.TicketID == requestID)
-                                                        .ToList();
-
-                ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
-
-                if (processStep == null)
-                {
-                    request.IsApprove = true;
-                    request.IsReject = false;
-                    foreach (usage_history item in usage_Histories)
-                    {
-                        item.IsUsed = false;
-                        item.IsLiquidation = true;
-                        item.IsRecovery = false;
-                        var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
-                        ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
-                        ase.QuantityDestroyed = ase.QuantityDestroyed + item.Quantity;
-                    }
-                    user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
-                    ams_notification noti = new ams_notification()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        CreateDate = DateTime.Now,
-                        IsRead = false,
-                        NotificationContent = "Yêu cầu thanh lý tài sản đã được phê duyệt",
-                        NotificationFor = user.ID,
-                        Action = JsonConvert.SerializeObject(new RequestAction()
-                        {
-                            Key = "REJECT",
-                            Value = request.ID,
-                            Path = ""
-                        }),
-                    };
-
-                    db.ams_notification.Add(noti);
-                    db.SaveChanges();
-                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "LIQUIDATION");
-                }
-                else
-                {
-                    request_ticket_history req = db.request_ticket_history.Where(ptr => ptr.ID == request.ID).ToList().FirstOrDefault();
-                    req.StepID = processStep.ID;
-                    db.SaveChanges();
-                    List<ams_notification> notis = new List<ams_notification>();
-                    string[] Approvers = processStep.Approvers.Split('|');
-                    List<string> users = new List<string>();
-
-                    if (Approvers[0].Length == 0)
-                    {
-                        user_identifie user = new UserInformation().GetUserInforByID(request.RequestBy).Result;
-                        Organizational org = new OrganizationalChart().GetChart(user.DepartmentID).Result.Node;
-                        foreach (user_identifie element in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                        {
-                            users.Add(element.ID);
-                        }
-                    }
-                    else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
-                    {
-                        users.Add(Approvers[0]);
-                    }
-
-                    foreach (string item in Approvers)
-                    {
-                        if (item.Contains("DEP"))
-                        {
-                            string DepID = item.Split('/')[1];
-                            Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
-                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                            {
-                                users = new List<string>();
-                                users.Add(user.ID);
-                            }
-                        }
-                        else if (item.Contains("ORG"))
-                        {
-                            string orgID = item.Split('/')[1];
-                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
-                            {
-                                users = new List<string>();
-                                users.Add(user.ID);
-                            }
-                        }
-                    }
-
-                    foreach (string userid in users)
-                    {
-                        ams_notification noti = new ams_notification()
-                        {
-                            ID = Guid.NewGuid().ToString(),
-                            CreateDate = DateTime.Now,
-                            IsRead = false,
-                            NotificationContent = "Yêu cầu thanh lý tài sản được gửi từ " + new UserInformation().GetUserInfor(request.RequestBy).Result.UserFullName,
-                            NotificationFor = userid,
-                            Action = JsonConvert.SerializeObject(new RequestAction()
-                            {
-                                Key = request.RequestType,
-                                Value = request.ID,
-                                Path = "/Liquidation"
-                            }),
-                        };
-                        notis.Add(noti);
-                    }
-
-                    db.ams_notification.AddRange(notis);
-                    db.SaveChanges();
-                    user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                    saveVotingHistory(requestID, user1.ID, "Phê duyệt", "LIQUIDATION");
-                }
-
-                return new BaseModel<Ticket>()
-                {
-                    Result = new Ticket()
-                };
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<Ticket>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
-        public BaseModel<Ticket> RejectTicketLiquidation(string requestBy, string requestID, string requestType)
-        {
-            try
-            {
-                var db = DBC.Init;
-                request_ticket_history request = db.request_ticket_history
-                                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
-                                                .ToList()
-                                                .FirstOrDefault();
-                ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
-
-                request.IsApprove = false;
-                request.IsReject = true;
-
-                user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
-
-                // tạo request
-                ams_notification noti = new ams_notification()
-                {
-                    ID = Guid.NewGuid().ToString(),
-                    CreateDate = DateTime.Now,
-                    IsRead = false,
-                    NotificationContent = "Yêu cầu thanh lý tài sản đã bị từ chối bởi " + user.UserFullName,
-                    NotificationFor = user.ID,
-                    Action = JsonConvert.SerializeObject(new RequestAction()
-                    {
-                        Key = "REJECT",
-                        Value = request.ID,
-                        Path = "/Liquidation"
-                    }),
-                };
-
-                db.ams_notification.Add(noti);
-
-                db.SaveChanges();
-                user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
-                saveVotingHistory(requestID, user1.ID, "Từ chối", "LIQUIDATION");
+                saveVotingHistory(requestID, user1.ID, "Từ chối", requestType);
                 return new BaseModel<Ticket>()
                 {
                     Result = new Ticket()

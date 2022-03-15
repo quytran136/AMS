@@ -4,6 +4,30 @@ import { call, put, takeLatest, select } from "redux-saga/effects";
 import * as amsAction from '../Actions';
 import * as cookieHandle from "../../Common/Cookie";
 
+export function* amsWatcher() {
+    yield takeLatest(type.GET_TOKEN, signinSaga);
+    yield takeLatest(type.SIGNUP, signupSaga);
+    yield takeLatest(type.GET_DEPARTMENT, getDepartmentChartSaga);
+    yield takeLatest(type.SAVE_CHANGE_DEPARTMENT, saveChangeDepartmentChartSaga);
+    yield takeLatest(type.GET_ORGANIZATIONAL, getOrganizationalChartSaga);
+    yield takeLatest(type.SAVE_CHANGE_ORGANIZATIONAL, saveChangeOrganizationalChartSaga);
+    yield takeLatest(type.GET_DEPARTMENT_DETAIL, getDepartmentDetailSaga);
+    yield takeLatest(type.GET_USERS, getUsersSaga);
+    yield takeLatest(type.GET_USER_INFO, getUserInfoSaga);
+    yield takeLatest(type.GET_USER_INFO_LOGIN, getUserInfoLoginSaga);
+    yield takeLatest(type.GET_USERS_BY_DEPARTMENT, getUsersByDepartmentSaga);
+    yield takeLatest(type.DELETE_USER, deleteUserSaga);
+    yield takeLatest(type.LOCK_UNLOCK_USER, lockOrUnlockUserSaga);
+    yield takeLatest(type.REQUEST_PROCESS_FLOW, requestProcessFlowSaga);
+    yield takeLatest(type.REQUEST_WAREHOUSE, requestWarehouseSaga);
+    yield takeLatest(type.REQUEST_SUPPLIER, requestSupplierSaga);
+    yield takeLatest(type.REQUEST_ASSET, requestAssetSaga);
+    yield takeLatest(type.REQUEST_CONFIG_COMMON, requestConfigCommonSaga);
+    yield takeLatest(type.REQUEST_CREATE_TICKET, requestTicketSaga);
+    yield takeLatest(type.GET_NOTIFICATION, notificationSaga);
+    yield takeLatest(type.GET_REPORT, reportSaga);
+}
+
 function* signinSaga(action) {
     try {
         const token = yield call(AMS_API.signin, action.body);
@@ -36,10 +60,6 @@ function* signinSaga(action) {
     }
 }
 
-export function* signinWatcher() {
-    yield takeLatest(type.GET_TOKEN, signinSaga);
-}
-
 function* signupSaga(action) {
     try {
         yield put(amsAction.signupSuccess(false))
@@ -60,10 +80,6 @@ function* signupSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* signupWatcher() {
-    yield takeLatest(type.SIGNUP, signupSaga);
 }
 
 function* getDepartmentChartSaga(action) {
@@ -89,10 +105,6 @@ function* getDepartmentChartSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* getDepartmentChartWatcher() {
-    yield takeLatest(type.GET_DEPARTMENT, getDepartmentChartSaga);
 }
 
 function* saveChangeDepartmentChartSaga(action) {
@@ -126,10 +138,6 @@ function* saveChangeDepartmentChartSaga(action) {
     }
 }
 
-export function* saveChangeDepartmentChartWatcher() {
-    yield takeLatest(type.SAVE_CHANGE_DEPARTMENT, saveChangeDepartmentChartSaga);
-}
-
 function* getOrganizationalChartSaga(action) {
     try {
         const organizationalChart = yield call(AMS_API.organizationalChart, action.body)
@@ -152,10 +160,6 @@ function* getOrganizationalChartSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* getOrganizationalChartWatcher() {
-    yield takeLatest(type.GET_ORGANIZATIONAL, getOrganizationalChartSaga);
 }
 
 function* saveChangeOrganizationalChartSaga(action) {
@@ -192,10 +196,6 @@ function* saveChangeOrganizationalChartSaga(action) {
     }
 }
 
-export function* saveChangeOrganizationalChartWatcher() {
-    yield takeLatest(type.SAVE_CHANGE_ORGANIZATIONAL, saveChangeOrganizationalChartSaga);
-}
-
 function* getDepartmentDetailSaga(action) {
     try {
         const departmentDetail = yield call(AMS_API.departmentChart, action.body)
@@ -221,10 +221,6 @@ function* getDepartmentDetailSaga(action) {
     }
 }
 
-export function* getDepartmentDetailWatcher() {
-    yield takeLatest(type.GET_DEPARTMENT_DETAIL, getDepartmentDetailSaga);
-}
-
 function* getUsersSaga(action) {
     try {
         const users = yield call(AMS_API.userInformation, action.body)
@@ -244,10 +240,6 @@ function* getUsersSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* getUsersWatcher() {
-    yield takeLatest(type.GET_USERS, getUsersSaga);
 }
 
 function* getUserInfoSaga(action) {
@@ -275,10 +267,6 @@ function* getUserInfoSaga(action) {
     }
 }
 
-export function* getUserInfoWatcher() {
-    yield takeLatest(type.GET_USER_INFO, getUserInfoSaga);
-}
-
 function* getUserInfoLoginSaga(action) {
     try {
         const userinfo = yield call(AMS_API.userInformation, action.body)
@@ -302,10 +290,6 @@ function* getUserInfoLoginSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* getUserInfoLoginWatcher() {
-    yield takeLatest(type.GET_USER_INFO_LOGIN, getUserInfoLoginSaga);
 }
 
 function* getUsersByDepartmentSaga(action) {
@@ -332,10 +316,6 @@ function* getUsersByDepartmentSaga(action) {
     }
 }
 
-export function* getUsersByDepartmentWatcher() {
-    yield takeLatest(type.GET_USERS_BY_DEPARTMENT, getUsersByDepartmentSaga);
-}
-
 function* deleteUserSaga(action) {
     try {
         const user = yield call(AMS_API.userInformation, action.body)
@@ -358,10 +338,6 @@ function* deleteUserSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* deleteUserWatcher() {
-    yield takeLatest(type.DELETE_USER, deleteUserSaga);
 }
 
 function* lockOrUnlockUserSaga(action) {
@@ -387,10 +363,6 @@ function* lockOrUnlockUserSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* lockOrUnlockUserWatcher() {
-    yield takeLatest(type.LOCK_UNLOCK_USER, lockOrUnlockUserSaga);
 }
 
 function* requestProcessFlowSaga(action) {
@@ -427,10 +399,6 @@ function* requestProcessFlowSaga(action) {
     }
 }
 
-export function* requestProcessFlowWatcher() {
-    yield takeLatest(type.REQUEST_PROCESS_FLOW, requestProcessFlowSaga);
-}
-
 function* requestWarehouseSaga(action) {
     try {
         const warehouse = yield call(AMS_API.warehouse, action.body)
@@ -465,8 +433,36 @@ function* requestWarehouseSaga(action) {
     }
 }
 
-export function* requestWarehouseWatcher() {
-    yield takeLatest(type.REQUEST_WAREHOUSE, requestWarehouseSaga);
+function* requestSupplierSaga(action) {
+    try {
+        const supplier = yield call(AMS_API.supplier, action.body)
+        if (!supplier) {
+            throw new Error("Thao tác không thành công")
+        }
+
+        if (!supplier.Message) {
+            switch (action.body.Key) {
+                case "UPDATE_SUPPLIER":
+                    yield put(amsAction.setMessage("Câp nhật dữ liệu thành công"))
+                    break;
+                case "GET_SUPPLIER":
+                    yield put(amsAction.getSupplierSuccess(supplier))
+                    break;
+                case "GET_SUPPLIER_DETAIL":
+                    yield put(amsAction.getSupplierSuccess(supplier))
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            yield put(amsAction.setError(supplier))
+        }
+    } catch (ex) {
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
 }
 
 function* requestAssetSaga(action) {
@@ -479,7 +475,6 @@ function* requestAssetSaga(action) {
         if (!asset.Message) {
             switch (action.body.Key) {
                 case "UPDATE_ASSET_CLASSIFY":
-                    // yield put(amsAction.saveProcessFlow(null))
                     yield put(amsAction.setMessage("Câp nhật dữ liệu thành công"))
                     break;
                 case "GET_ASSET_CLASSIFY":
@@ -503,10 +498,6 @@ function* requestAssetSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* requestAssetWatcher() {
-    yield takeLatest(type.REQUEST_ASSET, requestAssetSaga);
 }
 
 function* requestConfigCommonSaga(action) {
@@ -539,35 +530,14 @@ function* requestConfigCommonSaga(action) {
     }
 }
 
-export function* requestConfigCommonWatcher() {
-    yield takeLatest(type.REQUEST_CONFIG_COMMON, requestConfigCommonSaga);
-}
-
 function* requestTicketSaga(action) {
     try {
         const ticket = yield call(AMS_API.ticket, action.body)
         if (!ticket) {
             throw new Error("Thao tác không thành công")
         }
-        yield put(amsAction.requestNotificationSuccess(null))
         if (!ticket.Message) {
-            switch (action.body.Key) {
-                case "GET_TICKET_SHOPPING":
-                    yield put(amsAction.getTicketSuccess(ticket))
-                    break;
-                case "GET_TICKET_ALLOCATION":
-                    yield put(amsAction.getTicketSuccess(ticket))
-                    break;
-                case "GET_TICKET_RECOVERY":
-                    yield put(amsAction.getTicketSuccess(ticket))
-                    break;
-                case "GET_TICKET_LIQUIDATION":
-                    yield put(amsAction.getTicketSuccess(ticket))
-                    break;
-                default:
-                    yield put(amsAction.setMessage("Gửi yêu cầu thành công"))
-                    break;
-            }
+            yield put(amsAction.getTicketSuccess(ticket))
         } else {
             yield put(amsAction.setError(ticket))
         }
@@ -579,18 +549,14 @@ function* requestTicketSaga(action) {
     }
 }
 
-export function* requestTicketWatcher() {
-    yield takeLatest(type.REQUEST_CREATE_TICKET, requestTicketSaga);
-}
-
 function* notificationSaga(action) {
     try {
-        const reducer = yield select()
         const notification = yield call(AMS_API.notification, action.body)
         if (!notification) {
             throw new Error("Thao tác không thành công")
         }
         yield put(amsAction.requestNotificationSuccess(null))
+        const reducer = yield select()
         if (!notification.Message) {
             if (action.body.Key === "GET_NOTIFICATION") {
                 if (reducer?.amsReducer?.notifications?.Response?.Notifications.length !== notification?.Response?.Notifications.length) {
@@ -606,10 +572,6 @@ function* notificationSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* notificationWatcher() {
-    yield takeLatest(type.GET_NOTIFICATION, notificationSaga);
 }
 
 function* reportSaga(action) {
@@ -630,8 +592,4 @@ function* reportSaga(action) {
             Message: ex.message
         }))
     }
-}
-
-export function* reportWatcher() {
-    yield takeLatest(type.GET_REPORT, reportSaga);
 }

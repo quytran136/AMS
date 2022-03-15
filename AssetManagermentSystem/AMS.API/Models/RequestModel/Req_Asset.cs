@@ -6,6 +6,7 @@ namespace AMS.API.Models.RequestModel
     public class Req_Asset
     {
         public asset_classify AssetClassify { get; set; }
+        public supplier Supplier { get; set; }
         public asset_detail AssetDetail { get; set; }
         public List<asset_detail> AssetDetails { get; set; }
         public string StoreID { get; set; }

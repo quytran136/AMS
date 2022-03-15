@@ -19,5 +19,6 @@ namespace AMS.API.Models.RequestModel
         public string Phone { get; set; }
         public string Email { get; set; }
         public string SearchContent { get; set; }
+        public string Image { get; set; }
     }
 }

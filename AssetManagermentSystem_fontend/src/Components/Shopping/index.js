@@ -19,7 +19,7 @@ function Shopping(props) {
         requestWarehouse,
         requestTicket,
         setError,
-        requestNotification
+        requestNotification,
     } = amsAction;
 
     const {
@@ -28,7 +28,7 @@ function Shopping(props) {
         warehouses,
         userInfoLogin,
         warehouseAction,
-        ticket
+        ticket,
     } = props.amsStore;
 
     const [listAsset, setListAsset] = useState();
@@ -49,6 +49,8 @@ function Shopping(props) {
         }
         dispatch(requestWarehouse(body))
     }
+
+   
 
     function sentRequest() {
         if (warehouseSelected) {
@@ -77,7 +79,8 @@ function Shopping(props) {
                     QuantityOriginalStock: element.QuantityOriginalStock,
                     Unit: element.Unit,
                     Description: element.Description,
-                    Price: element.Price
+                    Price: element.Price,
+                    SupplierID: element.SupplierID
                 })
             });
 
@@ -124,7 +127,6 @@ function Shopping(props) {
                 UserNameRequest: userName,
                 Data: {
                     RequestID: data.split('|')[0],
-                    RequestType: "SHOPPING"
                 }
             }
             dispatch(requestTicket(body))
@@ -139,7 +141,6 @@ function Shopping(props) {
                 UserNameRequest: userName,
                 Data: {
                     RequestID: data.split('|')[0],
-                    RequestType: "SHOPPING"
                 }
             }
             dispatch(requestTicket(body))
@@ -154,7 +155,6 @@ function Shopping(props) {
                 UserNameRequest: userName,
                 Data: {
                     RequestID: data.split('|')[0],
-                    RequestType: "SHOPPING"
                 }
             }
             dispatch(requestTicket(body))

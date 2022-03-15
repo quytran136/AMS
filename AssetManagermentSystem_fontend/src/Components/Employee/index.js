@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import 'antd/dist/antd.css';
 import './style.scss'
-import { Button, Input, Row, Col, Table } from 'antd';
+import { Button, Input, Row, Col, Table, Avatar } from 'antd';
 import {
     EditOutlined,
     DeleteOutlined,
@@ -35,6 +35,14 @@ const Employee = (prop) => {
             title: 'Họ tên',
             dataIndex: 'UserFullName',
             key: 'UserFullName',
+            render: (text, record, index) => {
+                return(
+                    <div className="flex">
+                        <Avatar size={32} shape="circle" className="item" src={record.Image} />
+                        {record.UserFullName}
+                    </div>
+                )
+            }
         },
         {
             title: 'Tài khoản',

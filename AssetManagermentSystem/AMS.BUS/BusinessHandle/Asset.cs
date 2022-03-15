@@ -16,6 +16,8 @@ namespace AMS.BUS.BusinessHandle
         public usage_history Usage_History { get; set; }
         public List<asset_detail> Asset_Details { get; set; }
 
+        #region Metadata
+
         public BaseModel<asset_classify> UpdateAssetClassify(asset_classify assetclassify)
         {
             try
@@ -163,25 +165,29 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<List<asset_detail>> GetAsset(asset_classify assetClassifyID)
+        public BaseModel<List<asset_detail>> GetAsset(supplier supplier,asset_classify assetClassifyID)
         {
             try
             {
                 var db = DBC.Init;
-                List<asset_detail> ad = db.asset_detail.Where(ptr => ptr.IsDelete == false && ptr.AssetClassifyID == assetClassifyID.ID).ToList().Select(ptr => new asset_detail()
-                {
-                    ID = ptr.ID,
-                    AssetClassifyID = ptr.AssetClassifyID,
-                    AssetFullName = ptr.AssetFullName,
-                    CreateDate = ptr.CreateDate,
-                    Price = ptr.Price,
-                    QuantityOriginalStock = ptr.QuantityOriginalStock,
-                    QuantityInStock = ptr.QuantityOriginalStock,
-                    QuantityUsed = ptr.QuantityUsed,
-                    QuantityDestroyed = ptr.QuantityDestroyed,
-                    StoreID = ptr.StoreID,
-                    IsDelete = ptr.IsDelete,
-                }).ToList();
+                List<asset_detail> ad = db.asset_detail
+                    .Where(ptr => ptr.IsDelete == false && ptr.SupplierID == supplier.ID && ptr.AssetClassifyID == assetClassifyID.ID)
+                    .ToList()
+                    .Select(ptr => new asset_detail()
+                    {
+                        ID = ptr.ID,
+                        AssetClassifyID = ptr.AssetClassifyID,
+                        AssetFullName = ptr.AssetFullName,
+                        CreateDate = ptr.CreateDate,
+                        Price = ptr.Price,
+                        QuantityOriginalStock = ptr.QuantityOriginalStock,
+                        QuantityInStock = ptr.QuantityOriginalStock,
+                        QuantityUsed = ptr.QuantityUsed,
+                        QuantityDestroyed = ptr.QuantityDestroyed,
+                        StoreID = ptr.StoreID,
+                        IsDelete = ptr.IsDelete,
+                    })
+                    .ToList();
                 return new BaseModel<List<asset_detail>>()
                 {
                     Result = ad
@@ -298,6 +304,52 @@ namespace AMS.BUS.BusinessHandle
                 };
             }
         }
+
+        public BaseModel<string> AddAssetRanger(List<asset_detail> details, string ticketID, string storeID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<asset_detail> listAsset = new List<asset_detail>();
+                foreach (asset_detail item in details)
+                {
+                    listAsset.Add(new asset_detail()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        AssetClassifyID = item.AssetClassifyID,
+                        CreateDate = DateTime.Now,
+                        AssetFullName = item.AssetFullName,
+                        Description = item.Description,
+                        Price = item.Price,
+                        IsDelete = false,
+                        IsActive = false,
+                        TicketID = ticketID,
+                        StoreID = storeID,
+                        QuantityDestroyed = 0,
+                        QuantityInStock = 0,
+                        QuantityOriginalStock = item.QuantityOriginalStock,
+                        QuantityUsed = 0,
+                        Unit = item.Unit
+                    });
+                }
+
+                db.asset_detail.AddRange(listAsset);
+
+                return new BaseModel<string>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
         public BaseModel<string> UpdateAsset(asset_detail detail)
         {
             try
@@ -420,6 +472,327 @@ namespace AMS.BUS.BusinessHandle
                 };
             }
         }
+        #endregion
+
+        #region nhập kho
+        public BaseModel<string> CreateAssetShopping(List<asset_detail> details, string ticketID, string storeID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<asset_detail> listAsset = new List<asset_detail>();
+                foreach (asset_detail item in details)
+                {
+                    listAsset.Add(new asset_detail()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        AssetClassifyID = item.AssetClassifyID,
+                        CreateDate = DateTime.Now,
+                        AssetFullName = item.AssetFullName,
+                        Description = item.Description,
+                        Price = item.Price,
+                        IsDelete = false,
+                        IsActive = false,
+                        TicketID = ticketID,
+                        StoreID = storeID,
+                        QuantityDestroyed = 0,
+                        QuantityInStock = 0,
+                        QuantityOriginalStock = item.QuantityOriginalStock,
+                        QuantityUsed = 0,
+                        Unit = item.Unit,
+                        SupplierID = item.SupplierID,
+                    });
+                }
+
+                db.asset_detail.AddRange(listAsset);
+                db.SaveChanges();
+                return new BaseModel<string>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public List<asset_detail> GetAssetShopping(string requestID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                var listAsset = db.asset_detail.Where(ptr => ptr.TicketID == requestID)
+                .ToList()
+                .Select(ptr => new asset_detail()
+                {
+                    ID = ptr.ID,
+                    AssetClassifyID = ptr.AssetClassifyID,
+                    QuantityOriginalStock = ptr.QuantityOriginalStock,
+                    CreateDate = ptr.CreateDate,
+                    AssetFullName = ptr.AssetFullName,
+                    Description = ptr.Description,
+                    Price = ptr.Price,
+                    Unit = ptr.Unit,
+                    SupplierID = ptr.SupplierID,
+                }).ToList();
+                if (listAsset == null)
+                {
+                    return new List<asset_detail>();
+                }
+                return listAsset;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public BaseModel<string> ApproveAddAsset(string requestID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<asset_detail> assets = db.asset_detail
+                                            .Where(ptr => ptr.TicketID == requestID)
+                                            .ToList()
+                                            .Select(ptr => new asset_detail()
+                                            {
+                                                ID = ptr.ID,
+                                                AssetClassifyID = ptr.AssetClassifyID,
+                                                QuantityOriginalStock = ptr.QuantityOriginalStock,
+                                                CreateDate = ptr.CreateDate,
+                                                AssetFullName = ptr.AssetFullName,
+                                                Description = ptr.Description,
+                                                Price = ptr.Price,
+                                                Unit = ptr.Unit
+                                            }).ToList();
+                foreach (asset_detail item in assets)
+                {
+                    var ase = db.asset_detail.Where(ptr => ptr.ID == item.ID).ToList().FirstOrDefault();
+                    ase.IsActive = true;
+                    ase.QuantityInStock = item.QuantityOriginalStock;
+                }
+                return new BaseModel<string>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public BaseModel<string> RejectAddAsset(string requestID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<asset_detail> assets = db.asset_detail
+                                            .Where(ptr => ptr.TicketID == requestID)
+                                            .ToList();
+                foreach (asset_detail item in assets)
+                {
+                    item.IsActive = false;
+                    item.IsDelete = true;
+                }
+                return new BaseModel<string>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+        #endregion
+
+        #region Cấp phát
+        public BaseModel<string> CreateAssetAllocation(List<usage_history> details, string ticketID)
+        {
+            try
+            {
+                var db = DBC.Init;
+
+                List<usage_history> listUsageHistory = new List<usage_history>();
+                foreach (usage_history item in details)
+                {
+                    usage_history us = db.usage_history.Where(ptr => ptr.AssetID == item.AssetID && ptr.UsageFor == item.UsageFor).ToList().FirstOrDefault();
+                    if (us == null)
+                    {
+                        listUsageHistory.Add(new usage_history()
+                        {
+                            ID = Guid.NewGuid().ToString(),
+                            TicketID = ticketID,
+                            AssetID = item.AssetID,
+                            Quantity = item.Quantity,
+                            UsageFor = item.UsageFor,
+                            CreateDate = DateTime.Now,
+                            IsLiquidation = false,
+                            IsRecovery = false,
+                            IsUsed = false,
+                        });
+                    }
+                    else
+                    {
+                        us.Quantity = us.Quantity + item.Quantity;
+                    }
+                }
+
+                db.usage_history.AddRange(listUsageHistory);
+                db.SaveChanges();
+                return new BaseModel<string>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public List<asset_detail> GetAssetAllocation(string requestID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<usage_history> usages = db.usage_history.Where(ptr => ptr.TicketID == requestID).ToList().Select(ptr => new usage_history()
+                {
+                    AssetID = ptr.AssetID,
+                    ID = ptr.ID,
+                    Quantity = ptr.Quantity,
+                    TicketID = ptr.TicketID,
+                    UsageFor = ptr.UsageFor
+                }).ToList();
+
+                List<asset_detail> assets = (from usa in db.usage_history
+                                             join ad in db.asset_detail on usa.AssetID equals ad.ID
+                                             where usa.TicketID == requestID
+                                             select new
+                                             {
+                                                 ID = ad.ID,
+                                                 AssetClassifyID = ad.AssetClassifyID,
+                                                 QuantityOriginalStock = ad.QuantityOriginalStock,
+                                                 CreateDate = ad.CreateDate,
+                                                 AssetFullName = ad.AssetFullName,
+                                                 Description = ad.Description,
+                                                 Price = ad.Price,
+                                                 QuantityInStock = ad.QuantityInStock,
+                                                 Unit = ad.Unit,
+                                                 QuantityUsed = usa.Quantity,
+                                                 UsageFor = usa.UsageFor,
+                                                 SupplierID = ad.SupplierID,
+                                             }).ToList().Select(ptr => new asset_detail()
+                                             {
+                                                 ID = ptr.ID,
+                                                 AssetClassifyID = ptr.AssetClassifyID,
+                                                 QuantityOriginalStock = ptr.QuantityOriginalStock,
+                                                 CreateDate = ptr.CreateDate,
+                                                 AssetFullName = ptr.AssetFullName,
+                                                 Description = ptr.Description,
+                                                 Price = ptr.Price,
+                                                 QuantityInStock = ptr.QuantityInStock,
+                                                 Unit = ptr.Unit,
+                                                 QuantityUsed = ptr.QuantityUsed,
+                                                 TicketID = ptr.UsageFor,
+                                                 SupplierID = ptr.SupplierID,
+                                             }).ToList();
+
+                if (assets == null)
+                {
+                    return new List<asset_detail>();
+                }
+                return assets;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public BaseModel<string> ApproveAssetAllocation(string requestID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<usage_history> usage_Histories = db.usage_history
+                                                        .Where(ptr => ptr.TicketID == requestID)
+                                                        .ToList();
+                if (usage_Histories == null)
+                {
+                    return new BaseModel<string>();
+                }
+                foreach (usage_history item in usage_Histories)
+                {
+                    item.IsUsed = true;
+                    item.IsLiquidation = false;
+                    item.IsRecovery = false;
+                    var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
+                    ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
+                    ase.QuantityUsed = ase.QuantityUsed + item.Quantity;
+                }
+                return new BaseModel<string>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public BaseModel<string> RejectAssetAllocation(string requestID)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<asset_detail> assets = db.asset_detail
+                                            .Where(ptr => ptr.TicketID == requestID)
+                                            .ToList();
+                foreach (asset_detail item in assets)
+                {
+                    item.IsActive = false;
+                    item.IsDelete = true;
+                }
+                return new BaseModel<string>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+        #endregion
 
         public string BUSMessageCode(int id)
         {

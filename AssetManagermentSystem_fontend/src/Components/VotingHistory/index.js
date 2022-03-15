@@ -1,9 +1,12 @@
-import React from "react";
-import { connect, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import {Table } from 'antd';
 
 function VotingHistory(props) {
     const { dataSource } = props
+
+    const [data, setData] = useState();
+
     const columns = [
         {
             title: 'Ngày thao tác',
@@ -21,13 +24,30 @@ function VotingHistory(props) {
             key: 'Message',
         },
     ]
+    function readData(){
+        if(dataSource){
+            var list = []
+            dataSource.forEach((element, index) => {
+                list.push({
+                    key: index,
+                    CreateDate : element.CreateDate,
+                    Creator: element.Creator,
+                    Message: element.Message
+                })
+            });
+            setData(list)
+        }
+    }
+
+    useEffect(readData, [dataSource])
+
     return (
         <div>
             <Table
-                scroll={dataSource ? {
+                scroll={data ? {
                     y: '50vh',
                 } : {}}
-                dataSource={dataSource}
+                dataSource={data}
                 columns={columns}
                 pagination={20} />
         </div>

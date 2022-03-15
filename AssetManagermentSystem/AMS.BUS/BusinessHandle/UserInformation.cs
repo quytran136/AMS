@@ -265,6 +265,7 @@ namespace AMS.BUS.BusinessHandle
                         DOB = userId.DOB,
                         Phone = userId.Phone,
                         Email = userId.Email,
+                        Image = userId.Image,
                     };
                     db.user_identifie.Add(user1);
                     db.SaveChanges();
@@ -340,6 +341,7 @@ namespace AMS.BUS.BusinessHandle
                     user.DOB = userId.DOB;
                     user.Phone = userId.Phone;
                     user.Email = userId.Email;
+                    user.Image = userId.Image;
                     db.SaveChanges();
                     return new BaseModel<user_identifie>()
                     {

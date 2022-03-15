@@ -6,6 +6,7 @@ import User from './Screen/User';
 import Config from './Screen/Config';
 import Warehousing from './Screen/Warehousing';
 import Asset from './Screen/Asset';
+import Supplier from './Screen/Supplier';
 import Report from './Screen/Report';
 import * as cookieHandle from "./Common/Cookie";
 import {
@@ -172,6 +173,9 @@ function App(prop) {
                   </Route>
                   <Route exact path="/Warehousing">
                     <Warehousing />
+                  </Route>
+                  <Route exact path="/Supplier">
+                    <Supplier />
                   </Route>
                   <Route exact path="/Asset">
                     <Asset />

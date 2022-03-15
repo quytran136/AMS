@@ -1,13 +1,8 @@
-﻿using AMS.API.ChatHubManager;
-using AMS.API.Models.RequestModel;
+﻿using AMS.API.Models.RequestModel;
 using AMS.API.Models.ResponseModel;
 using AMS.BUS.BusinessHandle;
 using AMS.BUS.BusModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using AMS.COMMON.Constands;
 using System.Web.Http;
 
 namespace AMS.API.Controllers
@@ -30,13 +25,22 @@ namespace AMS.API.Controllers
             switch (req.Key)
             {
                 case "CREATE_TICKET_SHOPPING":
-                    BaseModel<string> tickets = new Ticket().CreateTicketShopping(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.AssetDetails);
+                    BaseModel<string> tickets = new Ticket().CreateTicket(
+                        RequestType.SHOPPING,
+                        req.UserNameRequest,
+                        req.Data.StoreID,
+                        req.Data.Description,
+                        req.Data.ProcessID,
+                        (ticketID) => { new Asset().CreateAssetShopping(req.Data.AssetDetails, ticketID, req.Data.StoreID); });
                     return new BaseResponse<Res_Ticket>().Result(tickets, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
                     });
                 case "GET_TICKET_SHOPPING":
-                    BaseModel<Ticket> tickets1 = new Ticket().GetTicketShopping(req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets1 = new Ticket().GetTicket(
+                                                            RequestType.SHOPPING,
+                                                            req.Data.RequestID,
+                                                            () => { return new Asset().GetAssetShopping(req.Data.RequestID); });
                     return new BaseResponse<Res_Ticket>().Result(tickets1, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
@@ -47,25 +51,51 @@ namespace AMS.API.Controllers
                         }
                     });
                 case "APPROVE_TICKET_SHOPPING":
-                    BaseModel<Ticket> tickets2 = new Ticket().ApproveTicketShopping(req.UserNameRequest, req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets2 = new Ticket().ApproveTicket(
+                        RequestType.SHOPPING,
+                        req.UserNameRequest,
+                        req.Data.RequestID,
+                        () =>
+                        {
+                            new Asset().ApproveAddAsset(req.Data.RequestID);
+                        });
                     return new BaseResponse<Res_Ticket>().Result(tickets2, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
                     });
                 case "REJECT_TICKET_SHOPPING":
-                    BaseModel<Ticket> tickets3 = new Ticket().RejectTicketShopping(req.UserNameRequest, req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets3 = new Ticket().RejectTicket(
+                        RequestType.SHOPPING,
+                        req.UserNameRequest,
+                        req.Data.RequestID,
+                        () =>
+                        {
+                            new Asset().RejectAddAsset(req.Data.RequestID);
+                        });
                     return new BaseResponse<Res_Ticket>().Result(tickets3, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
                     });
                 case "CREATE_TICKET_ALLOCATION":
-                    BaseModel<string> tickets4 = new Ticket().CreateTicketAllocation(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.UsageAssetList);
+                    BaseModel<string> tickets4 = new Ticket().CreateTicket(
+                        RequestType.ALLOCATION,
+                        req.UserNameRequest,
+                        req.Data.StoreID,
+                        req.Data.Description,
+                        req.Data.ProcessID,
+                        (requestID) => { new Asset().CreateAssetAllocation(req.Data.UsageAssetList, requestID); });
                     return new BaseResponse<Res_Ticket>().Result(tickets4, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
                     });
                 case "GET_TICKET_ALLOCATION":
-                    BaseModel<Ticket> tickets5 = new Ticket().GetTicketAllocation(req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets5 = new Ticket().GetTicket(
+                    RequestType.ALLOCATION,
+                    req.Data.RequestID,
+                    () =>
+                    {
+                        return new Asset().GetAssetAllocation(req.Data.RequestID);
+                    });
                     return new BaseResponse<Res_Ticket>().Result(tickets5, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
@@ -77,74 +107,28 @@ namespace AMS.API.Controllers
                         }
                     });
                 case "APPROVE_TICKET_ALLOCATION":
-                    BaseModel<Ticket> tickets6 = new Ticket().ApproveTicketAllocation(req.UserNameRequest, req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets6 = new Ticket().ApproveTicket(
+                        RequestType.ALLOCATION,
+                        req.UserNameRequest,
+                        req.Data.RequestID,
+                        () =>
+                        {
+                            new Asset().ApproveAssetAllocation(req.Data.RequestID);
+                        });
                     return new BaseResponse<Res_Ticket>().Result(tickets6, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
                     });
                 case "REJECT_TICKET_ALLOCATION":
-                    BaseModel<Ticket> tickets7 = new Ticket().RejectTicketAllocation(req.UserNameRequest, req.Data.RequestID, req.Data.RequestType);
+                    BaseModel<Ticket> tickets7 = new Ticket().RejectTicket(
+                        RequestType.ALLOCATION,
+                        req.UserNameRequest,
+                        req.Data.RequestID,
+                        () =>
+                        {
+                            new Asset().RejectAssetAllocation(req.Data.RequestID);
+                        });
                     return new BaseResponse<Res_Ticket>().Result(tickets7, new BaseResponse<Res_Ticket>()
-                    {
-                        Response = new Res_Ticket()
-                    });
-                case "CREATE_TICKET_RECOVERY":
-                    BaseModel<string> recovery = new Ticket().CreateTicketRecovery(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.UsageAssetList);
-                    return new BaseResponse<Res_Ticket>().Result(recovery, new BaseResponse<Res_Ticket>()
-                    {
-                        Response = new Res_Ticket()
-                    });
-                case "GET_TICKET_RECOVERY":
-                    BaseModel<Ticket> recovery1 = new Ticket().GetTicketRecovery(req.Data.RequestID, req.Data.RequestType);
-                    return new BaseResponse<Res_Ticket>().Result(recovery1, new BaseResponse<Res_Ticket>()
-                    {
-                        Response = new Res_Ticket()
-                        {
-                            Ticket = recovery1.Result.Request,
-                            Assets = recovery1.Result.Assets,
-                            UsageList = recovery1.Result.UsageHistories,
-                            VotingHistory = recovery1.Result.VotingHistory
-                        }
-                    });
-                case "APPROVE_TICKET_RECOVERY":
-                    BaseModel<Ticket> recovery2 = new Ticket().ApproveTicketRecovery(req.UserNameRequest, req.Data.RequestID, req.Data.RequestType);
-                    return new BaseResponse<Res_Ticket>().Result(recovery2, new BaseResponse<Res_Ticket>()
-                    {
-                        Response = new Res_Ticket()
-                    });
-                case "REJECT_TICKET_RECOVERY":
-                    BaseModel<Ticket> recovery3 = new Ticket().RejectTicketRecovery(req.UserNameRequest, req.Data.RequestID, req.Data.RequestType);
-                    return new BaseResponse<Res_Ticket>().Result(recovery3, new BaseResponse<Res_Ticket>()
-                    {
-                        Response = new Res_Ticket()
-                    });
-                case "CREATE_TICKET_LIQUIDATION":
-                    BaseModel<string> Liquidation = new Ticket().CreateTicketLiquidation(req.UserNameRequest, req.Data.StoreID, req.Data.Description, req.Data.ProcessID, req.Data.UsageAssetList);
-                    return new BaseResponse<Res_Ticket>().Result(Liquidation, new BaseResponse<Res_Ticket>()
-                    {
-                        Response = new Res_Ticket()
-                    });
-                case "GET_TICKET_LIQUIDATION":
-                    BaseModel<Ticket> Liquidation1 = new Ticket().GetTicketLiquidation(req.Data.RequestID, req.Data.RequestType);
-                    return new BaseResponse<Res_Ticket>().Result(Liquidation1, new BaseResponse<Res_Ticket>()
-                    {
-                        Response = new Res_Ticket()
-                        {
-                            Ticket = Liquidation1.Result.Request,
-                            Assets = Liquidation1.Result.Assets,
-                            UsageList = Liquidation1.Result.UsageHistories,
-                            VotingHistory = Liquidation1.Result.VotingHistory
-                        }
-                    });
-                case "APPROVE_TICKET_LIQUIDATION":
-                    BaseModel<Ticket> Liquidation2 = new Ticket().ApproveTicketLiquidation(req.UserNameRequest, req.Data.RequestID, req.Data.RequestType);
-                    return new BaseResponse<Res_Ticket>().Result(Liquidation2, new BaseResponse<Res_Ticket>()
-                    {
-                        Response = new Res_Ticket()
-                    });
-                case "REJECT_TICKET_LIQUIDATION":
-                    BaseModel<Ticket> Liquidation3 = new Ticket().RejectTicketLiquidation(req.UserNameRequest, req.Data.RequestID, req.Data.RequestType);
-                    return new BaseResponse<Res_Ticket>().Result(Liquidation3, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
                     });

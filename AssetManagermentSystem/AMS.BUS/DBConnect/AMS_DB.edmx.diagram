@@ -39,6 +39,8 @@
         <AssociationConnector Association="AMS_DBModel.FK_role_view_user_identifie" />
         <AssociationConnector Association="AMS_DBModel.FK_role_view_view_page" />
         <AssociationConnector Association="AMS_DBModel.FK_system_log_user_identifie" />
+        <EntityTypeShape EntityType="AMS_DBModel.supplier" Width="1.5" PointX="15.375" PointY="5.875" />
+        <AssociationConnector Association="AMS_DBModel.FK_asset_detail_supplier" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

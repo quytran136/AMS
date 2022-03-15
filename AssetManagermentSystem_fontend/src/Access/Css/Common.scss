@@ -26,6 +26,11 @@
     background-repeat: no-repeat;
 }
 
+.image{
+    width: ($max-vh / 20) * 2;
+    height: ($max-vh / 20) * 2;
+}
+
 .icon {
     font-size: 23px;
     color    : #fff !important;

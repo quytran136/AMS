@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import 'antd/dist/antd.css';
 import './style.scss'
-import { Input, Button, Modal, DatePicker, TreeSelect } from 'antd';
+import { Input, Button, Modal, DatePicker, TreeSelect, Upload } from 'antd';
 import {
     UserOutlined,
     MailOutlined,
     PhoneOutlined,
     EyeInvisibleOutlined,
     EyeTwoTone,
-    LockOutlined
+    LockOutlined,
+    PlusOutlined
 } from '@ant-design/icons';
 import * as amsAction from '../../ReduxSaga/Actions';
 import moment from 'moment';
@@ -17,7 +18,6 @@ import moment from 'moment';
 const UpdateEmployee = (prop) => {
     const dispatch = useDispatch();
     const { visible, onTrigger, dataSelected } = prop
-
     const {
         getOrganizationalChart,
         signup,
@@ -45,6 +45,7 @@ const UpdateEmployee = (prop) => {
     const [DOB, setDOB] = useState(new Date().toISOString());
     const [email, setEmail] = useState();
     const [phone, setPhone] = useState();
+    const [files, setFiles] = useState([]);
 
     function reset() {
         dispatch(getUserInfoSuccess(null))
@@ -88,6 +89,12 @@ const UpdateEmployee = (prop) => {
                 setEmail(userInfo.Email)
                 setPhone(userInfo.Phone)
                 setUserLoginName(userInfo.UserName)
+                setFiles([{
+                    uid: userInfo.Email,
+                    name: 'avata.png',
+                    status: 'done',
+                    thumbUrl: userInfo.Image
+                }])
             }, 100);
         }
     }
@@ -173,7 +180,8 @@ const UpdateEmployee = (prop) => {
                     OrganizationID: organization,
                     DOB: DOB,
                     Phone: phone,
-                    Email: email
+                    Email: email,
+                    Image: files[0].thumbUrl,
                 }
             }
             dispatch(signup(body))
@@ -200,7 +208,8 @@ const UpdateEmployee = (prop) => {
                     OrganizationID: organization,
                     DOB: DOB,
                     Phone: phone,
-                    Email: email
+                    Email: email,
+                    Image: files[0].thumbUrl,
                 }
             }
             dispatch(signup(body))
@@ -259,6 +268,24 @@ const UpdateEmployee = (prop) => {
             onOk={() => !dataSelected ? onSave() : onEdit()}
             onCancel={() => onClose()}
         >
+            <h4>Hình đại diện</h4>
+            <Upload
+                listType="picture-card"
+                fileList={files || []}
+                onChange={({ fileList }) => {
+                    if (fileList) {
+                        fileList.forEach(element => {
+                            element.status = "done"
+                        });
+                        setFiles(fileList)
+                    }
+                }}
+            >
+                {files.length >= 1 ? null : <div>
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>Upload</div>
+                </div>}
+            </Upload>
             <h4>Trực thuộc phòng ban / bộ phận</h4>
             <TreeSelect
                 showSearch
@@ -305,7 +332,7 @@ const UpdateEmployee = (prop) => {
                     style={{ width: '80%' }}
                     value={userFullName}
                     onChange={(e) => setUserFullName(e.target.value)} />
-                <Button disabled = {dataSelected} type="primary" style={{ width: '20%' }} onClick={() => generateUserName()}>
+                <Button disabled={dataSelected} type="primary" style={{ width: '20%' }} onClick={() => generateUserName()}>
                     Tạo TK
                 </Button>
             </Input.Group>
@@ -337,7 +364,7 @@ const UpdateEmployee = (prop) => {
             <br />
             <h4>Tài khoản</h4>
             <Input
-                disabled = {dataSelected}
+                disabled={dataSelected}
                 placeholder="xyz"
                 prefix={<UserOutlined />}
                 value={userLoginName}

@@ -27,7 +27,8 @@ const initialState = {
     requestID: null,
     functionTitle: "",
     report: null,
-    result: null
+    result: null,
+    supplier: null
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -126,6 +127,11 @@ export const amsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 warehouses: action.warehouses
+            }
+        case type.GET_SUPPLIER_SUCCESS:
+            return {
+                ...state,
+                supplier: action.supplier
             }
         case type.GET_ASSETCLASSIFIES_SUCCESS:
             return {

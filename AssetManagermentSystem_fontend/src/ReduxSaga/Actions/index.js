@@ -225,10 +225,25 @@ export const requestWarehouse = (body) => {
     }
 }
 
+export const requestSupplier = (body) => {
+    return{
+        type: type.REQUEST_SUPPLIER,
+        body
+    }
+}
+
+
 export const getWarehouseSuccess = (warehouses) => {
     return{
         type: type.GET_WAREHOUSE_SUCCESS,
         warehouses
+    }
+}
+
+export const getSupplierSuccess = (supplier) => {
+    return{
+        type: type.GET_SUPPLIER_SUCCESS,
+        supplier
     }
 }
 

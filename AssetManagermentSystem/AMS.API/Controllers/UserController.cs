@@ -43,6 +43,7 @@ namespace AMS.API.Controllers
                         Phone = req.Data.Phone,
                         Email = req.Data.Email,
                         DOB = req.Data.DOB,
+                        Image = req.Data.Image,
                     });
                     return new BaseResponse<Res_UserInformation>().Result(user_info1, new BaseResponse<Res_UserInformation>() {
                         Response = new Res_UserInformation()
@@ -54,6 +55,7 @@ namespace AMS.API.Controllers
                             Phone = user_info1.Result.Phone ?? "",
                             Email = user_info1.Result.Email ?? "",
                             DOB = user_info1.Result.DOB ?? DateTime.Now,
+                            Image = user_info1.Result.Image ?? ""
                         }
                     });
                 case "UPDATE_USER":
@@ -68,6 +70,7 @@ namespace AMS.API.Controllers
                         Phone = req.Data.Phone,
                         Email = req.Data.Email,
                         DOB = req.Data.DOB,
+                        Image = req.Data.Image,
                     });
                     return new BaseResponse<Res_UserInformation>().Result(user_info9, new BaseResponse<Res_UserInformation>() {
                         Response = new Res_UserInformation()
@@ -79,6 +82,7 @@ namespace AMS.API.Controllers
                             Phone = user_info9.Result?.Phone ?? "",
                             Email = user_info9.Result?.Email ?? "",
                             DOB = user_info9.Result?.DOB ?? DateTime.Now,
+                            Image = user_info9.Result?.Image ?? ""
                         }
                     });
                 case "CHANGE_PASSWORD":
@@ -138,7 +142,8 @@ namespace AMS.API.Controllers
                             DOB = user_info6.Result.DOB ?? DateTime.Now,
                             DepartmentName = dep1.Result.Node.DepartmentName,
                             DepartmentID = user_info6.Result.DepartmentID,
-                            OrganizationID = user_info6.Result.OrganizationID
+                            OrganizationID = user_info6.Result.OrganizationID,
+                            Image = user_info6.Result.Image ?? "",
                         }
                     });
                 case "USERS":
@@ -160,7 +165,8 @@ namespace AMS.API.Controllers
                             DOB = item.User_Identifie.DOB ?? DateTime.Now,
                             DepartmentName = item.DepartmentName ?? "",
                             OrganizationName = item.OrganizationName ?? "",
-                            key = item.User_Identifie.ID ?? ""
+                            key = item.User_Identifie.ID ?? "",
+                            Image = item.User_Identifie.Image ?? "",
                         });
                     }
 
@@ -183,7 +189,8 @@ namespace AMS.API.Controllers
                             IsDelete = item.IsDelete ?? true,
                             IsLock = item.IsLock ?? true,
                             UserName = item.UserName ?? "",
-                            ID = item.ID ?? ""
+                            ID = item.ID ?? "",
+                            Image = item.Image ?? ""
                         });
                     }
 

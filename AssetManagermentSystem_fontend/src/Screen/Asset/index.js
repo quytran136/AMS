@@ -141,6 +141,7 @@ function Asset(props) {
                     <Button
                       type="primary"
                       shape="circle"
+                      className="ams-btn"
                       icon={<EditOutlined />}
                       onClick={() => {
                         setID(element.Asset_Classify.ID)

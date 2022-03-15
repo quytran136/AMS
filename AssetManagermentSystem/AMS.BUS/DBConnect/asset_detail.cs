@@ -29,9 +29,11 @@ namespace AMS.BUS.DBConnect
         public Nullable<bool> IsActive { get; set; }
         public string Unit { get; set; }
         public string Description { get; set; }
+        public string SupplierID { get; set; }
     
         public virtual asset_classify asset_classify { get; set; }
         public virtual request_ticket_history request_ticket_history { get; set; }
         public virtual store_Identifie store_Identifie { get; set; }
+        public virtual supplier supplier { get; set; }
     }
 }

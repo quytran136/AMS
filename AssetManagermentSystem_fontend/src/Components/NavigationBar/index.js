@@ -41,14 +41,8 @@ const NavigationBar = (prop) => {
 
     function readNotification() {
         if (notifications) {
-            let count = 0;
-            notifications.Response.Notifications.forEach(element => {
-                if (element.IsRead === false) {
-                    count++
-                }
-            });
-            setCountNotification(count)
-        }else{
+            setCountNotification(notifications.Response.Notifications.length)
+        } else {
             setCountNotification(0)
         }
     }
@@ -62,12 +56,9 @@ const NavigationBar = (prop) => {
     const UserBoard = () => {
         return (<span className="board-info">
             <Row
-                className="menu-item"
-                onClick={() => {
-
-                }}>
+                className="menu-item">
                 <Col span={3}>
-                    <Avatar size={32} icon={<UserOutlined />} />
+                    <Avatar size={32} src={userInfoLogin.Image} />
                 </Col>
                 <Col className="menu-label" span={21} align="top" justify="center">
                     {userInfoLogin?.UserFullName}
@@ -147,7 +138,7 @@ const NavigationBar = (prop) => {
                                                     case "FUNCTION":
                                                         const funcArray = JSON.parse(element.Value)
                                                         funcArray.forEach(func => {
-                                                            if(ac.Path === func.FunctionPath){
+                                                            if (ac.Path === func.FunctionPath) {
                                                                 title = func.FunctionName
                                                             }
                                                         });
@@ -158,7 +149,7 @@ const NavigationBar = (prop) => {
                                             })
                                             dispatch(setFunctionTitle("Phê duyệt " + title))
                                             history.push(ac.Path)
-                                        }, 300);
+                                        }, 100);
                                     } else {
                                         const body = {
                                             Token: token,
@@ -242,7 +233,7 @@ const NavigationBar = (prop) => {
                 </span>
                 <span className="nav-bar-item ams-btn">
                     <Popover placement="bottom" content={<UserBoard />} trigger="click">
-                        <UserOutlined className="icon" />
+                        <Avatar shape="square" size={45} src={userInfoLogin?.Image} />
                     </Popover>
                 </span>
             </Col>

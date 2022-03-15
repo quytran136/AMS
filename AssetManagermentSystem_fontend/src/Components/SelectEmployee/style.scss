@@ -34,3 +34,14 @@
         background-color: #1890ff;
     }
 }
+
+.flex {
+    display       : flex;
+    align-items   : center;
+    flex-direction: row;
+    flex-wrap     : nowrap;
+
+    .item {
+        margin-right    : 10px;
+    }
+}

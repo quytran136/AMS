@@ -1,6 +1,7 @@
 ﻿using AMS.BUS.BusModels;
 using AMS.BUS.DBConnect;
 using AMS.COMMON;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,49 @@ namespace AMS.BUS.BusinessHandle
 {
     public class Notification : IBaseHandle
     {
+        public BaseModel<string> SentNotificationByUser(List<string> users, string ticketid, string sentByid, string key, string NotificationContent)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<ams_notification> notis = new List<ams_notification>();
+                foreach (string userid in users)
+                {
+                    ams_notification noti = new ams_notification()
+                    {
+                        ID = Guid.NewGuid().ToString(),
+                        CreateDate = DateTime.Now,
+                        IsRead = false,
+                        NotificationContent = string.Format("{0} đã được gửi từ {1}", NotificationContent, new UserInformation().GetUserInfor(sentByid).Result.UserFullName),
+                        NotificationFor = userid,
+                        Action = JsonConvert.SerializeObject(new RequestAction()
+                        {
+                            Key = key,
+                            Value = ticketid,
+                            Path = string.Format("/{0}", key)
+                        }),
+                    };
+                    notis.Add(noti);
+                }
+
+                db.ams_notification.AddRange(notis);
+                db.SaveChanges();
+                return new BaseModel<string> { Result = string.Empty };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    },
+                    Result = string.Empty
+                };
+            }
+        }
+
         public BaseModel<List<ams_notification>> GetNotificationByUser(string userName)
         {
             try

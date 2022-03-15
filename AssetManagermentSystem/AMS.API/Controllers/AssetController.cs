@@ -3,11 +3,7 @@ using AMS.API.Models.ResponseModel;
 using AMS.BUS.BusinessHandle;
 using AMS.BUS.BusModels;
 using AMS.BUS.DBConnect;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace AMS.API.Controllers
@@ -66,7 +62,7 @@ namespace AMS.API.Controllers
                         Response = new Res_Asset()
                     });
                 case "GET_ASSET":
-                    BaseModel<List<asset_detail>> ad1 = new Asset().GetAsset(req.Data.AssetClassify);
+                    BaseModel<List<asset_detail>> ad1 = new Asset().GetAsset(req.Data.Supplier, req.Data.AssetClassify);
                     return new BaseResponse<Res_Asset>().Result(ad1, new BaseResponse<Res_Asset>()
                     {
                         Response = new Res_Asset()
@@ -80,11 +76,6 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_Asset()
                     });
-                case "EXPORT_ASSET_DETAIL":
-                    return new BaseResponse<Res_Asset>()
-                    {
-                        Response = new Res_Asset()
-                    };
                 case "GET_ASSET_ALLOCATION":
                     BaseModel<List<Asset>> ad3 = new Asset().GetAssetByUser(req.Data.UsageFor);
                     return new BaseResponse<Res_Asset>().Result(ad3, new BaseResponse<Res_Asset>()

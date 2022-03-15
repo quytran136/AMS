@@ -35,6 +35,7 @@
     <EntitySetMapping Name="asset_detail">
       <EntityTypeMapping TypeName="AMS_DBModel.asset_detail">
         <MappingFragment StoreEntitySet="asset_detail">
+          <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Unit" ColumnName="Unit" />
           <ScalarProperty Name="IsActive" ColumnName="IsActive" />
@@ -330,5 +331,18 @@
     <FunctionImportMapping FunctionImportName="sp_NewNotification" FunctionName="AMS_DBModel.Store.sp_NewNotification" />
     <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AMS_DBModel.Store.sp_renamediagram" />
     <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AMS_DBModel.Store.sp_upgraddiagrams" />
+    <EntitySetMapping Name="suppliers">
+      <EntityTypeMapping TypeName="AMS_DBModel.supplier">
+        <MappingFragment StoreEntitySet="supplier">
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

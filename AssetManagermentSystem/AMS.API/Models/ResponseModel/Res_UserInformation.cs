@@ -22,6 +22,7 @@ namespace AMS.API.Models.ResponseModel
         public string DepartmentID { get; set; }
         public string OrganizationName { get; set; }
         public string OrganizationID { get; set; }
+        public string Image { get; set; }
         public List<Res_UserInformation> Users { get; set; }
     }
 }

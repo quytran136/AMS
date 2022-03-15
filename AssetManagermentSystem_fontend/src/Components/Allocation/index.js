@@ -84,7 +84,6 @@ function Allocation(props) {
                 UserNameRequest: userName,
                 Data: {
                     RequestID: data.split('|')[0],
-                    RequestType: "ALLOCATION"
                 }
             }
             dispatch(requestTicket(body))
@@ -99,7 +98,6 @@ function Allocation(props) {
                 UserNameRequest: userName,
                 Data: {
                     RequestID: data.split('|')[0],
-                    RequestType: "ALLOCATION"
                 }
             }
             dispatch(requestTicket(body))
@@ -114,7 +112,6 @@ function Allocation(props) {
                 UserNameRequest: userName,
                 Data: {
                     RequestID: data.split('|')[0],
-                    RequestType: "ALLOCATION"
                 }
             }
             dispatch(requestTicket(body))

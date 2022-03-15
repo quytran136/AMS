@@ -29,6 +29,10 @@ const AMS_API = {
         const url = "Warehouse/WarehouseControl"
         return request.post(url, body);
     },
+    supplier: (body) => {
+        const url = "Supplier/SupplierControl"
+        return request.post(url, body);
+    },
     asset: (body) => {
         const url = "Asset/AssetControl"
         return request.post(url, body);
