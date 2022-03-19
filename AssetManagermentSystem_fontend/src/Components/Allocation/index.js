@@ -18,7 +18,8 @@ function Allocation(props) {
     const {
         requestTicket,
         requestNotification,
-        setError
+        setError,
+        setMessage
     } = amsAction;
 
     const {
@@ -47,6 +48,14 @@ function Allocation(props) {
                 dispatch(setError({
                     Code: "AMS_01",
                     Message: "Tối thiểu phải chọn 1 tài sản"
+                }))
+                breakPoint = true
+                return;
+            }
+            if(element.EmployeeID.length <= 2){
+                dispatch(setError({
+                    Code: "AMS_01",
+                    Message: "chỉ định người nhận thuốc"
                 }))
                 breakPoint = true
                 return;
@@ -83,7 +92,7 @@ function Allocation(props) {
                 Key: "GET_TICKET_ALLOCATION",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data.split('|')[0],
+                    RequestID: data.ticketID,
                 }
             }
             dispatch(requestTicket(body))
@@ -97,10 +106,11 @@ function Allocation(props) {
                 Key: "APPROVE_TICKET_ALLOCATION",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data.split('|')[0],
+                    RequestID: data.ticketID,
                 }
             }
             dispatch(requestTicket(body))
+            dispatch(setMessage("Phê duyệt thành công"))
         }
     }
 
@@ -111,10 +121,11 @@ function Allocation(props) {
                 Key: "REJECT_TICKET_ALLOCATION",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data.split('|')[0],
+                    RequestID: data.ticketID,
                 }
             }
             dispatch(requestTicket(body))
+            dispatch(setMessage("Đã từ chối yêu cầu"))
         }
     }
 
@@ -139,55 +150,63 @@ function Allocation(props) {
                     </Col>
                     <Col span={8} className="tool-right">
                         {
-                            data ?
-                                <>
-                                    <Button
-                                        className="ams-btn-default"
-                                        type="primary"
-                                        onClick={() => {
-                                            const body = {
-                                                Token: token,
-                                                Key: "READED_NOTIFICATION",
-                                                UserNameRequest: userName,
-                                                Data: data.split('|')[1]
-                                            }
-                                            dispatch(requestNotification(body))
-                                            sentRequestApprove()
-                                            history.push('/Home')
-                                        }}
-                                    >Approve</Button>
-                                    <Button
-                                        className="ams-btn-default"
-                                        type="primary"
-                                        danger
-                                        onClick={() => {
-                                            const body = {
-                                                Token: token,
-                                                Key: "READED_NOTIFICATION",
-                                                UserNameRequest: userName,
-                                                Data: data.split('|')[1]
-                                            }
-                                            dispatch(requestNotification(body))
-                                            sentRequestReject()
-                                            history.push('/Home')
-                                        }}
-                                    >Reject</Button>
-                                </>
-                                :
-                                <Button
-                                    className="ams-btn-default"
-                                    type="primary"
-                                    onClick={() => {
-                                        sentRequest()
-                                    }}
-                                >Sent request</Button>
+                            data?.createRequest === false ?
+                            <>
+                                {data.readOnly(ticket) === false ?
+                                    <>
+                                        <Button
+                                            className="ams-btn-default"
+                                            type="primary"
+                                            onClick={() => {
+                                                const body = {
+                                                    Token: token,
+                                                    Key: "READED_NOTIFICATION",
+                                                    UserNameRequest: userName,
+                                                    Data: data.notiID,
+                                                }
+                                                dispatch(requestNotification(body))
+                                                sentRequestApprove()
+                                                history.push('/Home')
+                                            }}
+                                        >Phê duyệt</Button>
+                                        <Button
+                                            className="ams-btn-default"
+                                            type="primary"
+                                            danger
+                                            onClick={() => {
+                                                const body = {
+                                                    Token: token,
+                                                    Key: "READED_NOTIFICATION",
+                                                    UserNameRequest: userName,
+                                                    Data: data.notiID,
+                                                }
+                                                dispatch(requestNotification(body))
+                                                sentRequestReject()
+                                                history.push('/Home')
+                                            }}
+                                        >Từ chối</Button>
+                                    </>
+                                    : <></>
+                                }
+                            </> : <></>
+                        }
+                        {
+                            data?.createRequest === true ?
+                            <Button
+                                className="ams-btn-default"
+                                type="primary"
+                                onClick={() => {
+                                    sentRequest()
+                                }}
+                            >Gửi yêu cầu</Button>
+                            : <></>
                         }
                         <Button
                             className="ams-btn-default"
                             danger
                             type="primary"
                             onClick={() => {
-                                history.push('/Home')
+                                history.push(data?.redirect ? data?.redirect : '/Home')
                             }}
                         >Cancel</Button>
                     </Col>
@@ -207,7 +226,7 @@ function Allocation(props) {
                                 <Col span={12}>
                                     <h4>Diễn giải</h4>
                                     <Input.TextArea
-                                        disabled={data ? true : false}
+                                        disabled={!data?.createRequest}
                                         placeholder="Diễn giải"
                                         allowClear
                                         value={ticketDescription}
@@ -224,7 +243,7 @@ function Allocation(props) {
                             <>
                                 <h4>Diễn giải</h4>
                                 <Input.TextArea
-                                    disabled={data ? true : false}
+                                    disabled={!data?.createRequest}
                                     placeholder="Diễn giải"
                                     allowClear
                                     value={ticketDescription}
@@ -236,7 +255,7 @@ function Allocation(props) {
                         }
                         <h4>Danh sách tài sản</h4>
                         <SelectAsset
-                            disabled={data ? true : false}
+                            disabled={!data?.createRequest}
                             dataSource={ticket?.Response}
                             onChange={(list) => {
                                 setListAsset(list)

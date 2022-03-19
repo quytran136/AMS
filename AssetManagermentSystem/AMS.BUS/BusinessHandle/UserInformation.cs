@@ -186,7 +186,6 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-
         public BaseModel<user_identifie> GetUserInfor(string userName)
         {
             try

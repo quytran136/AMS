@@ -10,6 +10,7 @@ import {
     LogoutOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
+    ReadFilled
 } from '@ant-design/icons';
 import * as amsAction from '../../ReduxSaga/Actions';
 import * as cookieHandle from '../../Common/Cookie';
@@ -41,7 +42,13 @@ const NavigationBar = (prop) => {
 
     function readNotification() {
         if (notifications) {
-            setCountNotification(notifications.Response.Notifications.length)
+            var count = 0
+            notifications.Response.Notifications.forEach((item) => {
+                if (item.IsRead === false) {
+                    count++
+                }
+            })
+            setCountNotification(count)
         } else {
             setCountNotification(0)
         }
@@ -58,7 +65,7 @@ const NavigationBar = (prop) => {
             <Row
                 className="menu-item">
                 <Col span={3}>
-                    <Avatar size={32} src={userInfoLogin.Image} />
+                    <Avatar shape="circle" size={32} src={userInfoLogin ? userInfoLogin.Image : ""} />
                 </Col>
                 <Col className="menu-label" span={21} align="top" justify="center">
                     {userInfoLogin?.UserFullName}
@@ -128,29 +135,41 @@ const NavigationBar = (prop) => {
                                         Key: "GET_NOTIFICATION",
                                         UserNameRequest: userName,
                                     }
-                                    if (ac.Key !== "REJECT") {
-                                        dispatch(requestNotification(body2))
-                                        dispatch(setRequestID(ac.Value + "|" + element.ID))
-                                        setTimeout(() => {
-                                            let title = ""
-                                            configCommon.Response.Configs.forEach(element => {
-                                                switch (element.Code) {
-                                                    case "FUNCTION":
-                                                        const funcArray = JSON.parse(element.Value)
-                                                        funcArray.forEach(func => {
-                                                            if (ac.Path === func.FunctionPath) {
-                                                                title = func.FunctionName
-                                                            }
-                                                        });
-                                                        break
-                                                    default:
-                                                        break;
+                                    dispatch(requestNotification(body2))
+                                    dispatch(setRequestID({
+                                        createRequest: false,
+                                        ticketID: ac.Value,
+                                        notiID: element.ID,
+                                        readOnly: (ticket) => {
+                                            if (ticket && ticket?.Response.Ticket) {
+                                                if (ticket.Response.Ticket.StepID !== ac.StepID) {
+                                                    return true
                                                 }
-                                            })
-                                            dispatch(setFunctionTitle("Phê duyệt " + title))
-                                            history.push(ac.Path)
-                                        }, 100);
-                                    } else {
+                                            }
+                                            return false
+                                        },
+                                        stepID: ac.StepID
+                                    }))
+                                    setTimeout(() => {
+                                        let title = ""
+                                        configCommon.Response.Configs.forEach(element => {
+                                            switch (element.Code) {
+                                                case "FUNCTION":
+                                                    const funcArray = JSON.parse(element.Value)
+                                                    funcArray.forEach(func => {
+                                                        if (ac.Path === func.FunctionPath) {
+                                                            title = func.FunctionName
+                                                        }
+                                                    });
+                                                    break
+                                                default:
+                                                    break;
+                                            }
+                                        })
+                                        dispatch(setFunctionTitle("Phê duyệt " + title))
+                                        history.push(ac.Path)
+                                    }, 100);
+                                    if (element.IsRead === false) {
                                         const body = {
                                             Token: token,
                                             Key: "READED_NOTIFICATION",
@@ -160,8 +179,13 @@ const NavigationBar = (prop) => {
                                         dispatch(requestNotification(body))
                                     }
                                 }}>
-                                {element.NotificationContent}
-                                <h4>{element.CreateDate}</h4>
+                                <div>
+                                    {element.IsRead === false ? <ReadFilled className="green-color" /> : <></>}
+                                </div>
+                                <div>
+                                    <h4>{element.NotificationContent}</h4>
+                                    <h4>{(new Date(element.CreateDate)).toLocaleString("us-en")}</h4>
+                                </div>
                             </div>
                         )
                     })
@@ -233,7 +257,7 @@ const NavigationBar = (prop) => {
                 </span>
                 <span className="nav-bar-item ams-btn">
                     <Popover placement="bottom" content={<UserBoard />} trigger="click">
-                        <Avatar shape="square" size={45} src={userInfoLogin?.Image} />
+                        <Avatar shape="circle" size={32} src={userInfoLogin?.Image} />
                     </Popover>
                 </span>
             </Col>

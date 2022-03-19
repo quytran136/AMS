@@ -142,8 +142,8 @@ function SelectAsset(props) {
             }
 
             let list = []
-            if (dataSource.UsageList) {
-                dataSource.UsageList.forEach(u => {
+            if (dataSource.Assets) {
+                dataSource.Assets.forEach(ass => {
                     let item = {
                         AssetClassifyID: "",
                         Assets: [],
@@ -154,31 +154,25 @@ function SelectAsset(props) {
                         Unit: "",
                         EmployeeID: ""
                     }
-                    if (dataSource.Assets) {
-                        dataSource.Assets.forEach(a => {
-                            if (u.AssetID === a.ID) {
-                                if (assetClassifies) {
-                                    assetClassifies.Response.AssetClassifies.forEach((element) => {
-                                        if (a.AssetClassifyID === element.Asset_Classify.ID) {
-                                            item.Assets = []
-                                            element.Asset_Details.forEach(element1 => {
-                                                item.Assets.push({
-                                                    value: element1.ID,
-                                                    label: element1.AssetFullName,
-                                                })
-                                            });
-                                        }
+                    if (assetClassifies) {
+                        assetClassifies.Response.AssetClassifies.forEach((element) => {
+                            if (ass.AssetClassifyID === element.Asset_Classify.ID) {
+                                item.Assets = []
+                                element.Asset_Details.forEach(element1 => {
+                                    item.Assets.push({
+                                        value: element1.ID,
+                                        label: element1.AssetFullName,
                                     })
-                                    item.AssetClassifyID = a.AssetClassifyID
-                                    item.AssetID = u.AssetID
-                                    item.Description = a.Description
-                                    item.Quantity = u.Quantity
-                                    item.QuantityInStock = a.QuantityInStock
-                                    item.Unit = a.Unit
-                                    item.EmployeeID = u.UsageFor
-                                }
+                                });
                             }
-                        });
+                        })
+                        item.AssetClassifyID = ass.AssetClassifyID
+                        item.AssetID = ass.ID
+                        item.Description = ass.Description
+                        item.Quantity = ass.QuantityUsed
+                        item.QuantityInStock = ass.QuantityInStock
+                        item.Unit = ass.Unit
+                        item.EmployeeID = ass.UsageFor
                     }
                     list.push(item)
                 });
@@ -210,10 +204,10 @@ function SelectAsset(props) {
             <div className="list-asset">
                 <Row>
                     <Col span={4} className="field">
-                        Lớp tài sản
+                        Danh mục
                     </Col>
                     <Col span={4} className="field">
-                        Tên tài sản
+                        Tên thuốc
                     </Col>
                     <Col span={2} className="field">
                         Đơn vị
@@ -318,7 +312,7 @@ function SelectAsset(props) {
                                     <Col span={3} className="field">
                                         <SelectEmployee
                                             disabled={disabled}
-                                            selected={element?.EmployeeID?.split("|")}
+                                            selected={element?.EmployeeID?.split("|") || ""}
                                             type="Select"
                                             onSelected={(selectedRows) => {
                                                 let item = element

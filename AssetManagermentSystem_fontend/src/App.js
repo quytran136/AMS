@@ -1,5 +1,5 @@
 import './App.scss';
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Home from './Screen/Home';
 import Login from './Screen/Login';
 import User from './Screen/User';
@@ -12,8 +12,7 @@ import * as cookieHandle from "./Common/Cookie";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect
+  Route
 } from "react-router-dom";
 import {
   CloseCircleOutlined,
@@ -34,6 +33,8 @@ import { hubConnection } from 'signalr-no-jquery'
 import {
   SERVER_SIGNALR
 } from './Common/server';
+import Ticket from './Screen/Ticket';
+import Invoice from './Screen/Invoice';
 
 function App(prop) {
   const dispatch = useDispatch();
@@ -164,6 +165,12 @@ function App(prop) {
                 <Switch >
                   <Route exact path="/Home">
                     <Home />
+                  </Route>
+                  <Route exact path="/Ticket">
+                    <Ticket />
+                  </Route>
+                  <Route exact path="/Shopping/Invoice">
+                    <Invoice />
                   </Route>
                   <Route exact path="/User">
                     <User />

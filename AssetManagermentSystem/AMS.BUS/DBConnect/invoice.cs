@@ -12,24 +12,24 @@ namespace AMS.BUS.DBConnect
     using System;
     using System.Collections.Generic;
     
-    public partial class store_Identifie
+    public partial class invoice
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public store_Identifie()
+        public invoice()
         {
-            this.asset_detail = new HashSet<asset_detail>();
-            this.invoices = new HashSet<invoice>();
+            this.invoice_detail = new HashSet<invoice_detail>();
         }
     
         public string ID { get; set; }
-        public string StoreName { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
-        public string Owner { get; set; }
-        public Nullable<bool> IsDelete { get; set; }
+        public string CreatorID { get; set; }
+        public string TicketID { get; set; }
+        public string StoreID { get; set; }
+        public Nullable<bool> IsReject { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<asset_detail> asset_detail { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<invoice> invoices { get; set; }
+        public virtual ICollection<invoice_detail> invoice_detail { get; set; }
+        public virtual request_ticket_history request_ticket_history { get; set; }
+        public virtual store_Identifie store_Identifie { get; set; }
     }
 }

@@ -198,6 +198,7 @@ namespace AMS.BUS.BusinessHandle
                                         ParentID = item.Node.ParentID,
                                         IsDelete = true
                                     });
+                                    new OrganizationalChart().Delete(item.Node.ID);
                                 }
                             }
                         }

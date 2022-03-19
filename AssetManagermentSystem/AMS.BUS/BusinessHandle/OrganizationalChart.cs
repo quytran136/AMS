@@ -253,6 +253,36 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
+        public BaseModel<string> Delete(string departmentID)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(departmentID))
+                {
+                    var db = DBC.Init;
+                    var allOrg = db.Organizationals.Where(ptr => ptr.DepartmentID == departmentID && ptr.IsDelete == false).ToList();
+                    if (allOrg != null)
+                    {
+                        foreach (var item in allOrg)
+                        {
+                            item.IsDelete = true;
+                        }
+                    }
+                }
+                return new BaseModel<string>();
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
         public string BUSMessageCode(int id)
         {
             return string.Format("{0}{1}{2}{3}",

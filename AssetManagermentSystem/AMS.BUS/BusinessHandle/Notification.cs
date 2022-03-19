@@ -12,7 +12,7 @@ namespace AMS.BUS.BusinessHandle
 {
     public class Notification : IBaseHandle
     {
-        public BaseModel<string> SentNotificationByUser(List<string> users, string ticketid, string sentByid, string key, string NotificationContent)
+        public BaseModel<string> SentNotificationByUser(List<string> users, string ticketid, string sentByid, string key, string notificationContent, string stepid = "")
         {
             try
             {
@@ -25,13 +25,14 @@ namespace AMS.BUS.BusinessHandle
                         ID = Guid.NewGuid().ToString(),
                         CreateDate = DateTime.Now,
                         IsRead = false,
-                        NotificationContent = string.Format("{0} đã được gửi từ {1}", NotificationContent, new UserInformation().GetUserInfor(sentByid).Result.UserFullName),
+                        NotificationContent = string.Format("{0} đã được gửi từ {1}", notificationContent, new UserInformation().GetUserInfor(sentByid).Result.UserFullName),
                         NotificationFor = userid,
                         Action = JsonConvert.SerializeObject(new RequestAction()
                         {
                             Key = key,
                             Value = ticketid,
-                            Path = string.Format("/{0}", key)
+                            Path = string.Format("/{0}", key),
+                            StepID = stepid,
                         }),
                     };
                     notis.Add(noti);
@@ -62,9 +63,10 @@ namespace AMS.BUS.BusinessHandle
                 var db = DBC.Init;
                 user_identifie user = new UserInformation().GetUserInfor(userName).Result;
                 List<ams_notification> notifications = db.ams_notification
-                    .Where(ptr => ptr.NotificationFor == user.ID && ptr.IsRead == false)
-                    .ToList()
+                    .Where(ptr => ptr.NotificationFor == user.ID)
                     .OrderByDescending(ptr => ptr.CreateDate)
+                    .ToList()
+                    .Take(10)
                     .Select(ptr => new ams_notification()
                     {
                         ID = ptr.ID,
@@ -100,9 +102,10 @@ namespace AMS.BUS.BusinessHandle
             {
                 var db = DBC.Init;
                 List<ams_notification> notifications = db.ams_notification
-                    .Where(ptr => ptr.NotificationFor == id && ptr.IsRead == false)
-                    .ToList()
+                    .Where(ptr => ptr.NotificationFor == id)
                     .OrderByDescending(ptr => ptr.CreateDate)
+                    .ToList()
+                    .Take(10)
                     .Select(ptr => new ams_notification()
                     {
                         ID = ptr.ID,

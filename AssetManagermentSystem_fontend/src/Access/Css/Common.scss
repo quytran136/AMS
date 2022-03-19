@@ -13,7 +13,7 @@
 }
 
 .main-content {
-    height: ($max-vh/20) * 19;
+    height : ($max-vh/20) * 19;
     padding: 20px 10px 0px 10px;
     width  : 100%;
 }
@@ -26,8 +26,8 @@
     background-repeat: no-repeat;
 }
 
-.image{
-    width: ($max-vh / 20) * 2;
+.image {
+    width : ($max-vh / 20) * 2;
     height: ($max-vh / 20) * 2;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .ams-btn {
-    color : $white-color !important;
+    color       : $white-color !important;
     margin-right: $margin;
 }
 
@@ -102,4 +102,12 @@
 .body-content {
     width           : auto;
     background-color: $white-color;
+}
+
+.green-color {
+    color: $green-color !important;
+}
+
+.red-color {
+    color: $red-color !important;
 }

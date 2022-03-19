@@ -173,10 +173,10 @@ function ListAsset(props) {
             <div className="list-asset">
                 <Row>
                     <Col span={5} className="field">
-                        Lớp tài sản
+                        Tên danh mục
                     </Col>
                     <Col span={5} className="field">
-                        Tên tài sản
+                        Tên thuốc
                     </Col>
                     <Col span={3} className="field">
                         Đơn vị tính

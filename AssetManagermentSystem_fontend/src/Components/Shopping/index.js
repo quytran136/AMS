@@ -18,8 +18,9 @@ function Shopping(props) {
     const {
         requestWarehouse,
         requestTicket,
-        setError,
         requestNotification,
+        setError,
+        setMessage
     } = amsAction;
 
     const {
@@ -50,7 +51,7 @@ function Shopping(props) {
         dispatch(requestWarehouse(body))
     }
 
-   
+
 
     function sentRequest() {
         if (warehouseSelected) {
@@ -77,6 +78,7 @@ function Shopping(props) {
                     AssetClassifyID: element.AssetClassifyID,
                     AssetFullName: element.AssetFullName,
                     QuantityOriginalStock: element.QuantityOriginalStock,
+                    Quantity: element.QuantityOriginalStock,
                     Unit: element.Unit,
                     Description: element.Description,
                     Price: element.Price,
@@ -96,7 +98,8 @@ function Shopping(props) {
                     StoreID: warehouseSelected,
                     Description: ticketDescription,
                     ProcessID: warehouseAction.ProcessID,
-                    AssetDetails: AssetDetails
+                    AssetDetails: AssetDetails,
+                    InvoiceDetails: AssetDetails
                 }
             }
             dispatch(requestTicket(body))
@@ -126,7 +129,7 @@ function Shopping(props) {
                 Key: "GET_TICKET_SHOPPING",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data.split('|')[0],
+                    RequestID: data.ticketID,
                 }
             }
             dispatch(requestTicket(body))
@@ -140,10 +143,11 @@ function Shopping(props) {
                 Key: "APPROVE_TICKET_SHOPPING",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data.split('|')[0],
+                    RequestID: data.ticketID,
                 }
             }
             dispatch(requestTicket(body))
+            dispatch(setMessage("Phê duyệt thành công"))
         }
     }
 
@@ -154,16 +158,17 @@ function Shopping(props) {
                 Key: "REJECT_TICKET_SHOPPING",
                 UserNameRequest: userName,
                 Data: {
-                    RequestID: data.split('|')[0],
+                    RequestID: data.ticketID,
                 }
             }
             dispatch(requestTicket(body))
+            dispatch(setMessage("Đã từ chối yêu cầu"))
         }
     }
 
     function ticketContent() {
-        if (ticket) {
-            setWarehouseSelected(ticket.Response.Ticket.StoreID)
+        if (ticket && ticket?.Response.Ticket) {
+            setWarehouseSelected(ticket?.Response.Ticket.StoreID)
             setTicketDescription(ticket?.Response.Ticket?.Description)
         }
     }
@@ -187,57 +192,66 @@ function Shopping(props) {
                     </Col>
                     <Col span={8} className="tool-right">
                         {
-                            data ?
+                            data?.createRequest === false ?
                                 <>
-                                    <Button
-                                        className="ams-btn-default"
-                                        type="primary"
-                                        onClick={() => {
-                                            const body = {
-                                                Token: token,
-                                                Key: "READED_NOTIFICATION",
-                                                UserNameRequest: userName,
-                                                Data: data.split('|')[1]
-                                            }
-                                            dispatch(requestNotification(body))
-                                            sentRequestApprove()
-                                            history.push('/Home')
-                                        }}
-                                    >Approve</Button>
-                                    <Button
-                                        className="ams-btn-default"
-                                        type="primary"
-                                        danger
-                                        onClick={() => {
-                                            const body = {
-                                                Token: token,
-                                                Key: "READED_NOTIFICATION",
-                                                UserNameRequest: userName,
-                                                Data: data.split('|')[1]
-                                            }
-                                            dispatch(requestNotification(body))
-                                            sentRequestReject()
-                                            history.push('/Home')
-                                        }}
-                                    >Reject</Button>
+                                    {data.readOnly(ticket) === false ?
+                                        <>
+                                            <Button
+                                                className="ams-btn-default"
+                                                type="primary"
+                                                onClick={() => {
+                                                    const body = {
+                                                        Token: token,
+                                                        Key: "READED_NOTIFICATION",
+                                                        UserNameRequest: userName,
+                                                        Data: data.notiID,
+                                                    }
+                                                    dispatch(requestNotification(body))
+                                                    sentRequestApprove()
+                                                    history.push('/Home')
+                                                }}
+                                            >Phê duyệt</Button>
+                                            <Button
+                                                className="ams-btn-default"
+                                                type="primary"
+                                                danger
+                                                onClick={() => {
+                                                    const body = {
+                                                        Token: token,
+                                                        Key: "READED_NOTIFICATION",
+                                                        UserNameRequest: userName,
+                                                        Data: data.notiID,
+                                                    }
+                                                    dispatch(requestNotification(body))
+                                                    sentRequestReject()
+                                                    history.push('/Home')
+                                                }}
+                                            >Từ chối</Button>
+                                        </>
+                                        : <></>
+                                    }
                                 </>
-                                :
+                                : <></>
+                        }
+                        {
+                            data?.createRequest === true ?
                                 <Button
                                     className="ams-btn-default"
                                     type="primary"
                                     onClick={() => {
                                         sentRequest()
                                     }}
-                                >Sent request</Button>
+                                >Gửi yêu cầu</Button>
+                                : <></>
                         }
                         <Button
                             className="ams-btn-default"
                             danger
                             type="primary"
                             onClick={() => {
-                                history.push('/Home')
+                                history.push(data?.redirect ? data?.redirect : '/Home')
                             }}
-                        >Cancel</Button>
+                        >Quay lại</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -249,7 +263,7 @@ function Shopping(props) {
                         <h4>Kho lưu trữ:</h4>
                         <Select
                             options={listWareHouse}
-                            disabled={data ? true : false}
+                            disabled={!data?.createRequest}
                             className="select-warehouse"
                             value={warehouseSelected}
                             onChange={e => {
@@ -266,7 +280,7 @@ function Shopping(props) {
                                 <Col span={12}>
                                     <h4>Diễn giải</h4>
                                     <Input.TextArea
-                                        disabled={data ? true : false}
+                                        disabled={!data?.createRequest}
                                         placeholder="Diễn giải"
                                         allowClear
                                         value={ticketDescription}
@@ -283,7 +297,7 @@ function Shopping(props) {
                             <>
                                 <h4>Diễn giải</h4>
                                 <Input.TextArea
-                                    disabled={data ? true : false}
+                                    disabled={!data?.createRequest}
                                     placeholder="Diễn giải"
                                     allowClear
                                     value={ticketDescription}
@@ -295,7 +309,7 @@ function Shopping(props) {
                         }
                         <h4>Danh sách tài sản</h4>
                         <ListAsset
-                            disabled={data ? true : false}
+                            disabled={!data?.createRequest}
                             dataSource={ticket?.Response?.Assets}
                             onChange={(list) => {
                                 setListAsset(list)

@@ -111,7 +111,6 @@ namespace AMS.BUS.BusinessHandle
                                                             QuantityOriginalStock = ptr.QuantityOriginalStock,
                                                             QuantityUsed = ptr.QuantityUsed,
                                                             StoreID = ptr.StoreID,
-                                                            TicketID = ptr.TicketID,
                                                             Unit = ptr.Unit
                                                         }).ToList()
                     });
@@ -165,7 +164,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<List<asset_detail>> GetAsset(supplier supplier,asset_classify assetClassifyID)
+        public BaseModel<List<asset_detail>> GetAsset(supplier supplier, asset_classify assetClassifyID)
         {
             try
             {
@@ -305,51 +304,6 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<string> AddAssetRanger(List<asset_detail> details, string ticketID, string storeID)
-        {
-            try
-            {
-                var db = DBC.Init;
-                List<asset_detail> listAsset = new List<asset_detail>();
-                foreach (asset_detail item in details)
-                {
-                    listAsset.Add(new asset_detail()
-                    {
-                        ID = Guid.NewGuid().ToString(),
-                        AssetClassifyID = item.AssetClassifyID,
-                        CreateDate = DateTime.Now,
-                        AssetFullName = item.AssetFullName,
-                        Description = item.Description,
-                        Price = item.Price,
-                        IsDelete = false,
-                        IsActive = false,
-                        TicketID = ticketID,
-                        StoreID = storeID,
-                        QuantityDestroyed = 0,
-                        QuantityInStock = 0,
-                        QuantityOriginalStock = item.QuantityOriginalStock,
-                        QuantityUsed = 0,
-                        Unit = item.Unit
-                    });
-                }
-
-                db.asset_detail.AddRange(listAsset);
-
-                return new BaseModel<string>();
-            }
-            catch (Exception ex)
-            {
-                return new BaseModel<string>()
-                {
-                    Exception = new ExceptionHandle()
-                    {
-                        Code = SYSMessageCode(1),
-                        Exception = ex
-                    }
-                };
-            }
-        }
-
         public BaseModel<string> UpdateAsset(asset_detail detail)
         {
             try
@@ -475,36 +429,41 @@ namespace AMS.BUS.BusinessHandle
         #endregion
 
         #region nhập kho
-        public BaseModel<string> CreateAssetShopping(List<asset_detail> details, string ticketID, string storeID)
+        public BaseModel<string> CreateAssetShopping(List<invoice_detail> details, string ticketID, string storeID, string requestorID)
         {
             try
             {
                 var db = DBC.Init;
-                List<asset_detail> listAsset = new List<asset_detail>();
-                foreach (asset_detail item in details)
+                string invoiceID = Guid.NewGuid().ToString();
+                var userInformation = new UserInformation().GetUserInfor(requestorID);
+                db.invoices.Add(new invoice()
                 {
-                    listAsset.Add(new asset_detail()
+                    ID = invoiceID,
+                    CreateDate = DateTime.Now,
+                    StoreID = storeID,
+                    CreatorID = userInformation.Result.ID,
+                    TicketID = ticketID,
+                    IsReject = false,
+                });
+
+                List<invoice_detail> listAsset = new List<invoice_detail>();
+                foreach (invoice_detail item in details)
+                {
+                    listAsset.Add(new invoice_detail()
                     {
                         ID = Guid.NewGuid().ToString(),
                         AssetClassifyID = item.AssetClassifyID,
-                        CreateDate = DateTime.Now,
                         AssetFullName = item.AssetFullName,
                         Description = item.Description,
+                        InvoiceID = invoiceID,
+                        Quantity = item.Quantity,
                         Price = item.Price,
-                        IsDelete = false,
-                        IsActive = false,
-                        TicketID = ticketID,
-                        StoreID = storeID,
-                        QuantityDestroyed = 0,
-                        QuantityInStock = 0,
-                        QuantityOriginalStock = item.QuantityOriginalStock,
-                        QuantityUsed = 0,
                         Unit = item.Unit,
                         SupplierID = item.SupplierID,
                     });
                 }
 
-                db.asset_detail.AddRange(listAsset);
+                db.invoice_detail.AddRange(listAsset);
                 db.SaveChanges();
                 return new BaseModel<string>();
             }
@@ -526,20 +485,34 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                var listAsset = db.asset_detail.Where(ptr => ptr.TicketID == requestID)
-                .ToList()
-                .Select(ptr => new asset_detail()
-                {
-                    ID = ptr.ID,
-                    AssetClassifyID = ptr.AssetClassifyID,
-                    QuantityOriginalStock = ptr.QuantityOriginalStock,
-                    CreateDate = ptr.CreateDate,
-                    AssetFullName = ptr.AssetFullName,
-                    Description = ptr.Description,
-                    Price = ptr.Price,
-                    Unit = ptr.Unit,
-                    SupplierID = ptr.SupplierID,
-                }).ToList();
+                var listAsset = (from inv in db.invoices
+                                 join invd in db.invoice_detail on inv.ID equals invd.InvoiceID
+                                 where inv.TicketID == requestID
+                                 select new
+                                 {
+                                     ID = invd.ID,
+                                     AssetClassifyID = invd.AssetClassifyID,
+                                     CreateDate = inv.CreateDate,
+                                     AssetFullName = invd.AssetFullName,
+                                     Description = invd.Description,
+                                     Price = invd.Price,
+                                     Unit = invd.Unit,
+                                     QuantityOriginalStock = invd.Quantity,
+                                     SupplierID = invd.SupplierID,
+                                 })
+                                 .ToList()
+                                 .Select(ptr => new asset_detail()
+                                 {
+                                     ID = ptr.ID,
+                                     AssetClassifyID = ptr.AssetClassifyID,
+                                     CreateDate = ptr.CreateDate,
+                                     AssetFullName = ptr.AssetFullName,
+                                     Description = ptr.Description,
+                                     Price = ptr.Price,
+                                     Unit = ptr.Unit,
+                                     QuantityOriginalStock = ptr.QuantityOriginalStock,
+                                     SupplierID = ptr.SupplierID,
+                                 }).ToList();
                 if (listAsset == null)
                 {
                     return new List<asset_detail>();
@@ -557,26 +530,47 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                List<asset_detail> assets = db.asset_detail
-                                            .Where(ptr => ptr.TicketID == requestID)
-                                            .ToList()
-                                            .Select(ptr => new asset_detail()
-                                            {
-                                                ID = ptr.ID,
-                                                AssetClassifyID = ptr.AssetClassifyID,
-                                                QuantityOriginalStock = ptr.QuantityOriginalStock,
-                                                CreateDate = ptr.CreateDate,
-                                                AssetFullName = ptr.AssetFullName,
-                                                Description = ptr.Description,
-                                                Price = ptr.Price,
-                                                Unit = ptr.Unit
-                                            }).ToList();
-                foreach (asset_detail item in assets)
+                invoice invoice = db.invoices.FirstOrDefault(ptr => ptr.TicketID == requestID);
+                if (invoice == null)
                 {
-                    var ase = db.asset_detail.Where(ptr => ptr.ID == item.ID).ToList().FirstOrDefault();
-                    ase.IsActive = true;
-                    ase.QuantityInStock = item.QuantityOriginalStock;
+                    return new BaseModel<string>()
+                    {
+                        Exception = new ExceptionHandle()
+                        {
+                            Code = BUSMessageCode(2)
+                        }
+                    };
                 }
+
+                var invoiceDetail = (from inv in db.invoices
+                                     join invd in db.invoice_detail on inv.ID equals invd.InvoiceID
+                                     where inv.TicketID == requestID
+                                     select invd).ToList();
+
+                List<asset_detail> assets = new List<asset_detail>();
+                foreach (invoice_detail item in invoiceDetail)
+                {
+                    assets.Add(new asset_detail()
+                    {
+                        ID = item.ID,
+                        AssetClassifyID = item.AssetClassifyID,
+                        AssetFullName = item.AssetFullName,
+                        Description = item.Description,
+                        Price = item.Price,
+                        QuantityOriginalStock = item.Quantity,
+                        QuantityInStock = item.Quantity,
+                        SupplierID = item.SupplierID,
+                        Unit = item.Unit,
+                        QuantityDestroyed = 0,
+                        IsActive = true,
+                        IsDelete = false,
+                        StoreID = invoice.StoreID,
+                        CreateDate = DateTime.Now,
+                        QuantityUsed = 0,
+                    });
+                }
+                db.asset_detail.AddRange(assets);
+                db.SaveChanges();
                 return new BaseModel<string>();
             }
             catch (Exception ex)
@@ -597,13 +591,12 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                List<asset_detail> assets = db.asset_detail
+                List<invoice> assets = db.invoices
                                             .Where(ptr => ptr.TicketID == requestID)
                                             .ToList();
-                foreach (asset_detail item in assets)
+                foreach (invoice item in assets)
                 {
-                    item.IsActive = false;
-                    item.IsDelete = true;
+                    item.IsReject = true;
                 }
                 return new BaseModel<string>();
             }
@@ -631,26 +624,18 @@ namespace AMS.BUS.BusinessHandle
                 List<usage_history> listUsageHistory = new List<usage_history>();
                 foreach (usage_history item in details)
                 {
-                    usage_history us = db.usage_history.Where(ptr => ptr.AssetID == item.AssetID && ptr.UsageFor == item.UsageFor).ToList().FirstOrDefault();
-                    if (us == null)
+                    listUsageHistory.Add(new usage_history()
                     {
-                        listUsageHistory.Add(new usage_history()
-                        {
-                            ID = Guid.NewGuid().ToString(),
-                            TicketID = ticketID,
-                            AssetID = item.AssetID,
-                            Quantity = item.Quantity,
-                            UsageFor = item.UsageFor,
-                            CreateDate = DateTime.Now,
-                            IsLiquidation = false,
-                            IsRecovery = false,
-                            IsUsed = false,
-                        });
-                    }
-                    else
-                    {
-                        us.Quantity = us.Quantity + item.Quantity;
-                    }
+                        ID = Guid.NewGuid().ToString(),
+                        TicketID = ticketID,
+                        AssetID = item.AssetID,
+                        Quantity = item.Quantity,
+                        UsageFor = item.UsageFor,
+                        CreateDate = DateTime.Now,
+                        IsLiquidation = false,
+                        IsRecovery = false,
+                        IsUsed = false,
+                    });
                 }
 
                 db.usage_history.AddRange(listUsageHistory);
@@ -713,7 +698,6 @@ namespace AMS.BUS.BusinessHandle
                                                  QuantityInStock = ptr.QuantityInStock,
                                                  Unit = ptr.Unit,
                                                  QuantityUsed = ptr.QuantityUsed,
-                                                 TicketID = ptr.UsageFor,
                                                  SupplierID = ptr.SupplierID,
                                              }).ToList();
 
@@ -746,10 +730,12 @@ namespace AMS.BUS.BusinessHandle
                     item.IsUsed = true;
                     item.IsLiquidation = false;
                     item.IsRecovery = false;
+                    item.IsReject = false;
                     var ase = db.asset_detail.Where(ptr => ptr.ID == item.AssetID).ToList().FirstOrDefault();
                     ase.QuantityInStock = ase.QuantityInStock - item.Quantity;
                     ase.QuantityUsed = ase.QuantityUsed + item.Quantity;
                 }
+                db.SaveChanges();
                 return new BaseModel<string>();
             }
             catch (Exception ex)
@@ -770,13 +756,15 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                List<asset_detail> assets = db.asset_detail
+                List<usage_history> assets = db.usage_history
                                             .Where(ptr => ptr.TicketID == requestID)
                                             .ToList();
-                foreach (asset_detail item in assets)
+                foreach (usage_history item in assets)
                 {
-                    item.IsActive = false;
-                    item.IsDelete = true;
+                    item.IsUsed = false;
+                    item.IsLiquidation = false;
+                    item.IsRecovery = false;
+                    item.IsReject = true;
                 }
                 return new BaseModel<string>();
             }

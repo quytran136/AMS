@@ -101,11 +101,20 @@
     <Compile Include="DBConnect\asset_detail.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
+    <Compile Include="DBConnect\chat_history.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBConnect\DBConnect.cs" />
     <Compile Include="DBConnect\Department.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\function.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\invoice.cs">
+      <DependentUpon>AMS_DB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBConnect\invoice_detail.cs">
       <DependentUpon>AMS_DB.tt</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\message_list.cs">

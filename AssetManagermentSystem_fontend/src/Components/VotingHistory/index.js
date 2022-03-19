@@ -30,7 +30,7 @@ function VotingHistory(props) {
             dataSource.forEach((element, index) => {
                 list.push({
                     key: index,
-                    CreateDate : element.CreateDate,
+                    CreateDate : (new Date(element.CreateDate)).toLocaleString("us-en"),
                     Creator: element.Creator,
                     Message: element.Message
                 })

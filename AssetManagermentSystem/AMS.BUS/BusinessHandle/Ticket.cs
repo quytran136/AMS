@@ -14,6 +14,7 @@ namespace AMS.BUS.BusinessHandle
     public class Ticket : IBaseHandle
     {
         public request_ticket_history Request { get; set; }
+        public List<request_ticket_history> Requests { get; set; }
         public List<asset_detail> Assets { get; set; }
         public List<usage_history> UsageHistories { get; set; }
         public List<VotingHistory> VotingHistory { get; set; }
@@ -30,7 +31,7 @@ namespace AMS.BUS.BusinessHandle
                     Actor = actor,
                     CreateDate = DateTime.Now,
                     Description = note,
-                    TicketID = tiketID
+                    TicketID = tiketID,
                 });
                 db.SaveChanges();
             }
@@ -63,6 +64,99 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
+        public BaseModel<Ticket> GetTicketRequested(string requestor)
+        {
+            try
+            {
+                var db = DBC.Init;
+                var user = new UserInformation().GetUserInfor(requestor);
+                List<request_ticket_history> requests = db.request_ticket_history
+                                                .Where(ptr => ptr.RequestBy == requestor)
+                                                .OrderByDescending(ptr => ptr.CreateDate)
+                                                .ToList()
+                                                .Select(ptr => new request_ticket_history()
+                                                {
+                                                    ID = ptr.ID,
+                                                    RequestBy = ptr.RequestBy,
+                                                    StepID = ptr.StepID,
+                                                    IsApprove = ptr.IsApprove,
+                                                    CreateDate = ptr.CreateDate,
+                                                    Description = ptr.Description,
+                                                    IsReject = ptr.IsReject,
+                                                    ProcessID = ptr.ProcessID,
+                                                    RequestType = ptr.RequestType,
+                                                    StoreID = ptr.StoreID
+                                                }).
+                                                ToList();
+
+                return new BaseModel<Ticket>()
+                {
+                    Result = new Ticket()
+                    {
+                        Requests = requests
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<Ticket>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        public BaseModel<Ticket> GetTicketRequested(DateTime? dateFrom, DateTime? dateTo)
+        {
+            try
+            {
+                var db = DBC.Init;
+                List<request_ticket_history> requests = db.request_ticket_history
+                                                .Where(ptr => ptr.CreateDate >= dateFrom 
+                                                && ptr.CreateDate <= dateTo 
+                                                && ptr.RequestType == RequestType.SHOPPING
+                                                && ptr.IsApprove == true)
+                                                .OrderByDescending(ptr => ptr.CreateDate)
+                                                .ToList()
+                                                .Select(ptr => new request_ticket_history()
+                                                {
+                                                    ID = ptr.ID,
+                                                    RequestBy = ptr.RequestBy,
+                                                    StepID = ptr.StepID,
+                                                    IsApprove = ptr.IsApprove,
+                                                    CreateDate = ptr.CreateDate,
+                                                    Description = ptr.Description,
+                                                    IsReject = ptr.IsReject,
+                                                    ProcessID = ptr.ProcessID,
+                                                    RequestType = ptr.RequestType,
+                                                    StoreID = ptr.StoreID
+                                                }).
+                                                ToList();
+
+                return new BaseModel<Ticket>()
+                {
+                    Result = new Ticket()
+                    {
+                        Requests = requests
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<Ticket>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
         // yêu cầu
         public BaseModel<string> CreateTicket(
             string requestType,
@@ -77,6 +171,7 @@ namespace AMS.BUS.BusinessHandle
                 var db = DBC.Init;
                 Process process = db.Processes.Where(ptr => ptr.ID == processID && ptr.IsDelete == false).ToList().FirstOrDefault();
                 string id = Guid.NewGuid().ToString();
+                string stepID = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().ID;
                 db.request_ticket_history.Add(new request_ticket_history()
                 {
                     RequestBy = requestBy,
@@ -85,7 +180,7 @@ namespace AMS.BUS.BusinessHandle
                     Description = description,
                     ID = id,
                     IsApprove = false,
-                    StepID = process.ProcessSteps.Where(ptr => string.IsNullOrEmpty(ptr.ParentID)).ToList().FirstOrDefault().ID,
+                    StepID = stepID,
                     RequestType = requestType,
                     IsReject = false,
                     StoreID = storeID
@@ -133,7 +228,7 @@ namespace AMS.BUS.BusinessHandle
                 }
 
                 Notification notification = new Notification();
-                notification.SentNotificationByUser(users, id, requestBy, requestType, RequestType.GetMessageByName(requestType).Message);
+                notification.SentNotificationByUser(users, id, requestBy, requestType, RequestType.GetMessageByName(requestType).Message, stepid: stepID);
                 db.SaveChanges();
                 func(id);
                 user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
@@ -154,15 +249,15 @@ namespace AMS.BUS.BusinessHandle
         }
 
         public BaseModel<Ticket> GetTicket(
-            string requestType, 
-            string requestID, 
+            string requestType,
+            string requestID,
             Func<List<asset_detail>> func)
         {
             try
             {
                 var db = DBC.Init;
                 request_ticket_history request = db.request_ticket_history
-                                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType && ptr.IsApprove == false && ptr.IsReject == false)
+                                                .Where(ptr => ptr.ID == requestID && ptr.RequestType == requestType)
                                                 .ToList()
                                                 .Select(ptr => new request_ticket_history()
                                                 {
@@ -180,7 +275,6 @@ namespace AMS.BUS.BusinessHandle
                                                 ToList()
                                                 .FirstOrDefault();
                 List<asset_detail> assets = func();
-
 
                 return new BaseModel<Ticket>()
                 {
@@ -223,6 +317,7 @@ namespace AMS.BUS.BusinessHandle
 
                 if (processStep == null)
                 {
+                    request.StepID = "-";
                     request.IsApprove = true;
                     request.IsReject = false;
                     func();
@@ -232,10 +327,11 @@ namespace AMS.BUS.BusinessHandle
                                                         {
                                                             user.ID
                                                         },
-                                                        request.ID, 
-                                                        requestBy, 
+                                                        request.ID,
+                                                        requestBy,
                                                         requestType,
-                                                        string.Format("{0} {1}", RequestType.GetMessageByName(requestType).Message, "chấp thuận"));
+                                                        string.Format("{0} {1}", RequestType.GetMessageByName(requestType).Message, "chấp thuận"),
+                                                        "");
                     db.SaveChanges();
                     user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
                     saveVotingHistory(requestID, user1.ID, "Phê duyệt", requestType);
@@ -286,28 +382,15 @@ namespace AMS.BUS.BusinessHandle
                         }
                     }
 
-                    //foreach (string userid in users)
-                    //{
-                    //    ams_notification noti = new ams_notification()
-                    //    {
-                    //        ID = Guid.NewGuid().ToString(),
-                    //        CreateDate = DateTime.Now,
-                    //        IsRead = false,
-                    //        NotificationContent = "Yêu cầu mua sắm tài sản được gửi từ " + new UserInformation().GetUserInfor(request.RequestBy).Result.UserFullName,
-                    //        NotificationFor = userid,
-                    //        Action = JsonConvert.SerializeObject(new RequestAction()
-                    //        {
-                    //            Key = request.RequestType,
-                    //            Value = request.ID,
-                    //            Path = "/Shopping"
-                    //        }),
-                    //    };
-                    //    notis.Add(noti);
-                    //}
-
-                    //db.ams_notification.AddRange(notis);
                     Notification notification = new Notification();
-                    notification.SentNotificationByUser(users, request.ID, requestBy, requestType, RequestType.GetMessageByName(requestType).Message);
+                    notification.SentNotificationByUser(
+                        users, 
+                        request.ID, 
+                        requestBy, 
+                        requestType, 
+                        String.Format("{0} {1}", "Phê duyệt", RequestType.GetMessageByName(requestType).Message),
+                        stepid: req.StepID
+                        );
                     db.SaveChanges();
                     user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
                     saveVotingHistory(requestID, user1.ID, "Phê duyệt", requestType);
@@ -332,9 +415,9 @@ namespace AMS.BUS.BusinessHandle
         }
 
         public BaseModel<Ticket> RejectTicket(
-            string requestType, 
-            string requestBy, 
-            string requestID, 
+            string requestType,
+            string requestBy,
+            string requestID,
             Action func)
         {
             try
@@ -345,18 +428,23 @@ namespace AMS.BUS.BusinessHandle
                                                 .ToList()
                                                 .FirstOrDefault();
                 ProcessStep processStep = db.ProcessSteps.Where(ptr => ptr.ParentID == request.StepID && ptr.IsDelete == false).ToList().FirstOrDefault();
-
+                request.StepID = "-";
                 request.IsApprove = false;
                 request.IsReject = true;
 
+                db.SaveChanges();
                 func();
 
                 user_identifie user = new UserInformation().GetUserInfor(request.RequestBy).Result;
 
                 Notification notification = new Notification();
-                notification.SentNotificationByUser(new List<string>() { user.ID }, request.ID, requestBy, requestType, RequestType.GetMessageByName(requestType).Message);
+                notification.SentNotificationByUser(new List<string>() { user.ID },
+                    request.ID,
+                    requestBy,
+                    requestType,
+                    String.Format("{0} {1}", "Từ chối", RequestType.GetMessageByName(requestType).Message),
+                    "");
 
-                db.SaveChanges();
                 user_identifie user1 = new UserInformation().GetUserInfor(requestBy).Result;
                 saveVotingHistory(requestID, user1.ID, "Từ chối", requestType);
                 return new BaseModel<Ticket>()
@@ -401,6 +489,8 @@ namespace AMS.BUS.BusinessHandle
         public string Key { get; set; }
         public string Value { get; set; }
         public string Path { get; set; }
+        public bool EndOfThread { get; set; }
+        public string StepID { get; set; }
     }
 
     public class VotingHistory

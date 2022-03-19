@@ -160,14 +160,14 @@ function Asset(props) {
                     /></span>}
                   title={element.Asset_Classify.AssetClassifyName}
                   bordered={true}>
-                    Tổng số tài sản: {element.Asset_Details.length}
+                    Tổng: {element.Asset_Details.length} loại
                 </Card>)
               })}
           </Col>
         </Row>
       </Card>
       <Modal
-        title="Lớp tài sản"
+        title="Danh mục"
         centered
         visible={showUpdate}
         onOk={onUpdate}
@@ -176,7 +176,7 @@ function Asset(props) {
           getListAssetClassify()
         }}
       >
-        <Input placeholder="warehouse name..."
+        <Input placeholder="Tên danh mục..."
           prefix={<GoldOutlined />}
           value={assetClassify}
           onChange={(e) => setAssetClassify(e.target.value)} />

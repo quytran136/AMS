@@ -31,8 +31,11 @@ namespace AMS.BUS.DBConnect
         public virtual DbSet<ams_notification> ams_notification { get; set; }
         public virtual DbSet<asset_classify> asset_classify { get; set; }
         public virtual DbSet<asset_detail> asset_detail { get; set; }
+        public virtual DbSet<chat_history> chat_history { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<function> functions { get; set; }
+        public virtual DbSet<invoice> invoices { get; set; }
+        public virtual DbSet<invoice_detail> invoice_detail { get; set; }
         public virtual DbSet<message_list> message_list { get; set; }
         public virtual DbSet<Organizational> Organizationals { get; set; }
         public virtual DbSet<Process> Processes { get; set; }
@@ -42,13 +45,13 @@ namespace AMS.BUS.DBConnect
         public virtual DbSet<role_function> role_function { get; set; }
         public virtual DbSet<role_view> role_view { get; set; }
         public virtual DbSet<store_Identifie> store_Identifie { get; set; }
+        public virtual DbSet<supplier> suppliers { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<system_log> system_log { get; set; }
         public virtual DbSet<usage_history> usage_history { get; set; }
         public virtual DbSet<user_identifie> user_identifie { get; set; }
         public virtual DbSet<view_page> view_page { get; set; }
         public virtual DbSet<voting_history> voting_history { get; set; }
-        public virtual DbSet<supplier> suppliers { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

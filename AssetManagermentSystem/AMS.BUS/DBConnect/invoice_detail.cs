@@ -12,17 +12,18 @@ namespace AMS.BUS.DBConnect
     using System;
     using System.Collections.Generic;
     
-    public partial class usage_history
+    public partial class invoice_detail
     {
         public string ID { get; set; }
-        public string TicketID { get; set; }
-        public string AssetID { get; set; }
+        public string AssetClassifyID { get; set; }
+        public string AssetFullName { get; set; }
+        public string SupplierID { get; set; }
+        public string InvoiceID { get; set; }
+        public Nullable<double> Price { get; set; }
         public Nullable<int> Quantity { get; set; }
-        public string UsageFor { get; set; }
-        public Nullable<bool> IsUsed { get; set; }
-        public Nullable<bool> IsRecovery { get; set; }
-        public Nullable<bool> IsLiquidation { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<bool> IsReject { get; set; }
+        public string Description { get; set; }
+        public string Unit { get; set; }
+    
+        public virtual invoice invoice { get; set; }
     }
 }

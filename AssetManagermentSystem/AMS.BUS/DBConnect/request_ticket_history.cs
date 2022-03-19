@@ -17,7 +17,8 @@ namespace AMS.BUS.DBConnect
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public request_ticket_history()
         {
-            this.asset_detail = new HashSet<asset_detail>();
+            this.invoices = new HashSet<invoice>();
+            this.voting_history = new HashSet<voting_history>();
         }
     
         public string ID { get; set; }
@@ -32,6 +33,8 @@ namespace AMS.BUS.DBConnect
         public string StoreID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<asset_detail> asset_detail { get; set; }
+        public virtual ICollection<invoice> invoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<voting_history> voting_history { get; set; }
     }
 }

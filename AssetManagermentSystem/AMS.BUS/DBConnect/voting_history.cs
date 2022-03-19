@@ -20,5 +20,8 @@ namespace AMS.BUS.DBConnect
         public string Actor { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string Action { get; set; }
+        public string StepID { get; set; }
+    
+        public virtual request_ticket_history request_ticket_history { get; set; }
     }
 }

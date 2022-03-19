@@ -48,9 +48,16 @@
 .notification-board {
     .item {
         padding-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
 
         &:hover {
             background-color: rgb(233, 248, 198);
+        }
+
+        div{
+            padding-right: 10px;
         }
     }
 }

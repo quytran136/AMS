@@ -12,17 +12,14 @@ namespace AMS.BUS.DBConnect
     using System;
     using System.Collections.Generic;
     
-    public partial class usage_history
+    public partial class chat_history
     {
         public string ID { get; set; }
-        public string TicketID { get; set; }
-        public string AssetID { get; set; }
-        public Nullable<int> Quantity { get; set; }
-        public string UsageFor { get; set; }
-        public Nullable<bool> IsUsed { get; set; }
-        public Nullable<bool> IsRecovery { get; set; }
-        public Nullable<bool> IsLiquidation { get; set; }
+        public string FromUserID { get; set; }
+        public string ToUserID { get; set; }
+        public string Message { get; set; }
+        public string ImageList { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<bool> IsReject { get; set; }
+        public Nullable<bool> IsReaded { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace AMS.API.Jobs
                 .WithIdentity("trigg24", "gr24")
                 .StartNow()
                 .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(10)
+                    .WithIntervalInSeconds(5)
                     .RepeatForever())
                 .Build();
             tasks.Add(scheduler.ScheduleJob(jobSync, triggerSync));

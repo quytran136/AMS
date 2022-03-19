@@ -3,6 +3,7 @@ using AMS.API.Models.ResponseModel;
 using AMS.BUS.BusinessHandle;
 using AMS.BUS.BusModels;
 using AMS.COMMON.Constands;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace AMS.API.Controllers
@@ -24,6 +25,24 @@ namespace AMS.API.Controllers
 
             switch (req.Key)
             {
+                case "TICKET_REQUESTED":
+                    BaseModel<Ticket> ticketRequested = new Ticket().GetTicketRequested(req.UserNameRequest);
+                    return new BaseResponse<Res_Ticket>().Result(ticketRequested, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                        {
+                            Tickets = ticketRequested.Result.Requests,
+                        }
+                    });
+                case "TICKET_REQUESTED_FOR_ACCOUNTANT":
+                    BaseModel<Ticket> ticketRequested1 = new Ticket().GetTicketRequested(req.Data.DateFrom, req.Data.DateTo);
+                    return new BaseResponse<Res_Ticket>().Result(ticketRequested1, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                        {
+                            Tickets = ticketRequested1.Result.Requests,
+                        }
+                    });
                 case "CREATE_TICKET_SHOPPING":
                     BaseModel<string> tickets = new Ticket().CreateTicket(
                         RequestType.SHOPPING,
@@ -31,7 +50,7 @@ namespace AMS.API.Controllers
                         req.Data.StoreID,
                         req.Data.Description,
                         req.Data.ProcessID,
-                        (ticketID) => { new Asset().CreateAssetShopping(req.Data.AssetDetails, ticketID, req.Data.StoreID); });
+                        (ticketID) => { new Asset().CreateAssetShopping(req.Data.InvoiceDetails, ticketID, req.Data.StoreID, req.UserNameRequest); });
                     return new BaseResponse<Res_Ticket>().Result(tickets, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
@@ -102,7 +121,6 @@ namespace AMS.API.Controllers
                         {
                             Ticket = tickets5.Result.Request,
                             Assets = tickets5.Result.Assets,
-                            UsageList = tickets5.Result.UsageHistories,
                             VotingHistory = tickets5.Result.VotingHistory
                         }
                     });

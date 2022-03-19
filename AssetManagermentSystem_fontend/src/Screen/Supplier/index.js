@@ -175,7 +175,7 @@ function Supplier(props) {
                         onDelete(element.ID)
                       }}
                     /></span>}
-                  title={<img className="image" id={element.ID} src={element.Image} />}
+                  title={<img alt="avata" className="image" id={element.ID} src={element.Image} />}
                   bordered={true}>
                   <div>
                     Tên đơn vị: <h3>{element.Name}</h3>
