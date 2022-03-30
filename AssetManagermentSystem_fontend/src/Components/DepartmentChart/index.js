@@ -309,13 +309,13 @@ const DepartmentChart = (prop) => {
                     className="ams-btn-default"
                     type="primary"
                     onClick={() => saveDepartment()}
-                >Save</Button>
+                >Lưu</Button>
                 <Button
                     className="ams-btn-default"
                     type="primary"
                     danger
                     onClick={() => getDepartment()}
-                >Cancel</Button>
+                >Tải lại</Button>
             </div>
             <div>
                 <Tree

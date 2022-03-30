@@ -160,6 +160,7 @@
     <EntitySetMapping Name="invoices">
       <EntityTypeMapping TypeName="AMS_DBModel.invoice">
         <MappingFragment StoreEntitySet="invoice">
+          <ScalarProperty Name="IsPay" ColumnName="IsPay" />
           <ScalarProperty Name="IsReject" ColumnName="IsReject" />
           <ScalarProperty Name="StoreID" ColumnName="StoreID" />
           <ScalarProperty Name="TicketID" ColumnName="TicketID" />

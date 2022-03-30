@@ -26,6 +26,7 @@ namespace AMS.BUS.DBConnect
         public string TicketID { get; set; }
         public string StoreID { get; set; }
         public Nullable<bool> IsReject { get; set; }
+        public Nullable<bool> IsPay { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoice_detail> invoice_detail { get; set; }

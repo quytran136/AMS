@@ -13,6 +13,7 @@ namespace AMS.BUS.BusinessHandle
 {
     public class Ticket : IBaseHandle
     {
+        public List<invoice> Invoices { get; set; }
         public request_ticket_history Request { get; set; }
         public List<request_ticket_history> Requests { get; set; }
         public List<asset_detail> Assets { get; set; }
@@ -115,33 +116,47 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                List<request_ticket_history> requests = db.request_ticket_history
-                                                .Where(ptr => ptr.CreateDate >= dateFrom 
-                                                && ptr.CreateDate <= dateTo 
-                                                && ptr.RequestType == RequestType.SHOPPING
-                                                && ptr.IsApprove == true)
-                                                .OrderByDescending(ptr => ptr.CreateDate)
-                                                .ToList()
-                                                .Select(ptr => new request_ticket_history()
-                                                {
-                                                    ID = ptr.ID,
-                                                    RequestBy = ptr.RequestBy,
-                                                    StepID = ptr.StepID,
-                                                    IsApprove = ptr.IsApprove,
-                                                    CreateDate = ptr.CreateDate,
-                                                    Description = ptr.Description,
-                                                    IsReject = ptr.IsReject,
-                                                    ProcessID = ptr.ProcessID,
-                                                    RequestType = ptr.RequestType,
-                                                    StoreID = ptr.StoreID
-                                                }).
-                                                ToList();
+                List<invoice> invoice = (from req in db.request_ticket_history
+                                          join inv in db.invoices on req.ID equals inv.TicketID
+                                          where req.CreateDate >= dateFrom
+                                          && req.CreateDate <= dateTo
+                                          && req.RequestType == RequestType.SHOPPING
+                                          && req.IsApprove == true
+                                          orderby inv.IsPay descending
+                                          orderby req.CreateDate descending
+                                          select new
+                                          {
+                                              request_ticket = req,
+                                              invoice = inv
+                                          })
+                                                        .ToList().Select(ptr => new invoice()
+                                                        {
+                                                            request_ticket_history = new request_ticket_history()
+                                                            {
+                                                                ID = ptr.request_ticket.ID,
+                                                                RequestBy = ptr.request_ticket.RequestBy,
+                                                                StepID = ptr.request_ticket.StepID,
+                                                                IsApprove = ptr.request_ticket.IsApprove,
+                                                                CreateDate = ptr.request_ticket.CreateDate,
+                                                                Description = ptr.request_ticket.Description,
+                                                                IsReject = ptr.request_ticket.IsReject,
+                                                                ProcessID = ptr.request_ticket.ProcessID,
+                                                                RequestType = ptr.request_ticket.RequestType,
+                                                                StoreID = ptr.request_ticket.StoreID
+                                                            },
+                                                            CreateDate = ptr.invoice.CreateDate,
+                                                            CreatorID = ptr.invoice.CreatorID,
+                                                            ID = ptr.invoice.ID,
+                                                            IsPay = ptr.invoice.IsPay,
+                                                            IsReject = ptr.invoice.IsReject,
+                                                        }).
+                                                        ToList();
 
                 return new BaseModel<Ticket>()
                 {
                     Result = new Ticket()
                     {
-                        Requests = requests
+                        Invoices = invoice
                     }
                 };
             }
@@ -157,6 +172,7 @@ namespace AMS.BUS.BusinessHandle
                 };
             }
         }
+        #region Yêu cầu
         // yêu cầu
         public BaseModel<string> CreateTicket(
             string requestType,
@@ -384,10 +400,10 @@ namespace AMS.BUS.BusinessHandle
 
                     Notification notification = new Notification();
                     notification.SentNotificationByUser(
-                        users, 
-                        request.ID, 
-                        requestBy, 
-                        requestType, 
+                        users,
+                        request.ID,
+                        requestBy,
+                        requestType,
                         String.Format("{0} {1}", "Phê duyệt", RequestType.GetMessageByName(requestType).Message),
                         stepid: req.StepID
                         );
@@ -465,6 +481,44 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
+        #endregion
+
+        #region Thanh toán
+
+        public BaseModel<string> PayConfirm(string ticketId)
+        {
+            try
+            {
+                var db = DBC.Init;
+                var invoice = db.invoices.FirstOrDefault(ptr => ptr.IsPay == false && ptr.TicketID == ticketId);
+                if (invoice == null)
+                {
+                    return new BaseModel<string>()
+                    {
+                        Result = String.Empty
+                    };
+                }
+
+                invoice.IsPay = true;
+                return new BaseModel<string>()
+                {
+                    Result = "Success"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseModel<string>()
+                {
+                    Exception = new ExceptionHandle()
+                    {
+                        Code = SYSMessageCode(1),
+                        Exception = ex
+                    }
+                };
+            }
+        }
+
+        #endregion
         public string BUSMessageCode(int id)
         {
             return string.Format("{0}{1}{2}{3}",

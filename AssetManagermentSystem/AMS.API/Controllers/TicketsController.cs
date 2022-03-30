@@ -40,7 +40,7 @@ namespace AMS.API.Controllers
                     {
                         Response = new Res_Ticket()
                         {
-                            Tickets = ticketRequested1.Result.Requests,
+                            Invoices = ticketRequested1.Result.Invoices,
                         }
                     });
                 case "CREATE_TICKET_SHOPPING":
@@ -147,6 +147,12 @@ namespace AMS.API.Controllers
                             new Asset().RejectAssetAllocation(req.Data.RequestID);
                         });
                     return new BaseResponse<Res_Ticket>().Result(tickets7, new BaseResponse<Res_Ticket>()
+                    {
+                        Response = new Res_Ticket()
+                    });
+                case "PAY_CONFIRM_TICKET_SHOPPING":
+                    BaseModel<string> ticket8 = new Ticket().PayConfirm(req.Data.RequestID);
+                    return new BaseResponse<Res_Ticket>().Result(ticket8, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()
                     });

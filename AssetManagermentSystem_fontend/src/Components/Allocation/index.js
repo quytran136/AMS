@@ -208,7 +208,7 @@ function Allocation(props) {
                             onClick={() => {
                                 history.push(data?.redirect ? data?.redirect : '/Home')
                             }}
-                        >Cancel</Button>
+                        >Quay lại</Button>
                     </Col>
                 </Row>
                 <Row>

@@ -92,6 +92,7 @@
           <Property Name="TicketID" Type="nvarchar" MaxLength="64" />
           <Property Name="StoreID" Type="nvarchar" MaxLength="64" />
           <Property Name="IsReject" Type="bit" />
+          <Property Name="IsPay" Type="bit" />
         </EntityType>
         <EntityType Name="invoice_detail">
           <Key>
@@ -915,6 +916,7 @@
           <NavigationProperty Name="request_ticket_history" Relationship="AMS_DBModel.FK_invoice_request_ticket_history" FromRole="invoice" ToRole="request_ticket_history" />
           <NavigationProperty Name="store_Identifie" Relationship="AMS_DBModel.FK_invoice_store_Identifie" FromRole="invoice" ToRole="store_Identifie" />
           <Property Name="IsReject" Type="Boolean" />
+          <Property Name="IsPay" Type="Boolean" />
         </EntityType>
         <EntityType Name="invoice_detail">
           <Key>
@@ -1509,6 +1511,7 @@
           <EntitySetMapping Name="invoices">
             <EntityTypeMapping TypeName="AMS_DBModel.invoice">
               <MappingFragment StoreEntitySet="invoice">
+                <ScalarProperty Name="IsPay" ColumnName="IsPay" />
                 <ScalarProperty Name="IsReject" ColumnName="IsReject" />
                 <ScalarProperty Name="StoreID" ColumnName="StoreID" />
                 <ScalarProperty Name="TicketID" ColumnName="TicketID" />

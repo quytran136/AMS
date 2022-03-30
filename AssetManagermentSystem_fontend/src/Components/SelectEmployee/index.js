@@ -140,7 +140,6 @@ const SelectEmployee = (prop) => {
                             disabled={disabled}
                             scroll={users ? {
                                 y: 550,
-                                x: '100vw',
                             } : {}}
                             dataSource={users}
                             columns={columns}

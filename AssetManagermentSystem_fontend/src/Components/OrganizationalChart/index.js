@@ -313,18 +313,18 @@ const OrganizationalChart = (prop) => {
                     className="ams-btn-default"
                     type="primary"
                     onClick={() => saveOrganizational()}
-                >Save</Button>
+                >Lưu</Button>
                 <Button
                     className="ams-btn-default"
                     type="primary"
                     danger
                     onClick={() => getOrganizational()}
-                >Cancel</Button>
+                >Tải lại</Button>
                 <Button
                     className="ams-btn-default"
                     type="primary"
                     onClick={() => dispatch(setDepartmentData(null))}
-                >Back</Button>
+                >Quay lại</Button>
             </div>
             <span className="organization-chart">
                 <h3>

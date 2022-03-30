@@ -40,3 +40,14 @@
     flex-direction: row;
     flex-wrap     : nowrap;
 }
+
+.invoice-detail{
+    .header{
+        font-size: $fontsize3;
+    }
+    .info{
+        margin: 10px 0;
+        font-size: $fontsize4;
+        display: block;
+    }
+}

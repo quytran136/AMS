@@ -276,6 +276,7 @@
     <NavigationProperty Name="request_ticket_history" Relationship="AMS_DBModel.FK_invoice_request_ticket_history" FromRole="invoice" ToRole="request_ticket_history" />
     <NavigationProperty Name="store_Identifie" Relationship="AMS_DBModel.FK_invoice_store_Identifie" FromRole="invoice" ToRole="store_Identifie" />
     <Property Name="IsReject" Type="Boolean" />
+    <Property Name="IsPay" Type="Boolean" />
   </EntityType>
   <EntityType Name="invoice_detail">
     <Key>

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import 'antd/dist/antd.css';
 import './style.scss'
-import { Button, Row, Col, Table, DatePicker } from 'antd';
+import { Button, Row, Col, Table, DatePicker, Modal } from 'antd';
 import {
-    EyeOutlined,
     CheckCircleFilled,
     CloseCircleFilled,
     AuditOutlined
@@ -12,6 +11,7 @@ import {
 import * as amsAction from '../../ReduxSaga/Actions';
 import { useHistory } from "react-router-dom";
 import moment from 'moment';
+import ListAsset from "../../Components/ListAsset";
 
 const Invoice = (prop) => {
     const dispatch = useDispatch()
@@ -22,13 +22,11 @@ const Invoice = (prop) => {
         DateFrom: new Date(new Date().getFullYear(), new Date().getMonth(), 1).toLocaleDateString('en-us'),
         DateTo: new Date().toLocaleDateString('en-us')
     })
+    const [visibleModal, setVisibleModal] = useState(false)
+    const [ticketInfo, setTicketInfo] = useState()
 
     const {
         requestTicket,
-        setRequestID,
-        setFunctionTitle,
-        getTicketSuccess,
-        setWarehouseAction
     } = amsAction;
 
     const {
@@ -80,68 +78,12 @@ const Invoice = (prop) => {
                     <Button
                         type="primary"
                         shape="circle"
-                        icon={<EyeOutlined />}
-                        onClick={() => {
-                            dispatch(setRequestID(record.ID))
-                            dispatch(setRequestID({
-                                ticketID: record.ID,
-                                notiID: "",
-                                readOnly: true,
-                                redirect: "/Ticket"
-                            }))
-                            setTimeout(() => {
-                                let title = ""
-                                configCommon.Response.Configs.forEach(element => {
-                                    switch (element.Code) {
-                                        case "FUNCTION":
-                                            const funcArray = JSON.parse(element.Value)
-                                            funcArray.forEach(func => {
-                                                if (("/" + record.RequestType) === func.FunctionPath) {
-                                                    title = func.FunctionName
-                                                }
-                                            });
-                                            break
-                                        default:
-                                            break;
-                                    }
-                                })
-                                dispatch(setFunctionTitle("Phê duyệt " + title))
-                                history.push("/" + record.RequestType)
-                            }, 100);
-                        }}
-                    />
-                    <Button
-                        type="primary"
-                        shape="circle"
                         icon={<AuditOutlined />}
                         className="ams-btn-success"
                         onClick={() => {
-                            dispatch(setRequestID(record.ID))
-                            dispatch(setRequestID({
-                                ticketID: record.ID,
-                                notiID: "",
-                                readOnly: true,
-                                redirect: "/Shopping/Invoice"
-                            }))
-                            setTimeout(() => {
-                                let title = ""
-                                configCommon.Response.Configs.forEach(element => {
-                                    switch (element.Code) {
-                                        case "FUNCTION":
-                                            const funcArray = JSON.parse(element.Value)
-                                            funcArray.forEach(func => {
-                                                if (("/" + record.RequestType) === func.FunctionPath) {
-                                                    title = func.FunctionName
-                                                }
-                                            });
-                                            break
-                                        default:
-                                            break;
-                                    }
-                                })
-                                dispatch(setFunctionTitle("Phê duyệt " + title))
-                                history.push("/" + record.RequestType)
-                            }, 100);
+                            setVisibleModal(true)
+                            readRequest(record.ID)
+                            setTicketInfo(record)
                         }}
                     />
                 </span>)
@@ -162,19 +104,43 @@ const Invoice = (prop) => {
         dispatch(requestTicket(body))
     }
 
+    function readRequest(ticketID) {
+        const body = {
+            Token: token,
+            Key: "GET_TICKET_SHOPPING",
+            UserNameRequest: userName,
+            Data: {
+                RequestID: ticketID,
+            }
+        }
+        dispatch(requestTicket(body))
+    }
+
+    function payConfirm(ticketID){
+        const body = {
+            Token: token,
+            Key: "PAY_CONFIRM_TICKET_SHOPPING",
+            UserNameRequest: userName,
+            Data: {
+                RequestID: ticketID,
+            }
+        }
+        dispatch(requestTicket(body))
+    }
+
     function convertData() {
-        if (ticket && ticket.Response.Tickets) {
+        if (ticket && ticket.Response.Invoices) {
             var list = []
-            ticket.Response.Tickets.forEach((element, index) => {
+            ticket.Response.Invoices.forEach((element, index) => {
                 list.push({
                     key: index,
-                    Code: Date.parse(element.CreateDate),
-                    ID: element.ID,
-                    RequestType: element.RequestType,
-                    RequestBy: element.RequestBy,
-                    CreateDate: (new Date(element.CreateDate)).toLocaleString("us-en"),
-                    Status: element.IsApprove === true ? "Đã phê duyệt" : element.IsReject === true ? "không được duyệt" : "Đang trong tiến trình duyệt",
-                    icon: element.IsApprove === true ? <CheckCircleFilled className="green-color" /> : element.IsReject === true ? <CloseCircleFilled className="red-color" /> : ""
+                    Code: Date.parse(element.request_ticket_history.CreateDate),
+                    ID: element.request_ticket_history.ID,
+                    RequestType: element.request_ticket_history.RequestType,
+                    RequestBy: element.request_ticket_history.RequestBy,
+                    CreateDate: (new Date(element.request_ticket_history.CreateDate)).toLocaleString("us-en"),
+                    Status: element.request_ticket_history.IsApprove === true ? "Đã phê duyệt" : element.request_ticket_history.IsReject === true ? "không được duyệt" : "Đang trong tiến trình duyệt",
+                    icon: element.request_ticket_history.IsApprove === true ? <CheckCircleFilled className="green-color" /> : element.request_ticket_history.IsReject === true ? <CloseCircleFilled className="red-color" /> : ""
                 })
             });
             setListTicket(list)
@@ -188,17 +154,17 @@ const Invoice = (prop) => {
         <div className="main-content">
             <div className="invoice">
                 <div className="invoice-header">
-                    <h3>Danh sách yêu cầu</h3>
+                    <h3>Danh sách yêu cầu thanh toán</h3>
                 </div>
                 <Row className="invoice-tool">
                     <Col span={8} className="tool-left">
                         <DatePicker.RangePicker
                             defaultValue={[moment(selectedDate.DateFrom, "MM/DD/YYYY"), moment(selectedDate.DateTo, "MM/DD/YYYY")]}
                             onChange={(value, fo) => {
-                                    setSelectedDate({
-                                        DateFrom: fo[0],
-                                        DateTo: fo[1]
-                                    })
+                                setSelectedDate({
+                                    DateFrom: fo[0],
+                                    DateTo: fo[1]
+                                })
                             }} />
                     </Col>
                 </Row>
@@ -215,6 +181,51 @@ const Invoice = (prop) => {
                     </Col>
                 </Row>
             </div>
+            <Modal
+                visible={visibleModal}
+                title="Xác nhận thanh toán"
+                onCancel={() => {
+                    setVisibleModal(false)
+                }}
+                footer={[
+                    <Button 
+                    key="payConfirm" 
+                    type="primary"
+                    onClick={() =>{
+                        console.log(ticket)
+                        payConfirm(ticket?.Response.Ticket.ID)
+                    }}
+                    >
+                        Xác nhận thanh toán
+                    </Button>,
+                    <Button key="print" type="primary">
+                        In hóa đơn
+                    </Button>,
+                ]}
+                width="80vw"
+            >
+                <div className="invoice-detail">
+                    <div className="header">
+                        Phiếu yêu cầu thanh toán
+                    </div>
+                    <div className="info">
+                        <div>
+                            Người lập: <span className="text-bold">{ticketInfo?.RequestBy}</span>
+                        </div>
+                        <div>
+                            Ngày lập: <span className="text-bold">{ticketInfo?.CreateDate}</span>
+                        </div>
+                        <div>
+                            Tình trạng: <span className="text-bold">{ticketInfo?.Status}</span>
+                        </div>
+                    </div>
+                    <ListAsset
+                        disabled={true}
+                        viewOnly={true}
+                        dataSource={ticket?.Response?.Assets}
+                    />
+                </div>
+            </Modal>
         </div>)
 }
 

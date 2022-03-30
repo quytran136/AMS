@@ -87,6 +87,7 @@
     <Property Name="TicketID" Type="nvarchar" MaxLength="64" />
     <Property Name="StoreID" Type="nvarchar" MaxLength="64" />
     <Property Name="IsReject" Type="bit" />
+    <Property Name="IsPay" Type="bit" />
   </EntityType>
   <EntityType Name="invoice_detail">
     <Key>

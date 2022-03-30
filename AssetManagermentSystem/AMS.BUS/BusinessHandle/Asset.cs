@@ -444,6 +444,7 @@ namespace AMS.BUS.BusinessHandle
                     CreatorID = userInformation.Result.ID,
                     TicketID = ticketID,
                     IsReject = false,
+                    IsPay = false
                 });
 
                 List<invoice_detail> listAsset = new List<invoice_detail>();

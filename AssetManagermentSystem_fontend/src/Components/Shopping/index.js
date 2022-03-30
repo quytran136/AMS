@@ -51,8 +51,6 @@ function Shopping(props) {
         dispatch(requestWarehouse(body))
     }
 
-
-
     function sentRequest() {
         if (warehouseSelected) {
             if (!listAsset || listAsset?.length === 0) {
