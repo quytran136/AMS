@@ -35,6 +35,7 @@ import {
 } from './Common/server';
 import Ticket from './Screen/Ticket';
 import Invoice from './Screen/Invoice';
+import ChatList from './Components/ChatList';
 
 function App(prop) {
   const dispatch = useDispatch();
@@ -156,6 +157,7 @@ function App(prop) {
       <div className="common">
         {cookie ? <>
           <NavigationBar />
+          <ChatList />
           <div className="body-content">
             <Row>
               <Col span={showMenu ? 1 : 3}>

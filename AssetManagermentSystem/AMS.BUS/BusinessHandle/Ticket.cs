@@ -13,8 +13,9 @@ namespace AMS.BUS.BusinessHandle
 {
     public class Ticket : IBaseHandle
     {
-        public List<invoice> Invoices { get; set; }
         public request_ticket_history Request { get; set; }
+        public invoice Invoice { get; set; }
+        public List<invoice> Invoices { get; set; }
         public List<request_ticket_history> Requests { get; set; }
         public List<asset_detail> Assets { get; set; }
         public List<usage_history> UsageHistories { get; set; }
@@ -286,7 +287,7 @@ namespace AMS.BUS.BusinessHandle
                                                     IsReject = ptr.IsReject,
                                                     ProcessID = ptr.ProcessID,
                                                     RequestType = ptr.RequestType,
-                                                    StoreID = ptr.StoreID
+                                                    StoreID = ptr.StoreID,
                                                 }).
                                                 ToList()
                                                 .FirstOrDefault();
@@ -298,7 +299,11 @@ namespace AMS.BUS.BusinessHandle
                     {
                         Request = request,
                         Assets = assets,
-                        VotingHistory = getVotingHistory(requestID)
+                        VotingHistory = getVotingHistory(requestID),
+                        Invoice = db.invoices.Where(ptr => ptr.TicketID == request.ID).ToList().Select(ptr => new invoice()
+                        {
+                            IsPay = ptr.IsPay
+                        }).ToList().FirstOrDefault(),
                     }
                 };
             }
@@ -490,7 +495,7 @@ namespace AMS.BUS.BusinessHandle
             try
             {
                 var db = DBC.Init;
-                var invoice = db.invoices.FirstOrDefault(ptr => ptr.IsPay == false && ptr.TicketID == ticketId);
+                var invoice = db.invoices.FirstOrDefault(ptr => ptr.IsPay != true && ptr.TicketID == ticketId);
                 if (invoice == null)
                 {
                     return new BaseModel<string>()
@@ -500,6 +505,7 @@ namespace AMS.BUS.BusinessHandle
                 }
 
                 invoice.IsPay = true;
+                db.SaveChanges();
                 return new BaseModel<string>()
                 {
                     Result = "Success"

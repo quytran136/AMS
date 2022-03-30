@@ -43,7 +43,9 @@
 
 .invoice-detail{
     .header{
+        font-weight: bold;
         font-size: $fontsize3;
+        text-align: center;
     }
     .info{
         margin: 10px 0;

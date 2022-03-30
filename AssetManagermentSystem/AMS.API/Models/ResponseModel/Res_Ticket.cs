@@ -10,6 +10,7 @@ namespace AMS.API.Models.ResponseModel
     public class Res_Ticket
     {
         public request_ticket_history Ticket { get; set; }
+        public invoice Invoice { get; set; }
         public List<invoice> Invoices { get; set; }
         public List<request_ticket_history> Tickets { get; set;}
         public List<asset_detail> Assets { get; set; }

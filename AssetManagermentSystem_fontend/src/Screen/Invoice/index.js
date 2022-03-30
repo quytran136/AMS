@@ -116,7 +116,7 @@ const Invoice = (prop) => {
         dispatch(requestTicket(body))
     }
 
-    function payConfirm(ticketID){
+    function payConfirm(ticketID) {
         const body = {
             Token: token,
             Key: "PAY_CONFIRM_TICKET_SHOPPING",
@@ -139,8 +139,9 @@ const Invoice = (prop) => {
                     RequestType: element.request_ticket_history.RequestType,
                     RequestBy: element.request_ticket_history.RequestBy,
                     CreateDate: (new Date(element.request_ticket_history.CreateDate)).toLocaleString("us-en"),
-                    Status: element.request_ticket_history.IsApprove === true ? "Đã phê duyệt" : element.request_ticket_history.IsReject === true ? "không được duyệt" : "Đang trong tiến trình duyệt",
-                    icon: element.request_ticket_history.IsApprove === true ? <CheckCircleFilled className="green-color" /> : element.request_ticket_history.IsReject === true ? <CloseCircleFilled className="red-color" /> : ""
+                    Status: element.IsPay === true ? "Đã thanh toán" : element.request_ticket_history.IsApprove === true ? "Đã phê duyệt" : element.request_ticket_history.IsReject === true ? "không được duyệt" : "Đang trong tiến trình duyệt",
+                    icon: element.request_ticket_history.IsApprove === true ? <CheckCircleFilled className="green-color" /> : element.request_ticket_history.IsReject === true ? <CloseCircleFilled className="red-color" /> : "",
+                    isPay: element.isPay
                 })
             });
             setListTicket(list)
@@ -188,18 +189,25 @@ const Invoice = (prop) => {
                     setVisibleModal(false)
                 }}
                 footer={[
-                    <Button 
-                    key="payConfirm" 
-                    type="primary"
-                    onClick={() =>{
-                        console.log(ticket)
-                        payConfirm(ticket?.Response.Ticket.ID)
-                    }}
+                    <Button
+                        disabled={ticket?.Response?.Invoice?.IsPay === true ? true : false}
+                        key="payConfirm"
+                        type="primary"
+                        onClick={() => {
+                            payConfirm(ticket?.Response.Ticket.ID)
+                            setVisibleModal(false)
+                            setTimeout(() => {
+                                getListTicket()
+                            }, 1000);
+                        }}
                     >
                         Xác nhận thanh toán
                     </Button>,
-                    <Button key="print" type="primary">
-                        In hóa đơn
+                    <Button
+                        key="print"
+                        type="primary"
+                        onClick={() => window.print()}>
+                        In phiếu yêu cầu thanh toán
                     </Button>,
                 ]}
                 width="80vw"

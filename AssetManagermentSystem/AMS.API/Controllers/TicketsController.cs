@@ -66,7 +66,8 @@ namespace AMS.API.Controllers
                         {
                             Ticket = tickets1.Result.Request,
                             Assets = tickets1.Result.Assets,
-                            VotingHistory = tickets1.Result.VotingHistory
+                            VotingHistory = tickets1.Result.VotingHistory,
+                            Invoice = tickets1.Result.Invoice,
                         }
                     });
                 case "APPROVE_TICKET_SHOPPING":
