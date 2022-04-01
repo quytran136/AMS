@@ -25,5 +25,6 @@ namespace AMS.COMMON
         public static string TICKET = "TI";
         public static string NOTIFICATION = "NO";
         public static string REPORT = "RE";
+        public static string CHAT = "CH";
     }
 }

@@ -50,7 +50,7 @@ export const signup = (body) => {
 }
 
 export const signupSuccess = (result) => {
-    return{
+    return {
         type: type.SIGNUP_SUSSESS,
         result
     }
@@ -163,14 +163,14 @@ export const getUserInfoLogin = (body) => {
 }
 
 export const getUserInfoLoginSuccess = (userInfo) => {
-    return{
+    return {
         type: type.GET_USER_INFO_LOGIN_SUCCESS,
         userInfo
     }
 }
 
 export const getUserInfoSuccess = (userInfo) => {
-    return{
+    return {
         type: type.GET_USER_INFO_SUCCESS,
         userInfo
     }
@@ -198,35 +198,35 @@ export const deleteUser = (body) => {
 }
 
 export const lockOrUnlock = (body) => {
-    return{
+    return {
         type: type.LOCK_UNLOCK_USER,
         body
     }
 }
 
 export const requestProcessFlow = (body) => {
-    return{
+    return {
         type: type.REQUEST_PROCESS_FLOW,
         body
     }
 }
 
 export const saveProcessFlow = (processFlows) => {
-    return{
+    return {
         type: type.SAVE_PROCESS_FLOW,
         processFlows
     }
 }
 
 export const requestWarehouse = (body) => {
-    return{
+    return {
         type: type.REQUEST_WAREHOUSE,
         body
     }
 }
 
 export const requestSupplier = (body) => {
-    return{
+    return {
         type: type.REQUEST_SUPPLIER,
         body
     }
@@ -234,106 +234,141 @@ export const requestSupplier = (body) => {
 
 
 export const getWarehouseSuccess = (warehouses) => {
-    return{
+    return {
         type: type.GET_WAREHOUSE_SUCCESS,
         warehouses
     }
 }
 
 export const getSupplierSuccess = (supplier) => {
-    return{
+    return {
         type: type.GET_SUPPLIER_SUCCESS,
         supplier
     }
 }
 
 export const setWarehouseAction = (warehouseAction) => {
-    return{
+    return {
         type: type.SET_WAREHOUSE_ACTION,
         warehouseAction
     }
 }
 
 export const requestAsset = (body) => {
-    return{
+    return {
         type: type.REQUEST_ASSET,
         body
     }
 }
 
 export const getAssetClassifiesSuccess = (assetClassifies) => {
-    return{
+    return {
         type: type.GET_ASSETCLASSIFIES_SUCCESS,
         assetClassifies
     }
 }
 
 export const requestConfigCommon = (body) => {
-    return{
+    return {
         type: type.REQUEST_CONFIG_COMMON,
         body
     }
 }
 
 export const getConfigCommonSuccess = (configCommon) => {
-    return{
+    return {
         type: type.GET_CONFIG_COMMON,
         configCommon
     }
 }
 
 export const requestTicket = (body) => {
-    return{
+    return {
         type: type.REQUEST_CREATE_TICKET,
         body
     }
 }
 
 export const getTicketSuccess = (ticket) => {
-    return{
+    return {
         type: type.GET_TICKET,
         ticket
     }
 }
 
 export const requestNotification = (body) => {
-    return{
+    return {
         type: type.GET_NOTIFICATION,
         body
     }
 }
 
 export const requestNotificationSuccess = (notifications) => {
-    return{
+    return {
         type: type.GET_NOTIFICATION_SUCCESS,
         notifications
     }
 }
 
 export const setRequestID = (requestID) => {
-    return{
+    return {
         type: type.REQUEST_ID,
         requestID
     }
 }
 
 export const setFunctionTitle = (functionTitle) => {
-    return{
+    return {
         type: type.SET_FUNC_TITLE,
         functionTitle
     }
 }
 
 export const getReport = (body) => {
-    return{
+    return {
         type: type.GET_REPORT,
         body
     }
 }
 
 export const getReportSuccess = (result) => {
-    return{
+    return {
         type: type.GET_REPORT_SUCCESS,
+        result
+    }
+}
+
+export const addChatList = (item) => {
+    return {
+        type: type.ADD_CHAT_LIST,
+        item
+    }
+}
+
+export const removeChatList = (item) => {
+    return {
+        type: type.REMOVE_CHAT_LIST,
+        item
+    }
+}
+
+export const hadMessage = (content) => {
+    return {
+        type: type.HAD_MESSAGE,
+        content
+    }
+}
+
+export const getChatHistory = (body) => {
+    return {
+        type: type.CHAT_HISTORY,
+        body
+    }
+}
+
+export const getChatHistorySuccess = (result) => {
+    return {
+        type: type.CHAT_HISTORY_SUCCESS,
         result
     }
 }

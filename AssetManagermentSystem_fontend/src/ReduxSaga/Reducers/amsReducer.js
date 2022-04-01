@@ -28,7 +28,10 @@ const initialState = {
     functionTitle: "",
     report: null,
     result: null,
-    supplier: null
+    supplier: null,
+    chatList: [],
+    hadMessage: null,
+    chatMessage: null
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -172,6 +175,35 @@ export const amsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 result: action.result
+            }
+        case type.ADD_CHAT_LIST:
+            var listChatTem = state.chatList
+            var list = state.chatList.filter(item => item.ID === action.item.ID)
+            if (list && list.length === 0) {
+                if (state.chatList > 2) {
+                    listChatTem.shift();
+                }
+                listChatTem.push(action.item)
+            }
+            return {
+                ...state,
+                chatList: listChatTem
+            }
+        case type.REMOVE_CHAT_LIST:
+            var list = state.chatList.filter(item => item.ID !== action.item.ID)
+            return {
+                ...state,
+                chatList: list
+            }
+        case type.HAD_MESSAGE:
+            return {
+                ...state,
+                hadMessage: action.content
+            }
+        case type.CHAT_HISTORY_SUCCESS:
+            return {
+                ...state,
+                chatMessage: action.result
             }
         default:
             return {

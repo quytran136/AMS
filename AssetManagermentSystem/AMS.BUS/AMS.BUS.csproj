@@ -62,6 +62,7 @@
     <Compile Include="BusinessHandle\Access.cs" />
     <Compile Include="BusinessHandle\AMS_Config.cs" />
     <Compile Include="BusinessHandle\Asset.cs" />
+    <Compile Include="BusinessHandle\Chat.cs" />
     <Compile Include="BusinessHandle\IBaseHandle.cs" />
     <Compile Include="BusinessHandle\DepartmentChart.cs" />
     <Compile Include="BusinessHandle\Notification.cs" />

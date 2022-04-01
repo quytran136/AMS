@@ -52,6 +52,10 @@ const AMS_API = {
     report: (body) => {
         const url = "Report/ReportControl"
         return request.post(url, body);
+    },
+    chat: (body) => {
+        const url = "Chat/ChatControl"
+        return request.post(url, body);
     }
 }
 

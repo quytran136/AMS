@@ -29,13 +29,11 @@ import { Row, Col } from 'antd';
 import Shopping from './Components/Shopping';
 import Allocation from './Components/Allocation';
 import Notfound from './Screen/404Notfound';
-import { hubConnection } from 'signalr-no-jquery'
-import {
-  SERVER_SIGNALR
-} from './Common/server';
+
 import Ticket from './Screen/Ticket';
 import Invoice from './Screen/Invoice';
 import ChatList from './Components/ChatList';
+import * as signalR from './Common/SignalR';
 
 function App(prop) {
   const dispatch = useDispatch();
@@ -56,11 +54,9 @@ function App(prop) {
     setError,
     requestConfigCommon,
     requestNotification,
-    requestNotificationSuccess
+    requestNotificationSuccess,
+    hadMessage
   } = amsAction;
-
-  const connection = hubConnection(SERVER_SIGNALR)
-  const hubProxy = connection.createHubProxy('amshub')
 
   function load() {
     var cookie = cookieHandle.getCookie("BASE");
@@ -83,30 +79,15 @@ function App(prop) {
       }
       getConfigCommon(cookie.userName, cookie.token)
       dispatch(requestNotification(body))
-      initSignalR(cookie.userName)
-    }
-  }
-
-  function initSignalR(userName) {
-    connection.logging = true;
-    connection.start({ transport: ['serverSentEvents', 'longPolling'] })
-      .done(() => {
-        hubProxy.invoke('RegistConnect', userName, connection.id);
-      })
-      .fail(() => {
-        connection.stop();
-      })
-    hubProxy.on('OnNotification', (message) => {
-      let notification1 = JSON.parse(message)
-      if (!notification1.Message) {
-        if (notification1.Response) {
-          dispatch(requestNotificationSuccess(notification1))
-        }
-      } else {
+      signalR.initSignalR(cookie.userName, (notification1) => {
+        dispatch(requestNotificationSuccess(notification1))
+      }, (notification1) => {
         dispatch(setError(notification1))
-      }
-    })
-    return connection;
+      })
+      signalR.receiveMessage((content) => {
+        dispatch(hadMessage(content))
+      })
+    }
   }
 
   function getConfigCommon(userName, token) {

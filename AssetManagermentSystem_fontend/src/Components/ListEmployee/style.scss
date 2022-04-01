@@ -1,0 +1,26 @@
+@import "src/Access/Css/Constant.scss";
+
+.list-employee {
+    display       : flex;
+    flex-direction: column;
+    flex-wrap     : nowrap;
+    align-items   : flex-start;
+
+    .employee {
+        cursor        : pointer;
+        display       : flex;
+        flex-direction: row;
+        flex-wrap     : nowrap;
+        align-items   : center;
+        width         : 10vw;
+        margin-bottom : 10px 0;
+
+        .emp-name{
+            padding: 10px;
+        }
+
+        &:hover {
+            background-color: $background-color;
+        }
+    }
+}

@@ -209,6 +209,7 @@
     <Compile Include="ChatHubManager\ChatHub.cs" />
     <Compile Include="Controllers\AccessController.cs" />
     <Compile Include="Controllers\AssetController.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\DepartmentChartController.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="Models\RequestModel\Access\GetToken.cs" />
     <Compile Include="Models\RequestModel\BaseRequest.cs" />
     <Compile Include="Models\RequestModel\Req_Asset.cs" />
+    <Compile Include="Models\RequestModel\Req_Chat.cs" />
     <Compile Include="Models\RequestModel\Req_Config.cs" />
     <Compile Include="Models\RequestModel\Req_OrganizationalChart.cs" />
     <Compile Include="Models\RequestModel\Req_Process.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Models\ResponseModel\Access\Token.cs" />
     <Compile Include="Models\ResponseModel\BaseResponse.cs" />
     <Compile Include="Models\ResponseModel\Res_Asset.cs" />
+    <Compile Include="Models\ResponseModel\Res_Chat.cs" />
     <Compile Include="Models\ResponseModel\Res_Config.cs" />
     <Compile Include="Models\ResponseModel\Res_DepartmentChart.cs" />
     <Compile Include="Models\ResponseModel\Res_Notification.cs" />

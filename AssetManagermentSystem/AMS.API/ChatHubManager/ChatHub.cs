@@ -83,5 +83,20 @@ namespace AMS.API.ChatHubManager
                 context.Clients.Client(connectid).OnNotification(json);
             }
         }
+
+        public void SentChat(string body)
+        {
+            var context = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
+            dynamic tem = JsonConvert.DeserializeObject<dynamic>(body);
+            new Chat().SaveMessage(tem.From.Value, tem.To.Value, tem.Content.Value);
+            var connectid = connection
+               .Where(ptr => ptr.Key == tem.To.Value)
+               .FirstOrDefault()
+               .Value;
+            if (!string.IsNullOrEmpty(connectid))
+            {
+                context.Clients.Client(connectid).ReceiveChat(body);
+            }
+        }
     }
 }

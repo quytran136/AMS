@@ -10,10 +10,12 @@ import {
     LogoutOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
-    ReadFilled
+    ReadFilled,
+    TeamOutlined
 } from '@ant-design/icons';
 import * as amsAction from '../../ReduxSaga/Actions';
 import * as cookieHandle from '../../Common/Cookie';
+import ListEmployee from '../ListEmployee';
 import {
     useHistory
 } from "react-router-dom";
@@ -240,6 +242,13 @@ const NavigationBar = (prop) => {
                 </span>
             </Col>
             <Col span={10} className="nav-bar-right">
+                <span className="nav-bar-item ams-btn">
+                    <Popover placement="bottom" content={<ListEmployee/>} trigger="click">
+                        <Badge count={countNotification}>
+                            <TeamOutlined className="icon" />
+                        </Badge>
+                    </Popover>
+                </span>
                 <span className="nav-bar-item ams-btn">
                     <Popover placement="bottom" content={<NotificationBoard />} trigger="click">
                         <Badge count={countNotification}>

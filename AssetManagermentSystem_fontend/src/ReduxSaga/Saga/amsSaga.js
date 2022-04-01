@@ -26,6 +26,7 @@ export function* amsWatcher() {
     yield takeLatest(type.REQUEST_CREATE_TICKET, requestTicketSaga);
     yield takeLatest(type.GET_NOTIFICATION, notificationSaga);
     yield takeLatest(type.GET_REPORT, reportSaga);
+    yield takeLatest(type.CHAT_HISTORY, getChatHistory);
 }
 
 function* signinSaga(action) {
@@ -583,6 +584,26 @@ function* reportSaga(action) {
 
         if (!report.Message) {
             yield put(amsAction.getReportSuccess(report))
+        } else {
+            yield put(amsAction.setError(report))
+        }
+    } catch (ex) {
+        yield put(amsAction.setError({
+            Code: "AMS_01",
+            Message: ex.message
+        }))
+    }
+}
+
+function* getChatHistory(action){
+    try {
+        const report = yield call(AMS_API.chat, action.body)
+        if (!report) {
+            throw new Error("Thao tác không thành công")
+        }
+
+        if (!report.Message) {
+            yield put(amsAction.getChatHistorySuccess(report))
         } else {
             yield put(amsAction.setError(report))
         }

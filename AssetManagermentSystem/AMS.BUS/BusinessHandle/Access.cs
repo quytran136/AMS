@@ -60,6 +60,11 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
+        public BaseModel<bool> CheckToken(object token, object userNameRequest)
+        {
+            throw new NotImplementedException();
+        }
+
         private BaseModel<string> SaveToken(string token, string userID)
         {
             try
