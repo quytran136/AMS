@@ -196,7 +196,7 @@ function App(prop) {
                 <Login />
               </Route>
               <Route path="/">
-                <Notfound />
+                <Login />
               </Route>
             </Switch></>}
       </div>

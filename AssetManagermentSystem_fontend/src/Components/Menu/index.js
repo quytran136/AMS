@@ -81,7 +81,6 @@ const AMSMenu = (prop) => {
         const href = window.location.href
         menus.forEach((item, index) => {
             if (href.includes(item.key)) {
-                console.log(item.key)
                 setMenuSelected(item.key)
                 return
             }

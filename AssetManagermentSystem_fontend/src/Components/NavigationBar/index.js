@@ -79,7 +79,7 @@ const NavigationBar = (prop) => {
                     <Avatar size={32} icon={<UserOutlined />} />
                 </Col>
                 <Col className="menu-label" span={21}>
-                    <span >User name</span>
+                    <span >Phòng ban: {userInfoLogin?.UserFullName}</span>
                 </Col>
             </Row>
             <Row className="menu-item">
@@ -87,7 +87,7 @@ const NavigationBar = (prop) => {
                     <Avatar size={32} icon={<UserOutlined />} />
                 </Col>
                 <Col className="menu-label" span={21}>
-                    <span >User name</span>
+                    <span >Chức vụ: {userInfoLogin?.UserFullName}</span>
                 </Col>
             </Row>
             <Row className="menu-item">
@@ -243,30 +243,34 @@ const NavigationBar = (prop) => {
             </Col>
             <Col span={10} className="nav-bar-right">
                 <span className="nav-bar-item ams-btn">
-                    <Popover placement="bottom" content={<ListEmployee/>} trigger="click">
-                        <Badge count={countNotification}>
-                            <TeamOutlined className="icon" />
-                        </Badge>
+                    <Popover placement="bottom" content={<ListEmployee />} trigger="click">
+                        <TeamOutlined className="icon" />
                     </Popover>
                 </span>
-                <span className="nav-bar-item ams-btn">
+                <span className="nav-bar-item ams-btn"
+                    onClick={() => {
+                        const body2 = {
+                            Token: token,
+                            Key: "GET_NOTIFICATION",
+                            UserNameRequest: userName,
+                        }
+                        dispatch(requestNotification(body2))
+                    }}>
                     <Popover placement="bottom" content={<NotificationBoard />} trigger="click">
-                        <Badge count={countNotification}>
+                        <Badge className="avatar" count={5}>
                             <BellOutlined className="icon" />
                         </Badge>
                     </Popover>
                 </span>
                 <span className="nav-bar-item ams-btn">
                     <Popover placement="bottom" content={<MessageBoard />} trigger="click">
-                        <Badge count={5}>
-                            <MessageOutlined className="icon" />
-                        </Badge>
+                        <MessageOutlined className="icon" />
                     </Popover>
 
                 </span>
                 <span className="nav-bar-item ams-btn">
                     <Popover placement="bottom" content={<UserBoard />} trigger="click">
-                        <Avatar shape="circle" size={32} src={userInfoLogin?.Image} />
+                        <Avatar shape="circle" size={"default"} src={userInfoLogin?.Image} />
                     </Popover>
                 </span>
             </Col>

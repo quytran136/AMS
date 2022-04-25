@@ -57,6 +57,16 @@
     width     : 50ch;
     display   : inline-block;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+}
+
+* {
+    font-family: $font-family;
+    font-size  : ($fdf/1920 * 100) * $vw;
+}
+
+.avatar{
+    width: $vw;
 }
 
 .col {

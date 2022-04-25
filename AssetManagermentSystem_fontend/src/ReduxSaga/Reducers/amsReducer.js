@@ -31,7 +31,8 @@ const initialState = {
     supplier: null,
     chatList: [],
     hadMessage: null,
-    chatMessage: null
+    chatMessage: null,
+    assetList: null
 }
 
 export const amsReducer = (state = initialState, action) => {
@@ -204,6 +205,11 @@ export const amsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 chatMessage: action.result
+            }
+        case type.GET_ASSET_SUCCESS:
+            return {
+                ...state,
+                assetList: action.result
             }
         default:
             return {

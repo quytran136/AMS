@@ -62,7 +62,7 @@ namespace AMS.API.Controllers
                         Response = new Res_Asset()
                     });
                 case "GET_ASSET":
-                    BaseModel<List<asset_detail>> ad1 = new Asset().GetAsset(req.Data.Supplier, req.Data.AssetClassify);
+                    BaseModel<List<asset_detail>> ad1 = new Asset().GetAsset(req.Data.AssetClassify);
                     return new BaseResponse<Res_Asset>().Result(ad1, new BaseResponse<Res_Asset>()
                     {
                         Response = new Res_Asset()

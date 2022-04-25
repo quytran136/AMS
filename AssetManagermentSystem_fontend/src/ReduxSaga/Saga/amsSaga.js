@@ -487,6 +487,8 @@ function* requestAssetSaga(action) {
                 case "GET_ASSET_ALLOCATION":
                     yield put(amsAction.getAssetClassifiesSuccess(asset))
                     break;
+                case "GET_ASSET":
+                    yield put(amsAction.getAssetSuccess(asset))
                 default:
                     break;
             }

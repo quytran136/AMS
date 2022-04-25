@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../../Access/Css/Common.scss";
 import "./style.scss";
-import { Col, Row, Card, Input, Modal, Button } from 'antd';
+import { Col, Row, Card, Input, Modal, Button, Table } from 'antd';
 import {
   EditOutlined,
   DeleteOutlined,
@@ -20,13 +20,16 @@ function Asset(props) {
   const {
     userName,
     token,
-    assetClassifies
+    assetClassifies,
+    assetList
   } = props.amsStore;
 
   const [showUpdate, setShowUpdate] = useState()
+  const [showDetail, setShowDetail] = useState()
   const [assetClassify, setAssetClassify] = useState()
   const [isDelete, setIsDelete] = useState(false)
   const [id, setID] = useState()
+  const [tableHeader, setTableHeader] = useState([])
 
   function onInit() {
     setAssetClassify("");
@@ -61,6 +64,39 @@ function Asset(props) {
       dispatch(requestAsset(body))
     }
   }
+
+  function getListAsset(AssetClassify) {
+    const body = {
+      Token: token,
+      Key: "GET_ASSET",
+      UserNameRequest: userName,
+      Data: {
+        AssetClassify: {
+          ID: AssetClassify,
+        }
+      }
+    }
+    dispatch(requestAsset(body))
+  }
+
+  function readAssetList() {
+    var arr = []
+    if (assetList?.Response?.AssetDetails) {
+      var properties = Object.getOwnPropertyNames(assetList?.Response?.AssetDetails[0])
+      properties.forEach(element => {
+        if (assetList?.Response?.AssetDetails[0][element]) {
+          arr.push({
+            title: element,
+            dataIndex: element,
+            key: element,
+          })
+        }
+      });
+    }
+    setTableHeader(arr)
+  }
+
+  useEffect(readAssetList, [assetList])
 
   useEffect(getListAssetClassify, [])
 
@@ -160,14 +196,22 @@ function Asset(props) {
                     /></span>}
                   title={element.Asset_Classify.AssetClassifyName}
                   bordered={true}>
+                  <div onClick={() => {
+                    getListAsset(element.Asset_Classify.ID)
+                    setShowDetail(true)
+                  }}>
                     Tổng: {element.Asset_Details.length} loại
+                    <h4>
+                      Xem chi tiết
+                    </h4>
+                  </div>
                 </Card>)
               })}
           </Col>
         </Row>
       </Card>
       <Modal
-        title="Danh mục"
+        title="Tên danh mục"
         centered
         visible={showUpdate}
         onOk={onUpdate}
@@ -180,6 +224,29 @@ function Asset(props) {
           prefix={<GoldOutlined />}
           value={assetClassify}
           onChange={(e) => setAssetClassify(e.target.value)} />
+      </Modal>
+      <Modal
+        title="Danh sách thuốc"
+        centered
+        width="60vw"
+        visible={showDetail}
+        onOk={() => {
+          setShowDetail(false)
+          getListAssetClassify()
+        }}
+        onCancel={() => {
+          setShowDetail(false)
+          getListAssetClassify()
+        }}>
+        {assetList?.Response?.AssetDetails ?
+          <Table
+            scroll={assetList?.Response?.AssetDetails ? {
+              y: '70vh',
+            } : {}}
+            dataSource={assetList?.Response?.AssetDetails}
+            columns={tableHeader}
+            pagination={30} />
+          : <></>}
       </Modal>
     </div >
   );

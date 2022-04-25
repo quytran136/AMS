@@ -372,3 +372,10 @@ export const getChatHistorySuccess = (result) => {
         result
     }
 }
+
+export const getAssetSuccess = (result) => {
+    return{
+        type: type.GET_ASSET_SUCCESS,
+        result 
+    }
+}

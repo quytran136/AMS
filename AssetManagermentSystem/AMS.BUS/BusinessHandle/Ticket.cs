@@ -118,18 +118,18 @@ namespace AMS.BUS.BusinessHandle
             {
                 var db = DBC.Init;
                 List<invoice> invoice = (from req in db.request_ticket_history
-                                          join inv in db.invoices on req.ID equals inv.TicketID
-                                          where req.CreateDate >= dateFrom
-                                          && req.CreateDate <= dateTo
-                                          && req.RequestType == RequestType.SHOPPING
-                                          && req.IsApprove == true
-                                          orderby inv.IsPay descending
-                                          orderby req.CreateDate descending
-                                          select new
-                                          {
-                                              request_ticket = req,
-                                              invoice = inv
-                                          })
+                                         join inv in db.invoices on req.ID equals inv.TicketID
+                                         where req.CreateDate >= dateFrom
+                                         && req.CreateDate <= dateTo
+                                         && req.RequestType == RequestType.SHOPPING
+                                         && req.IsApprove == true
+                                         orderby inv.IsPay descending
+                                         orderby req.CreateDate descending
+                                         select new
+                                         {
+                                             request_ticket = req,
+                                             invoice = inv
+                                         })
                                                         .ToList().Select(ptr => new invoice()
                                                         {
                                                             request_ticket_history = new request_ticket_history()
@@ -218,28 +218,35 @@ namespace AMS.BUS.BusinessHandle
                         users.Add(element.ID);
                     }
                 }
-                else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
+                else if (Approvers.Where(ptr => string.IsNullOrEmpty(ptr) == true).Count() > 0 && Approvers[0].Contains("DEP") == false)
                 {
-                    users.Add(Approvers[0]);
-                }
-
-                foreach (string item in Approvers)
-                {
-                    if (item.Contains("DEP"))
+                    foreach (string item in Approvers)
                     {
-                        string DepID = item.Split('/')[1];
-                        Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
-                        foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                        {
-                            users.Add(user.ID);
-                        }
+                        users.Add(item);
                     }
-                    else if (item.Contains("ORG"))
+                }
+                if (users.Count == 0)
+                {
+                    foreach (string item in Approvers)
                     {
-                        string orgID = item.Split('/')[1];
-                        foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
+                        if (item.Contains("DEP"))
                         {
-                            users.Add(user.ID);
+                            users = new List<string>();
+                            string DepID = item.Split('/')[1];
+                            Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
+                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
+                            {
+                                users.Add(user.ID);
+                            }
+                        }
+                        else if (item.Contains("ORG"))
+                        {
+                            users = new List<string>();
+                            string orgID = item.Split('/')[1];
+                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
+                            {
+                                users.Add(user.ID);
+                            }
                         }
                     }
                 }
@@ -375,30 +382,35 @@ namespace AMS.BUS.BusinessHandle
                             users.Add(element.ID);
                         }
                     }
-                    else if (Approvers[1] == "" && Approvers[0].Contains("DEP") == false)
+                    else if (Approvers.Where(ptr => string.IsNullOrEmpty(ptr) == true).Count() > 0 && Approvers[0].Contains("DEP") == false)
                     {
-                        users.Add(Approvers[0]);
-                    }
-
-                    foreach (string item in Approvers)
-                    {
-                        if (item.Contains("DEP"))
+                        foreach (string item in Approvers)
                         {
-                            string DepID = item.Split('/')[1];
-                            Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
-                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
-                            {
-                                users = new List<string>();
-                                users.Add(user.ID);
-                            }
+                            users.Add(item);
                         }
-                        else if (item.Contains("ORG"))
+                    }
+                    if (users.Count == 0)
+                    {
+                        foreach (string item in Approvers)
                         {
-                            string orgID = item.Split('/')[1];
-                            foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
+                            if (item.Contains("DEP"))
                             {
                                 users = new List<string>();
-                                users.Add(user.ID);
+                                string DepID = item.Split('/')[1];
+                                Organizational org = new OrganizationalChart().GetChart(DepID).Result.Node;
+                                foreach (user_identifie user in new UserInformation().UsersByOrganizationID(org.ID).Result)
+                                {
+                                    users.Add(user.ID);
+                                }
+                            }
+                            else if (item.Contains("ORG"))
+                            {
+                                users = new List<string>();
+                                string orgID = item.Split('/')[1];
+                                foreach (user_identifie user in new UserInformation().UsersByOrganizationID(orgID).Result)
+                                {
+                                    users.Add(user.ID);
+                                }
                             }
                         }
                     }

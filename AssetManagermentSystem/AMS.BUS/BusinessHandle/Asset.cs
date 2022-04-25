@@ -164,18 +164,16 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<List<asset_detail>> GetAsset(supplier supplier, asset_classify assetClassifyID)
+        public BaseModel<List<asset_detail>> GetAsset(asset_classify assetClassifyID)
         {
             try
             {
                 var db = DBC.Init;
                 List<asset_detail> ad = db.asset_detail
-                    .Where(ptr => ptr.IsDelete == false && ptr.SupplierID == supplier.ID && ptr.AssetClassifyID == assetClassifyID.ID)
+                    .Where(ptr => ptr.IsDelete == false && ptr.AssetClassifyID == assetClassifyID.ID)
                     .ToList()
                     .Select(ptr => new asset_detail()
                     {
-                        ID = ptr.ID,
-                        AssetClassifyID = ptr.AssetClassifyID,
                         AssetFullName = ptr.AssetFullName,
                         CreateDate = ptr.CreateDate,
                         Price = ptr.Price,
@@ -183,10 +181,9 @@ namespace AMS.BUS.BusinessHandle
                         QuantityInStock = ptr.QuantityOriginalStock,
                         QuantityUsed = ptr.QuantityUsed,
                         QuantityDestroyed = ptr.QuantityDestroyed,
-                        StoreID = ptr.StoreID,
-                        IsDelete = ptr.IsDelete,
                     })
                     .ToList();
+
                 return new BaseModel<List<asset_detail>>()
                 {
                     Result = ad
