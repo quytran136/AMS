@@ -233,13 +233,13 @@ const NavigationBar = (prop) => {
                 <span className="nav-bar-item ams-btn">
                     Quản lý kho thuốc
                 </span>
-                <span className="nav-bar-item">
+                {/* <span className="nav-bar-item">
                     <Input.Group>
                         <Input.Search
                             placeholder="Search..."
                         />
                     </Input.Group >
-                </span>
+                </span> */}
             </Col>
             <Col span={10} className="nav-bar-right">
                 <span className="nav-bar-item ams-btn">
@@ -257,7 +257,7 @@ const NavigationBar = (prop) => {
                         dispatch(requestNotification(body2))
                     }}>
                     <Popover placement="bottom" content={<NotificationBoard />} trigger="click">
-                        <Badge className="avatar" count={5}>
+                        <Badge count={countNotification}>
                             <BellOutlined className="icon" />
                         </Badge>
                     </Popover>
@@ -270,7 +270,7 @@ const NavigationBar = (prop) => {
                 </span>
                 <span className="nav-bar-item ams-btn">
                     <Popover placement="bottom" content={<UserBoard />} trigger="click">
-                        <Avatar shape="circle" size={"default"} src={userInfoLogin?.Image} />
+                        <Avatar shape="circle" size={32} src={userInfoLogin?.Image} />
                     </Popover>
                 </span>
             </Col>

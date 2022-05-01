@@ -1,61 +1,125 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import '../../Access/Css/Common.scss';
 import "./style.scss";
-import { Row, Card } from 'antd';
+import { Row, Col } from 'antd';
 import * as amsAction from '../../ReduxSaga/Actions';
-import {
-  useHistory
-} from "react-router-dom";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import LineChart from "../../Components/Charts/LineChart";
+import Supplier from "../Supplier";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Home(props) {
   // const history = useHistory();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const {
+    requestTicket,
+    requestAsset
   } = amsAction;
 
   const {
-    configCommon
+    token,
+    userName,
+    supplier,
+    ticket,
+    assetClassifies
   } = props.amsStore;
 
-  const [listFunction, setListFunction] = useState([])
+  const loadDashboard = () => {
+    getListTicket()
+    getListAsset()
+  }
 
-  function readConfigCommon() {
-    if (configCommon) {
-      configCommon.Response.Configs.forEach(element => {
-        switch (element.Code) {
-          case "FUNCTION":
-            const a = JSON.parse(element.Value)
-            setListFunction(a)
-            break
-          default:
-            break;
-        }
-      })
+  const getListTicket = (e) => {
+    const body = {
+      Token: token,
+      Key: "TICKET_REQUESTED",
+      UserNameRequest: userName,
+      Data: {
+        SearchContent: e || ""
+      }
     }
+    dispatch(requestTicket(body))
   }
 
-  useEffect(readConfigCommon, [configCommon])
-
-  function renderHome(listFunction) {
-    return (<>
-      <Row className="home-body">
-        {
-          
+  function getListAsset() {
+    const body = {
+      Token: token,
+      Key: "GET_ASSET_CLASSIFY",
+      UserNameRequest: userName,
+      Data: {
+        AssetClassify: {
+          AssetClassifyName: "",
         }
-      </Row>
-    </>)
+      }
+    }
+    dispatch(requestAsset(body))
   }
+
+  useEffect(loadDashboard, [])
 
   return (
     <div className="main-content">
-      <Card className="home">
-        {renderHome(listFunction)}
-      </Card>
+      <div className="body">
+        <Row>
+          <Col span={6}>
+            <div className="box">
+              <div className="box-header">
+                Tổng loại thuốc
+              </div>
+              <div className="box-body">
+                {assetClassifies?.Response?.AssetClassifies?.length || 0}
+              </div>
+            </div>
+          </Col>
+          <Col span={6}>
+            <div className="box">
+              <div className="box-header">
+                Tổng số tiền đã chi
+              </div>
+              <div className="box-body">
+                {(1000000000).toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'VND',
+                })}
+              </div>
+            </div>
+          </Col>
+          <Col span={6}>
+            <div className="box">
+              <div className="box-header">
+                Số lượng nhà cung cấp
+              </div>
+              <div className="box-body">
+                {supplier?.Response?.Suppliers?.length || 0}
+              </div>
+            </div>
+          </Col>
+          <Col span={6}>
+            <div className="box">
+              <div className="box-header">
+                Tổng lượng yêu cầu đã gửi
+              </div>
+              <div className="box-body">
+                {ticket?.Response?.Tickets?.length || 0}
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={18}>
+            <LineChart />
+          </Col>
+          <Col span={6} className="left-side">
+            <Supplier ShowOnly={true} />
+          </Col>
+        </Row>
+      </div>
+      <div className="footter">
+
+      </div>
     </div>
   );
 }

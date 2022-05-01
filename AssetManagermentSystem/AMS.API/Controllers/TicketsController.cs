@@ -26,7 +26,7 @@ namespace AMS.API.Controllers
             switch (req.Key)
             {
                 case "TICKET_REQUESTED":
-                    BaseModel<Ticket> ticketRequested = new Ticket().GetTicketRequested(req.UserNameRequest);
+                    BaseModel<Ticket> ticketRequested = new Ticket().GetTicketRequested(req.UserNameRequest, req.Data.SearchContent);
                     return new BaseResponse<Res_Ticket>().Result(ticketRequested, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()

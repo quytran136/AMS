@@ -5,7 +5,7 @@ import './style.scss';
 import { Menu } from 'antd';
 import {
     TeamOutlined,
-    DesktopOutlined,
+    SettingOutlined,
     AppstoreOutlined,
     CodeSandboxOutlined,
     FundProjectionScreenOutlined,
@@ -46,12 +46,6 @@ const AMSMenu = (prop) => {
             link: "/Shopping/Invoice"
         },
         {
-            key: "Config",
-            icon: <DesktopOutlined />,
-            title: "Cấu hình",
-            link: "/Config"
-        },
-        {
             key: "Warehousing",
             icon: <AppstoreOutlined />,
             title: "Kho",
@@ -74,6 +68,12 @@ const AMSMenu = (prop) => {
             icon: <FundProjectionScreenOutlined />,
             title: "Báo cáo",
             link: "/Report"
+        },
+        {
+            key: "Config",
+            icon: <SettingOutlined />,
+            title: "Cấu hình",
+            link: "/Config"
         },
     ]
 

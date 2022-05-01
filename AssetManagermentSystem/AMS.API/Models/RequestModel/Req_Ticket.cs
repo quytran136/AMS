@@ -16,6 +16,7 @@ namespace AMS.API.Models.RequestModel
         public string ProcessID { get; set; }
         public string RequestID { get; set; }
         public string RequestType { get; set; }
+        public string SearchContent { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
     }

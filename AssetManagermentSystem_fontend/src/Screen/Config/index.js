@@ -15,6 +15,7 @@ import DepartmentChart from "../../Components/DepartmentChart";
 import Employee from "../../Components/Employee";
 import ProcessFlow from "../../Components/ProcessFlow";
 import ConfigCommon from "../../Components/ConfigCommon";
+import Authorization from "../../Components/Authorization";
 
 function Config() {
 
@@ -41,8 +42,8 @@ function Config() {
     },
     {
       key: "Authorization",
-      value: "Phân quyền",
-      component: "PartitionOutlined",
+      value: "Cấu hình quyền",
+      component: <Authorization/>,
       icon: <PartitionOutlined />
     },
     {

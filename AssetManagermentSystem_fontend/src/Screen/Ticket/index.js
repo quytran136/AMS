@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import 'antd/dist/antd.css';
 import './style.scss'
-import { Button, Row, Col, Table } from 'antd';
+import { Button, Row, Col, Table, Input } from 'antd';
 import {
     EyeOutlined,
     CheckCircleFilled,
@@ -109,11 +109,14 @@ const Ticket = (prop) => {
         }
     ]
 
-    const getListTicket = () => {
+    const getListTicket = (e) => {
         const body = {
             Token: token,
             Key: "TICKET_REQUESTED",
             UserNameRequest: userName,
+            Data: {
+                SearchContent: e || "" 
+            }
         }
         dispatch(requestTicket(body))
     }
@@ -173,6 +176,13 @@ const Ticket = (prop) => {
                                 onChange={(e) => setSearchContent(e.target.value)}
                             />
                         </Input.Group > */}
+                        <Input.Group>
+                            <Input.Search
+                                placeholder="Search..."
+                                onSearch={(e) => getListTicket(e)}
+                                onChange={(e) => getListTicket(e.target.value)}
+                            />
+                        </Input.Group >
                     </Col>
                     <Col span={16} className="tool-right">
                         {
@@ -186,7 +196,7 @@ const Ticket = (prop) => {
                                         onClick={() => {
                                             dispatch(setRequestID({
                                                 createRequest: true,
-                                                readOnly: (ticket) =>{
+                                                readOnly: (ticket) => {
                                                     return false
                                                 },
                                                 redirect: "/Ticket"

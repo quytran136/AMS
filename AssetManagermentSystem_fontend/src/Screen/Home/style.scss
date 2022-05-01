@@ -1,23 +1,44 @@
 @import "src/Access/Css/Constant.scss";
-.home {
-    width : 100%;
-    height: ($max-vh/20) * 18.5;
 
-    .home-body {
-        padding-top: 10px;
-        width      : 100%;
+.body {
+    overflow-y: auto;
+    max-height: 90vh;
 
-        .ams-func-item {
-            margin    : auto;
-            display   : inline-block;
-            cursor    : pointer;
-            padding   : 10px;
-            text-align: center;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 1px 0px 0 rgba(0, 0, 0, 0.19);
+    .left-side {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
 
-            &:hover {
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            }
+    .box {
+        border-radius: $border-radius;
+        border-color : $white-color;
+        border-style : solid;
+        border-width : 1px;
+        margin       : 5vh;
+        padding      : 1vh;
+        box-shadow   : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+        .box-header {
+            margin         : 1vh;
+            font-weight    : bold;
+            display        : flex;
+            text-align     : center;
+            flex-direction : column;
+            align-items    : center;
+            justify-content: center;
         }
+
+        .box-body {
+            color          : rgb(13, 153, 0);
+            font-weight    : bold;
+            display        : flex;
+            text-align     : center;
+            flex-direction : column;
+            align-items    : center;
+            justify-content: center;
+        }
+
     }
 }
+
+.footer {}

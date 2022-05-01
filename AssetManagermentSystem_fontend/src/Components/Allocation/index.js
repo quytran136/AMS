@@ -86,7 +86,7 @@ function Allocation(props) {
     }
 
     function readRequest() {
-        if (data) {
+        if (!data?.createRequest) {
             const body = {
                 Token: token,
                 Key: "GET_TICKET_ALLOCATION",
@@ -100,7 +100,7 @@ function Allocation(props) {
     }
 
     function sentRequestApprove() {
-        if (data) {
+        if (!data?.createRequest) {
             const body = {
                 Token: token,
                 Key: "APPROVE_TICKET_ALLOCATION",
@@ -115,7 +115,7 @@ function Allocation(props) {
     }
 
     function sentRequestReject() {
-        if (data) {
+        if (!data?.createRequest) {
             const body = {
                 Token: token,
                 Key: "REJECT_TICKET_ALLOCATION",

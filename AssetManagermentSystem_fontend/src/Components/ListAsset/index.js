@@ -224,19 +224,19 @@ function ListAsset(props) {
                         <Col span={5} className="field">
                             Tên thuốc
                         </Col>
-                        <Col span={3} className="field">
+                        <Col span={1} className="field">
                             Đơn vị tính
                         </Col>
-                        <Col span={3} className="field">
+                        <Col span={2} className="field">
                             Đơn vị cung cấp
                         </Col>
-                        <Col span={5} className="field">
+                        <Col span={3} className="field">
                             Diễn giải
                         </Col>
-                        <Col span={1} className="field">
+                        <Col span={2} className="field">
                             Số lượng
                         </Col>
-                        <Col span={1} className="field">
+                        <Col span={5} className="field">
                             Đơn giá
                         </Col>
                         <Col span={1} className="field">
@@ -272,7 +272,7 @@ function ListAsset(props) {
                                             }}
                                         />
                                     </Col>
-                                    <Col span={3} className="field">
+                                    <Col span={1} className="field">
                                         <Input
                                             disabled={disabled}
                                             value={element.Unit}
@@ -283,7 +283,7 @@ function ListAsset(props) {
                                             }}
                                         />
                                     </Col>
-                                    <Col span={3} className="field">
+                                    <Col span={2} className="field">
                                         <Select
                                             disabled={disabled}
                                             options={suppliers}
@@ -297,7 +297,7 @@ function ListAsset(props) {
                                         >
                                         </Select>
                                     </Col>
-                                    <Col span={5} className="field">
+                                    <Col span={3} className="field">
                                         <Input
                                             disabled={disabled}
                                             value={element.Description}
@@ -308,7 +308,7 @@ function ListAsset(props) {
                                             }}
                                         />
                                     </Col>
-                                    <Col span={1} className="field">
+                                    <Col span={2} className="field">
                                         <InputNumber
                                             disabled={disabled}
                                             className="field-asset"
@@ -323,7 +323,7 @@ function ListAsset(props) {
                                             stringMode
                                         />
                                     </Col>
-                                    <Col span={1} className="field">
+                                    <Col span={5} className="field">
                                         <InputNumber
                                             disabled={disabled}
                                             className="field-asset"

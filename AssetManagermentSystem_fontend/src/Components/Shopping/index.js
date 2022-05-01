@@ -121,7 +121,7 @@ function Shopping(props) {
     }
 
     function readRequest() {
-        if (data) {
+        if (!data?.createRequest) {
             const body = {
                 Token: token,
                 Key: "GET_TICKET_SHOPPING",
@@ -135,7 +135,7 @@ function Shopping(props) {
     }
 
     function sentRequestApprove() {
-        if (data) {
+        if (!data?.createRequest) {
             const body = {
                 Token: token,
                 Key: "APPROVE_TICKET_SHOPPING",
@@ -150,7 +150,7 @@ function Shopping(props) {
     }
 
     function sentRequestReject() {
-        if (data) {
+        if (!data?.createRequest) {
             const body = {
                 Token: token,
                 Key: "REJECT_TICKET_SHOPPING",
@@ -254,7 +254,8 @@ function Shopping(props) {
                 </Row>
                 <Row>
                     <Col span={16}>
-                        <h4>Người request: {userInfoLogin?.UserFullName}</h4>
+                        <h4>Mã yêu cầu: {Date.parse(ticket?.Response?.Ticket?.CreateDate || Date.now())}</h4>
+                        <h4>Người yêu cầu: {userInfoLogin?.UserFullName}</h4>
                         <h4>Bộ phận: {userInfoLogin?.DepartmentName}</h4>
                     </Col>
                     <Col span={8}>

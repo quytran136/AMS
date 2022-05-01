@@ -66,7 +66,7 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> GetTicketRequested(string requestor)
+        public BaseModel<Ticket> GetTicketRequested(string requestor, string searchContent)
         {
             try
             {
@@ -89,7 +89,10 @@ namespace AMS.BUS.BusinessHandle
                                                     RequestType = ptr.RequestType,
                                                     StoreID = ptr.StoreID
                                                 }).
-                                                ToList();
+                                                ToList()
+                                                .Where(ptr => ptr.CreateDate.Value.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds.ToString().Contains(searchContent) == true)
+                                                .ToList();
+
 
                 return new BaseModel<Ticket>()
                 {

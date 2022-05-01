@@ -12,7 +12,7 @@ import * as cookieHandle from "./Common/Cookie";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
 } from "react-router-dom";
 import {
   CloseCircleOutlined,
@@ -174,7 +174,7 @@ function App(prop) {
                     <Report />
                   </Route>
                   <Route path="/Shopping">
-                    <Shopping data={requestID} title={functionTitle} />
+                    {(!requestID) ? <Home/> : <Shopping data={requestID} title={functionTitle} />}
                   </Route>
                   <Route exact path="/Allocation">
                     <Allocation data={requestID} title={functionTitle} />
