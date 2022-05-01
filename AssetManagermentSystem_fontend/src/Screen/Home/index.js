@@ -4,11 +4,8 @@ import '../../Access/Css/Common.scss';
 import "./style.scss";
 import { Row, Col } from 'antd';
 import * as amsAction from '../../ReduxSaga/Actions';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import LineChart from "../../Components/Charts/LineChart";
 import Supplier from "../Supplier";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Home(props) {
   // const history = useHistory();
