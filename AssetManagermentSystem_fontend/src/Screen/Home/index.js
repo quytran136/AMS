@@ -87,7 +87,7 @@ function Home(props) {
           <Col span={6}>
             <div className="box">
               <div className="box-header">
-                Số lượng nhà cung cấp
+                Tổng nhà cung cấp
               </div>
               <div className="box-body">
                 {supplier?.Response?.Suppliers?.length || 0}
@@ -97,7 +97,7 @@ function Home(props) {
           <Col span={6}>
             <div className="box">
               <div className="box-header">
-                Tổng lượng yêu cầu đã gửi
+                Số yêu cầu đã gửi
               </div>
               <div className="box-body">
                 {ticket?.Response?.Tickets?.length || 0}

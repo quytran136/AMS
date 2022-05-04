@@ -35,7 +35,7 @@ namespace AMS.API.Controllers
                         }
                     });
                 case "TICKET_REQUESTED_FOR_ACCOUNTANT":
-                    BaseModel<Ticket> ticketRequested1 = new Ticket().GetTicketRequested(req.Data.DateFrom, req.Data.DateTo);
+                    BaseModel<Ticket> ticketRequested1 = new Ticket().GetTicketRequested(req.Data.DateFrom.Value, req.Data.DateTo.Value, req.Data.SearchContent);
                     return new BaseResponse<Res_Ticket>().Result(ticketRequested1, new BaseResponse<Res_Ticket>()
                     {
                         Response = new Res_Ticket()

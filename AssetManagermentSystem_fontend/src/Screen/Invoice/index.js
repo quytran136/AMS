@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import 'antd/dist/antd.css';
 import './style.scss'
-import { Button, Row, Col, Table, DatePicker, Modal } from 'antd';
+import { Button, Row, Col, Table, DatePicker, Modal, Input } from 'antd';
 import {
     CheckCircleFilled,
     CloseCircleFilled,
@@ -91,14 +91,15 @@ const Invoice = (prop) => {
         }
     ]
 
-    const getListTicket = () => {
+    const getListTicket = (e) => {
         const body = {
             Token: token,
             Key: "TICKET_REQUESTED_FOR_ACCOUNTANT",
             UserNameRequest: userName,
             Data: {
                 DateFrom: selectedDate.DateFrom,
-                DateTo: selectedDate.DateTo
+                DateTo: selectedDate.DateTo,
+                SearchContent: e || ""
             }
         }
         dispatch(requestTicket(body))
@@ -158,7 +159,7 @@ const Invoice = (prop) => {
                     <h3>Danh sách yêu cầu thanh toán</h3>
                 </div>
                 <Row className="invoice-tool">
-                    <Col span={8} className="tool-left">
+                    <Col span={4} className="tool-left">
                         <DatePicker.RangePicker
                             defaultValue={[moment(selectedDate.DateFrom, "MM/DD/YYYY"), moment(selectedDate.DateTo, "MM/DD/YYYY")]}
                             onChange={(value, fo) => {
@@ -167,6 +168,15 @@ const Invoice = (prop) => {
                                     DateTo: fo[1]
                                 })
                             }} />
+                    </Col>
+                    <Col span={6} className="tool-left">
+                        <Input.Group>
+                            <Input.Search
+                                placeholder="Search..."
+                                onSearch={(e) => getListTicket(e)}
+                                onChange={(e) => getListTicket(e.target.value)}
+                            />
+                        </Input.Group >
                     </Col>
                 </Row>
                 <Row className="invoice-body">

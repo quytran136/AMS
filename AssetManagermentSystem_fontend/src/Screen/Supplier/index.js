@@ -116,16 +116,15 @@ function Supplier(props) {
 
   return (
     ShowOnly ? <>
+      <h4>Danh sách nhà cung cấp</h4>
       {supplier?.Response?.Suppliers &&
         supplier?.Response?.Suppliers.map((element) => {
-          return (<Card
-            className="ams-card-item"
-            key={element.ID}>
-            <div>
-              <img alt="avata" className="image" id={element.ID} src={element.Image} />
+          return (<div className="supplier-read-only">
+            <img alt="avata" className="image" id={element.ID} src={element.Image} />
+            <h5>
               {element.Name}
-            </div>
-          </Card>)
+            </h5>
+          </div>)
         })}
     </> :
       <>

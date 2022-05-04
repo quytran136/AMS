@@ -115,15 +115,16 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<Ticket> GetTicketRequested(DateTime? dateFrom, DateTime? dateTo)
+        public BaseModel<Ticket> GetTicketRequested(DateTime dateFrom, DateTime dateTo, string searchContent)
         {
             try
             {
+                dateTo = dateTo.AddHours(23);
                 var db = DBC.Init;
                 List<invoice> invoice = (from req in db.request_ticket_history
                                          join inv in db.invoices on req.ID equals inv.TicketID
-                                         where req.CreateDate >= dateFrom
-                                         && req.CreateDate <= dateTo
+                                         where req.CreateDate.Value >= dateFrom
+                                         && req.CreateDate.Value <= dateTo
                                          && req.RequestType == RequestType.SHOPPING
                                          && req.IsApprove == true
                                          orderby inv.IsPay descending
@@ -133,28 +134,31 @@ namespace AMS.BUS.BusinessHandle
                                              request_ticket = req,
                                              invoice = inv
                                          })
-                                                        .ToList().Select(ptr => new invoice()
-                                                        {
-                                                            request_ticket_history = new request_ticket_history()
-                                                            {
-                                                                ID = ptr.request_ticket.ID,
-                                                                RequestBy = ptr.request_ticket.RequestBy,
-                                                                StepID = ptr.request_ticket.StepID,
-                                                                IsApprove = ptr.request_ticket.IsApprove,
-                                                                CreateDate = ptr.request_ticket.CreateDate,
-                                                                Description = ptr.request_ticket.Description,
-                                                                IsReject = ptr.request_ticket.IsReject,
-                                                                ProcessID = ptr.request_ticket.ProcessID,
-                                                                RequestType = ptr.request_ticket.RequestType,
-                                                                StoreID = ptr.request_ticket.StoreID
-                                                            },
-                                                            CreateDate = ptr.invoice.CreateDate,
-                                                            CreatorID = ptr.invoice.CreatorID,
-                                                            ID = ptr.invoice.ID,
-                                                            IsPay = ptr.invoice.IsPay,
-                                                            IsReject = ptr.invoice.IsReject,
-                                                        }).
-                                                        ToList();
+                                        .ToList()
+                                        .Select(ptr => new invoice()
+                                        {
+                                            request_ticket_history = new request_ticket_history()
+                                            {
+                                                ID = ptr.request_ticket.ID,
+                                                RequestBy = ptr.request_ticket.RequestBy,
+                                                StepID = ptr.request_ticket.StepID,
+                                                IsApprove = ptr.request_ticket.IsApprove,
+                                                CreateDate = ptr.request_ticket.CreateDate,
+                                                Description = ptr.request_ticket.Description,
+                                                IsReject = ptr.request_ticket.IsReject,
+                                                ProcessID = ptr.request_ticket.ProcessID,
+                                                RequestType = ptr.request_ticket.RequestType,
+                                                StoreID = ptr.request_ticket.StoreID
+                                            },
+                                            CreateDate = ptr.invoice.CreateDate.Value,
+                                            CreatorID = ptr.invoice.CreatorID,
+                                            ID = ptr.invoice.ID,
+                                            IsPay = ptr.invoice.IsPay,
+                                            IsReject = ptr.invoice.IsReject,
+                                        })
+                                        .ToList()
+                                        .Where(ptr => ptr.CreateDate.Value.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds.ToString().Contains(searchContent) == true)
+                                        .ToList(); ;
 
                 return new BaseModel<Ticket>()
                 {
