@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Col, Row, Input, InputNumber, Button, Select, Table } from 'antd';
+import { Col, Row, Input, InputNumber, Button, Select, Table, Modal, DatePicker } from 'antd';
 import {
     PlusOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    EditOutlined
 } from '@ant-design/icons';
 import { connect, useDispatch } from "react-redux";
 import * as amsAction from '../../ReduxSaga/Actions';
+import moment from 'moment';
 
 function ListAsset(props) {
     const { disabled, className, dataSource, onChange } = props
@@ -26,6 +28,8 @@ function ListAsset(props) {
     const [listAsset, setListAsset] = useState();
     const [listAssetClassifies, setListAssetClassifies] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
+    const [dataSelected, setDataSelected] = useState();
+    const [showModalUpdate, setShowModalUpdate] = useState(false);
 
     const columns = [
         {
@@ -52,6 +56,49 @@ function ListAsset(props) {
                     style: 'currency',
                     currency: 'VND',
                 }))
+            }
+        },
+        {
+            title: 'Hành động',
+            dataIndex: 'Price',
+            key: 'Price',
+            render: (text, record, index) => {
+                return (
+                    props.disabled ?
+                        <Button
+                            warning
+                            type="primary"
+                            shape="circle"
+                            icon={<EditOutlined />}
+                            onClick={() => {
+                                setDataSelected(record)
+                                setShowModalUpdate(true)
+                            }}
+                        /> :
+                        <div>
+                            <Button
+                                disabled={disabled}
+                                type="primary"
+                                danger
+                                shape="circle"
+                                icon={<DeleteOutlined />}
+                                onClick={() => {
+                                    deleteItem(record.ID)
+                                }}
+                            />
+                            <Button
+                                disabled={disabled}
+                                type="primary"
+                                shape="circle"
+                                icon={<EditOutlined />}
+                                onClick={() => {
+                                    setDataSelected(record)
+                                    setShowModalUpdate(true)
+                                }}
+                            />
+
+                        </div>
+                )
             }
         }
     ]
@@ -96,14 +143,7 @@ function ListAsset(props) {
             })
             setListAssetClassifies(listAS)
         }
-
-        let list = []
-        if (listAsset) {
-            listAsset.forEach(element => {
-                list.push(element)
-            });
-        }
-        list.push({
+        setDataSelected({
             ID: Date.now(),
             AssetClassifyID: "",
             AssetFullName: "",
@@ -111,12 +151,38 @@ function ListAsset(props) {
             QuantityOriginalStock: 0,
             Unit: "",
             Price: 0,
-            SupplierID: ""
+            SupplierID: "",
+            ExpirationDate: new Date().toISOString()
         })
+        setShowModalUpdate(true)
+    }
+
+    function saveListAsset(data) {
+        let list = []
+        if (listAsset) {
+            listAsset.forEach(element => {
+                list.push(element)
+            });
+        }
+        if (!listAsset.includes(data)) {
+            list.push({
+                ID: Date.now(),
+                AssetClassifyID: data.AssetClassifyID,
+                AssetFullName: data.AssetFullName,
+                Description: data.Description,
+                QuantityOriginalStock: data.QuantityOriginalStock,
+                Unit: data.Unit,
+                Price: data.Price,
+                SupplierID: data.SupplierID,
+                ExpirationDate: data.ExpirationDate
+            })
+        }
         setListAsset(list)
         if (onChange) {
             onChange(list)
         }
+        setDataSelected()
+        setShowModalUpdate(false)
     }
 
     function deleteItem(id) {
@@ -194,6 +260,11 @@ function ListAsset(props) {
         }
     }
 
+    function onclose() {
+        setDataSelected();
+        setShowModalUpdate(false)
+    }
+
     useEffect(getAssetClassify, [])
     useEffect(convertDataToSelect, [supplier])
     useEffect(readData, [dataSource])
@@ -202,7 +273,7 @@ function ListAsset(props) {
         <div className={className}>
             <Row className="asset-tool">
                 <Col span={8}>
-                    {!props.viewOnly ?
+                    {!props.disabled ?
                         <Button
                             disabled={disabled}
                             type="primary"
@@ -215,165 +286,141 @@ function ListAsset(props) {
                         : <></>}
                 </Col>
             </Row>
-            {!props.viewOnly ?
-                <div className="list-asset">
-                    <Row>
-                        <Col span={5} className="field">
-                            Tên danh mục
-                        </Col>
-                        <Col span={5} className="field">
-                            Tên thuốc
-                        </Col>
-                        <Col span={1} className="field">
-                            Đơn vị tính
-                        </Col>
-                        <Col span={2} className="field">
-                            Đơn vị cung cấp
-                        </Col>
-                        <Col span={3} className="field">
-                            Diễn giải
-                        </Col>
-                        <Col span={2} className="field">
-                            Số lượng
-                        </Col>
-                        <Col span={5} className="field">
-                            Đơn giá
-                        </Col>
-                        <Col span={1} className="field">
-
-                        </Col>
-                    </Row>
-                    <div className="list-edit-asset">
-                        {listAsset &&
-                            listAsset.map((element, index) => {
-                                return (<Row className="item-asset" key={index}>
-                                    <Col span={5} className="field">
-                                        <Select
-                                            disabled={disabled}
-                                            options={listAssetClassifies}
-                                            className="field-asset"
-                                            value={element.AssetClassifyID}
-                                            onChange={e => {
-                                                let item = element
-                                                item.AssetClassifyID = e
-                                                editItem(item)
-                                            }}
-                                        >
-                                        </Select>
-                                    </Col>
-                                    <Col span={5} className="field">
-                                        <Input
-                                            disabled={disabled}
-                                            value={element.AssetFullName}
-                                            onChange={(e) => {
-                                                let item = element
-                                                item.AssetFullName = e.target.value
-                                                editItem(item)
-                                            }}
-                                        />
-                                    </Col>
-                                    <Col span={1} className="field">
-                                        <Input
-                                            disabled={disabled}
-                                            value={element.Unit}
-                                            onChange={(e) => {
-                                                let item = element
-                                                item.Unit = e.target.value
-                                                editItem(item)
-                                            }}
-                                        />
-                                    </Col>
-                                    <Col span={2} className="field">
-                                        <Select
-                                            disabled={disabled}
-                                            options={suppliers}
-                                            className="field-asset"
-                                            value={element.SupplierID}
-                                            onChange={e => {
-                                                let item = element
-                                                item.SupplierID = e
-                                                editItem(item)
-                                            }}
-                                        >
-                                        </Select>
-                                    </Col>
-                                    <Col span={3} className="field">
-                                        <Input
-                                            disabled={disabled}
-                                            value={element.Description}
-                                            onChange={(e) => {
-                                                let item = element
-                                                item.Description = e.target.value
-                                                editItem(item)
-                                            }}
-                                        />
-                                    </Col>
-                                    <Col span={2} className="field">
-                                        <InputNumber
-                                            disabled={disabled}
-                                            className="field-asset"
-                                            value={element.QuantityOriginalStock}
-                                            min="0"
-                                            step="1"
-                                            onChange={(e) => {
-                                                let item = element
-                                                item.QuantityOriginalStock = e
-                                                editItem(item)
-                                            }}
-                                            stringMode
-                                        />
-                                    </Col>
-                                    <Col span={5} className="field">
-                                        <InputNumber
-                                            disabled={disabled}
-                                            className="field-asset"
-                                            value={element.Price}
-                                            min="0"
-                                            step="1"
-                                            onChange={(e) => {
-                                                let item = element
-                                                item.Price = e * 1000
-                                                editItem(item)
-                                            }}
-                                            stringMode
-                                        />
-                                    </Col>
-                                    <Col span={1} className="field">
-                                        <Button
-                                            disabled={disabled}
-                                            type="primary"
-                                            danger
-                                            shape="circle"
-                                            icon={<DeleteOutlined />}
-                                            onClick={() => {
-                                                deleteItem(element.ID)
-                                            }}
-                                        />
-                                    </Col>
-                                </Row>)
-                            })}
-                    </div>
-                </div>
-                : <div>
-                    <Table
-                        scroll={listAsset ? {
-                            y: '60vh',
-                        } : {}}
-                        dataSource={listAsset ? listAsset : []}
-                        columns={columns}
-                        pagination={20} />
-                    <Row className="total">
-                        <Col span={16}>
-                            Thành tiền
-                        </Col>
-                        <Col span={8}>
-                            {(countMoney(listAsset))?.toLocaleString('en-US', {
-                                style: 'currency',
-                                currency: 'VND',
-                            })}
-                        </Col>
-                    </Row>
-                </div>}
+            <div>
+                <Table
+                    scroll={listAsset ? {
+                        y: '60vh',
+                    } : {}}
+                    dataSource={listAsset ? listAsset : []}
+                    columns={columns}
+                    pagination={20} />
+                {/* <Row className="total">
+                    <Col span={16}>
+                        Thành tiền
+                    </Col>
+                    <Col span={8}>
+                        {(countMoney(listAsset))?.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: 'VND',
+                        })}
+                    </Col>
+                </Row> */}
+            </div>
+            <Modal
+                title={dataSelected?.AssetClassifyID ? "Thông tin" : "Thêm mới"}
+                centered
+                visible={showModalUpdate}
+                onOk={() => saveListAsset(dataSelected)}
+                onCancel={() => onclose()}>
+                <h4>Loại thuốc</h4>
+                <Select
+                    className="input"
+                    disabled={disabled}
+                    options={listAssetClassifies}
+                    value={dataSelected?.AssetClassifyID}
+                    onChange={e => {
+                        let item = dataSelected
+                        item.AssetClassifyID = e
+                        editItem(item)
+                    }}
+                >
+                </Select>
+                <br />
+                <h4>Tên Thuốc</h4>
+                <Input
+                    className="input"
+                    disabled={disabled}
+                    value={dataSelected?.AssetFullName}
+                    onChange={(e) => {
+                        let item = dataSelected
+                        item.AssetFullName = e.target.value
+                        editItem(item)
+                    }}
+                />
+                <br />
+                <h4>Ngày hết hạn</h4>
+                <DatePicker
+                    disabled={disabled}
+                    size="default"
+                    className="select"
+                    format="YYYY/MM/DD"
+                    defaultPickerValue={moment(dataSelected?.ExpirationDate, "YYYY/MM/DD")}
+                    value={moment(dataSelected?.ExpirationDate, "YYYY/MM/DD")}
+                    onChange={(e) => {
+                        let item = dataSelected
+                        item.ExpirationDate = e
+                        editItem(item)
+                    }}
+                />
+                <br />
+                <h4>Đơn vị tính</h4>
+                <Input
+                    className="input"
+                    disabled={disabled}
+                    value={dataSelected?.Unit}
+                    onChange={(e) => {
+                        let item = dataSelected
+                        item.Unit = e.target.value
+                        editItem(item)
+                    }}
+                />
+                <br />
+                <h4>Đơn vị cung cấp</h4>
+                <Select
+                    className="input"
+                    disabled={disabled}
+                    options={suppliers}
+                    value={dataSelected?.SupplierID}
+                    onChange={e => {
+                        let item = dataSelected
+                        item.SupplierID = e
+                        editItem(item)
+                    }}
+                >
+                </Select>
+                <br />
+                <h4>Diễn giải</h4>
+                <Input
+                    className="input"
+                    disabled={disabled}
+                    value={dataSelected?.Description}
+                    onChange={(e) => {
+                        let item = dataSelected
+                        item.Description = e.target.value
+                        editItem(item)
+                    }}
+                />
+                <br />
+                <h4>Số lượng</h4>
+                <InputNumber
+                    className="input"
+                    disabled={disabled}
+                    value={dataSelected?.QuantityOriginalStock}
+                    min="0"
+                    step="1"
+                    onChange={(e) => {
+                        let item = dataSelected
+                        item.QuantityOriginalStock = e
+                        editItem(item)
+                    }}
+                    stringMode
+                />
+                <br />
+                <h4>Đơn giá (VNĐ)</h4>
+                <InputNumber
+                    className="input"
+                    disabled={disabled}
+                    value={dataSelected?.Price}
+                    min="0"
+                    step="1"
+                    onChange={(e) => {
+                        let item = dataSelected
+                        item.Price = e * 1000
+                        editItem(item)
+                    }}
+                    stringMode
+                />
+            </Modal>
         </div >
     );
 }

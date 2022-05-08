@@ -80,7 +80,8 @@ function Shopping(props) {
                     Unit: element.Unit,
                     Description: element.Description,
                     Price: element.Price,
-                    SupplierID: element.SupplierID
+                    SupplierID: element.SupplierID,
+                    ExpirationDate: element.ExpirationDate,
                 })
             });
 

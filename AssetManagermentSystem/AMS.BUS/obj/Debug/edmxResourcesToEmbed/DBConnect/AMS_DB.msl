@@ -1,78 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="AMS_DBModelStoreContainer" CdmEntityContainer="AMS_DBEntities">
-    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AMS_DBModel.Store.sp_alterdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_BaoCaoTinhTrangSuDung" FunctionName="AMS_DBModel.Store.sp_BaoCaoTinhTrangSuDung">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTinhTrangSuDung_Result">
-          <ScalarProperty Name="Tồn_Kho" ColumnName="Tồn Kho" />
-          <ScalarProperty Name="Đang_Sử_Dụng" ColumnName="Đang Sử Dụng" />
-          <ScalarProperty Name="Đã_Thanh_Lý" ColumnName="Đã Thanh Lý" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_BaoCaoTonKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoTonKho">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTonKho_Result">
-          <ScalarProperty Name="Kho_tài_sản" ColumnName="Kho tài sản" />
-          <ScalarProperty Name="Lớp_tài_sản" ColumnName="Lớp tài sản" />
-          <ScalarProperty Name="Tên_tài_sản" ColumnName="Tên tài sản" />
-          <ScalarProperty Name="Tổng_lượng_tài_sản" ColumnName="Tổng lượng tài sản" />
-          <ScalarProperty Name="Tổng_lượng_tồn_kho" ColumnName="Tổng lượng tồn kho" />
-          <ScalarProperty Name="Tổng_lượng_đã_sử_dụng" ColumnName="Tổng lượng đã sử dụng" />
-          <ScalarProperty Name="Tổng_lượng_đã_thanh_lý" ColumnName="Tổng lượng đã thanh lý" />
-          <ScalarProperty Name="Giá_trị" ColumnName="Giá trị" />
-          <ScalarProperty Name="Ngày_tạo" ColumnName="Ngày tạo" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_BaoCaoTrangThaiTaiSan" FunctionName="AMS_DBModel.Store.sp_BaoCaoTrangThaiTaiSan">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTrangThaiTaiSan_Result">
-          <ScalarProperty Name="Mua_Sắm" ColumnName="Mua Sắm" />
-          <ScalarProperty Name="Cấp_Phát" ColumnName="Cấp Phát" />
-          <ScalarProperty Name="Thu_hồi" ColumnName="Thu hồi" />
-          <ScalarProperty Name="Thanh_Lý" ColumnName="Thanh Lý" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_BaoCaoYeuCauPheDuyet" FunctionName="AMS_DBModel.Store.sp_BaoCaoYeuCauPheDuyet">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result">
-          <ScalarProperty Name="Loại_yêu_cầu" ColumnName="Loại yêu cầu" />
-          <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
-          <ScalarProperty Name="Yêu_cầu_cho" ColumnName="Yêu cầu cho" />
-          <ScalarProperty Name="Số_lượng_yêu_cầu" ColumnName="Số lượng yêu cầu" />
-          <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
-          <ScalarProperty Name="Ngày_yêu_cầu" ColumnName="Ngày yêu cầu" />
-          <ScalarProperty Name="Tình_trạng_duyệt" ColumnName="Tình trạng duyệt" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AMS_DBModel.Store.sp_creatediagram" />
-    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AMS_DBModel.Store.sp_dropdiagram" />
-    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="AMS_DBModel.Store.sp_helpdiagramdefinition">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagramdefinition_Result">
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="AMS_DBModel.Store.sp_helpdiagrams">
-      <ResultMapping>
-        <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagrams_Result">
-          <ScalarProperty Name="Database" ColumnName="Database" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Owner" ColumnName="Owner" />
-          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-        </ComplexTypeMapping>
-      </ResultMapping>
-    </FunctionImportMapping>
-    <FunctionImportMapping FunctionImportName="sp_NewNotification" FunctionName="AMS_DBModel.Store.sp_NewNotification" />
-    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AMS_DBModel.Store.sp_renamediagram" />
-    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AMS_DBModel.Store.sp_upgraddiagrams" />
     <EntitySetMapping Name="ams_config">
       <EntityTypeMapping TypeName="AMS_DBModel.ams_config">
         <MappingFragment StoreEntitySet="ams_config">
@@ -107,6 +35,7 @@
     <EntitySetMapping Name="asset_detail">
       <EntityTypeMapping TypeName="AMS_DBModel.asset_detail">
         <MappingFragment StoreEntitySet="asset_detail">
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
           <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Unit" ColumnName="Unit" />
@@ -173,6 +102,7 @@
     <EntitySetMapping Name="invoice_detail">
       <EntityTypeMapping TypeName="AMS_DBModel.invoice_detail">
         <MappingFragment StoreEntitySet="invoice_detail">
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
           <ScalarProperty Name="Unit" ColumnName="Unit" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
@@ -386,5 +316,83 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AMS_DBModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoNhapKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoNhapKho">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoNhapKho_Result">
+          <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+          <ScalarProperty Name="Yêu_cầu_nhập" ColumnName="Yêu cầu nhập" />
+          <ScalarProperty Name="Số_lượng_nhập" ColumnName="Số lượng nhập" />
+          <ScalarProperty Name="Kho" ColumnName="Kho" />
+          <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+          <ScalarProperty Name="Ngày_nhập_kho" ColumnName="Ngày nhập kho" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoTonKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoTonKho">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTonKho_Result">
+          <ScalarProperty Name="Kho" ColumnName="Kho" />
+          <ScalarProperty Name="Phân_loại" ColumnName="Phân loại" />
+          <ScalarProperty Name="Tên" ColumnName="Tên" />
+          <ScalarProperty Name="Ngày_hết_hạn" ColumnName="Ngày hết hạn" />
+          <ScalarProperty Name="Tổng_lượng" ColumnName="Tổng lượng" />
+          <ScalarProperty Name="Tổng_lượng_tồn_kho" ColumnName="Tổng lượng tồn kho" />
+          <ScalarProperty Name="Tổng_lượng_đã_sử_dụng" ColumnName="Tổng lượng đã sử dụng" />
+          <ScalarProperty Name="Giá_trị" ColumnName="Giá trị" />
+          <ScalarProperty Name="Ngày_tạo" ColumnName="Ngày tạo" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoXuatKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoXuatKho">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoXuatKho_Result">
+          <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+          <ScalarProperty Name="Yêu_cầu_xuất" ColumnName="Yêu cầu xuất" />
+          <ScalarProperty Name="Số_lượng_xuất" ColumnName="Số lượng xuất" />
+          <ScalarProperty Name="Kho" ColumnName="Kho" />
+          <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+          <ScalarProperty Name="Ngày_xuất_kho" ColumnName="Ngày xuất kho" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_BaoCaoYeuCauPheDuyet" FunctionName="AMS_DBModel.Store.sp_BaoCaoYeuCauPheDuyet">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result">
+          <ScalarProperty Name="Loại_yêu_cầu" ColumnName="Loại yêu cầu" />
+          <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+          <ScalarProperty Name="Yêu_cầu_cho" ColumnName="Yêu cầu cho" />
+          <ScalarProperty Name="Số_lượng_yêu_cầu" ColumnName="Số lượng yêu cầu" />
+          <ScalarProperty Name="Kho" ColumnName="Kho" />
+          <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+          <ScalarProperty Name="Ngày_yêu_cầu" ColumnName="Ngày yêu cầu" />
+          <ScalarProperty Name="Tình_trạng_duyệt" ColumnName="Tình trạng duyệt" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AMS_DBModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AMS_DBModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="AMS_DBModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="AMS_DBModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_NewNotification" FunctionName="AMS_DBModel.Store.sp_NewNotification" />
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AMS_DBModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AMS_DBModel.Store.sp_upgraddiagrams" />
   </EntityContainerMapping>
 </Mapping>

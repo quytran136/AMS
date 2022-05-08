@@ -8,14 +8,24 @@ function Report() {
 
   const tabList = [
     {
-      key: "R1",
+      key: "REPORT_1",
       value: "Báo cáo tồn kho",
-      component: <ReportDetail data="R1"/>,
+      component: <ReportDetail data="REPORT_1"/>,
     },
     {
-      key: "R2",
+      key: "REPORT_2",
       value: "Báo cáo tổng hợp các yêu cầu",
-      component: <ReportDetail data="R2"/>,
+      component: <ReportDetail data="REPORT_2"/>,
+    },
+    {
+      key: "REPORT_3",
+      value: "Báo cáo nhập kho",
+      component: <ReportDetail data="REPORT_3"/>,
+    },
+    {
+      key: "REPORT_4",
+      value: "Báo cáo xuất kho",
+      component: <ReportDetail data="REPORT_4"/>,
     }
   ]
   const [currentMenu, setCurrentMenu] = useState(tabList[0].key);

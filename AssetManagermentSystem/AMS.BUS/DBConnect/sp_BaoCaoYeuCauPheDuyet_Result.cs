@@ -17,6 +17,7 @@ namespace AMS.BUS.DBConnect
         public string Người_yêu_cầu { get; set; }
         public string Yêu_cầu_cho { get; set; }
         public Nullable<int> Số_lượng_yêu_cầu { get; set; }
+        public string Kho { get; set; }
         public string Ghi_chú { get; set; }
         public string Ngày_yêu_cầu { get; set; }
         public string Tình_trạng_duyệt { get; set; }

@@ -74,12 +74,7 @@ namespace AMS.BUS.DBConnect
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
         }
     
-        public virtual ObjectResult<sp_BaoCaoTinhTrangSuDung_Result> sp_BaoCaoTinhTrangSuDung()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoTinhTrangSuDung_Result>("sp_BaoCaoTinhTrangSuDung");
-        }
-    
-        public virtual ObjectResult<sp_BaoCaoTonKho_Result> sp_BaoCaoTonKho(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent)
+        public virtual ObjectResult<sp_BaoCaoNhapKho_Result> sp_BaoCaoNhapKho(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent, string store)
         {
             var dateStartParameter = dateStart.HasValue ?
                 new ObjectParameter("dateStart", dateStart) :
@@ -93,15 +88,14 @@ namespace AMS.BUS.DBConnect
                 new ObjectParameter("searchContent", searchContent) :
                 new ObjectParameter("searchContent", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoTonKho_Result>("sp_BaoCaoTonKho", dateStartParameter, dateEndParameter, searchContentParameter);
+            var storeParameter = store != null ?
+                new ObjectParameter("store", store) :
+                new ObjectParameter("store", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoNhapKho_Result>("sp_BaoCaoNhapKho", dateStartParameter, dateEndParameter, searchContentParameter, storeParameter);
         }
     
-        public virtual ObjectResult<sp_BaoCaoTrangThaiTaiSan_Result> sp_BaoCaoTrangThaiTaiSan()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoTrangThaiTaiSan_Result>("sp_BaoCaoTrangThaiTaiSan");
-        }
-    
-        public virtual ObjectResult<sp_BaoCaoYeuCauPheDuyet_Result> sp_BaoCaoYeuCauPheDuyet(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent)
+        public virtual ObjectResult<sp_BaoCaoTonKho_Result> sp_BaoCaoTonKho(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent, string store)
         {
             var dateStartParameter = dateStart.HasValue ?
                 new ObjectParameter("dateStart", dateStart) :
@@ -115,7 +109,53 @@ namespace AMS.BUS.DBConnect
                 new ObjectParameter("searchContent", searchContent) :
                 new ObjectParameter("searchContent", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoYeuCauPheDuyet_Result>("sp_BaoCaoYeuCauPheDuyet", dateStartParameter, dateEndParameter, searchContentParameter);
+            var storeParameter = store != null ?
+                new ObjectParameter("store", store) :
+                new ObjectParameter("store", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoTonKho_Result>("sp_BaoCaoTonKho", dateStartParameter, dateEndParameter, searchContentParameter, storeParameter);
+        }
+    
+        public virtual ObjectResult<sp_BaoCaoXuatKho_Result> sp_BaoCaoXuatKho(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent, string store)
+        {
+            var dateStartParameter = dateStart.HasValue ?
+                new ObjectParameter("dateStart", dateStart) :
+                new ObjectParameter("dateStart", typeof(System.DateTime));
+    
+            var dateEndParameter = dateEnd.HasValue ?
+                new ObjectParameter("dateEnd", dateEnd) :
+                new ObjectParameter("dateEnd", typeof(System.DateTime));
+    
+            var searchContentParameter = searchContent != null ?
+                new ObjectParameter("searchContent", searchContent) :
+                new ObjectParameter("searchContent", typeof(string));
+    
+            var storeParameter = store != null ?
+                new ObjectParameter("store", store) :
+                new ObjectParameter("store", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoXuatKho_Result>("sp_BaoCaoXuatKho", dateStartParameter, dateEndParameter, searchContentParameter, storeParameter);
+        }
+    
+        public virtual ObjectResult<sp_BaoCaoYeuCauPheDuyet_Result> sp_BaoCaoYeuCauPheDuyet(Nullable<System.DateTime> dateStart, Nullable<System.DateTime> dateEnd, string searchContent, string store)
+        {
+            var dateStartParameter = dateStart.HasValue ?
+                new ObjectParameter("dateStart", dateStart) :
+                new ObjectParameter("dateStart", typeof(System.DateTime));
+    
+            var dateEndParameter = dateEnd.HasValue ?
+                new ObjectParameter("dateEnd", dateEnd) :
+                new ObjectParameter("dateEnd", typeof(System.DateTime));
+    
+            var searchContentParameter = searchContent != null ?
+                new ObjectParameter("searchContent", searchContent) :
+                new ObjectParameter("searchContent", typeof(string));
+    
+            var storeParameter = store != null ?
+                new ObjectParameter("store", store) :
+                new ObjectParameter("store", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_BaoCaoYeuCauPheDuyet_Result>("sp_BaoCaoYeuCauPheDuyet", dateStartParameter, dateEndParameter, searchContentParameter, storeParameter);
         }
     
         public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)

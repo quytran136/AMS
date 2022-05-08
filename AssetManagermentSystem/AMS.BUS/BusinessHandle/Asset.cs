@@ -76,8 +76,8 @@ namespace AMS.BUS.BusinessHandle
             {
                 var db = DBC.Init;
                 List<asset_classify> ac = db.asset_classify.
-                    Where(ptr => ptr.IsDelete == false && ptr.AssetClassifyName.Contains(classifyname)).
-                    OrderByDescending(ptr => ptr.CreateDate)
+                    Where(ptr => ptr.IsDelete == false && ptr.AssetClassifyName.Contains(classifyname))
+                    .OrderByDescending(ptr => ptr.CreateDate)
                     .ToList()
                     .Select(ptr => new asset_classify()
                     {
@@ -94,7 +94,11 @@ namespace AMS.BUS.BusinessHandle
                     Assets.Add(new Asset()
                     {
                         Asset_Classify = item,
-                        Asset_Details = db.asset_detail.Where(ptr => ptr.AssetClassifyID == item.ID && ptr.IsActive == true && ptr.IsDelete == false)
+                        Asset_Details = db.asset_detail.Where(ptr => ptr.AssetClassifyID == item.ID && 
+                                                                    ptr.IsActive == true && 
+                                                                    ptr.IsDelete == false && 
+                                                                    ptr.ExpirationDate.Value >= DateTime.Now &&
+                                                                    ptr.QuantityInStock > 0)
                                                         .ToList()
                                                         .Select(ptr => new asset_detail()
                                                         {
@@ -181,6 +185,7 @@ namespace AMS.BUS.BusinessHandle
                         QuantityInStock = ptr.QuantityOriginalStock,
                         QuantityUsed = ptr.QuantityUsed,
                         QuantityDestroyed = ptr.QuantityDestroyed,
+                        ExpirationDate = ptr.ExpirationDate,
                     })
                     .ToList();
 
@@ -458,6 +463,7 @@ namespace AMS.BUS.BusinessHandle
                         Price = item.Price,
                         Unit = item.Unit,
                         SupplierID = item.SupplierID,
+                        ExpirationDate = item.ExpirationDate,
                     });
                 }
 
@@ -565,6 +571,7 @@ namespace AMS.BUS.BusinessHandle
                         StoreID = invoice.StoreID,
                         CreateDate = DateTime.Now,
                         QuantityUsed = 0,
+                        ExpirationDate = item.ExpirationDate,
                     });
                 }
                 db.asset_detail.AddRange(assets);

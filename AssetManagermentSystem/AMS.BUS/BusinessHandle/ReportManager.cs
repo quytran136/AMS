@@ -33,12 +33,12 @@ namespace AMS.BUS.BusinessHandle
                 id);
         }
 
-        public BaseModel<ReportManager> GetReport1(DateTime dateFrom, DateTime dateEnd, string searchContent)
+        public BaseModel<ReportManager> GetReport1(DateTime dateFrom, DateTime dateEnd, string searchContent, string store)
         {
             try
             {
                 var db = DBC.Init;
-                var result = db.sp_BaoCaoTonKho(dateFrom, dateEnd, searchContent).ToList();
+                var result = db.sp_BaoCaoTonKho(dateFrom, dateEnd, searchContent, store).ToList();
                 List<string> header = new List<string>();
                 foreach (var index in typeof(sp_BaoCaoTonKho_Result).GetProperties())
                 {
@@ -66,12 +66,12 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<ReportManager> GetReport2(DateTime dateFrom, DateTime dateEnd, string searchContent)
+        public BaseModel<ReportManager> GetReport2(DateTime dateFrom, DateTime dateEnd, string searchContent, string store)
         {
             try
             {
                 var db = DBC.Init;
-                var result = db.sp_BaoCaoYeuCauPheDuyet(dateFrom, dateEnd, searchContent).ToList();
+                var result = db.sp_BaoCaoYeuCauPheDuyet(dateFrom, dateEnd, searchContent, store).ToList();
                 List<string> header = new List<string>();
                 foreach (var index in typeof(sp_BaoCaoYeuCauPheDuyet_Result).GetProperties())
                 {
@@ -99,14 +99,14 @@ namespace AMS.BUS.BusinessHandle
             }
         }
     
-        public BaseModel<ReportManager> GetReport3()
+        public BaseModel<ReportManager> GetReport3(DateTime dateFrom, DateTime dateEnd, string searchContent, string store)
         {
             try
             {
                 var db = DBC.Init;
-                var result = db.sp_BaoCaoTrangThaiTaiSan().ToList();
+                var result = db.sp_BaoCaoNhapKho(dateFrom, dateEnd, searchContent, store).ToList();
                 List<string> header = new List<string>();
-                foreach (var index in typeof(sp_BaoCaoTrangThaiTaiSan_Result).GetProperties())
+                foreach (var index in typeof(sp_BaoCaoNhapKho_Result).GetProperties())
                 {
                     header.Add(index.Name);
                 }
@@ -132,14 +132,14 @@ namespace AMS.BUS.BusinessHandle
             }
         }
 
-        public BaseModel<ReportManager> GetReport4()
+        public BaseModel<ReportManager> GetReport4(DateTime dateFrom, DateTime dateEnd, string searchContent, string store)
         {
             try
             {
                 var db = DBC.Init;
-                var result = db.sp_BaoCaoTinhTrangSuDung().ToList();
+                var result = db.sp_BaoCaoXuatKho(dateFrom, dateEnd, searchContent, store).ToList();
                 List<string> header = new List<string>();
-                foreach (var index in typeof(sp_BaoCaoTinhTrangSuDung_Result).GetProperties())
+                foreach (var index in typeof(sp_BaoCaoXuatKho_Result).GetProperties())
                 {
                     header.Add(index.Name);
                 }

@@ -13,13 +13,13 @@ namespace AMS.BUS.DBConnect
     
     public partial class sp_BaoCaoTonKho_Result
     {
-        public string Kho_tài_sản { get; set; }
-        public string Lớp_tài_sản { get; set; }
-        public string Tên_tài_sản { get; set; }
-        public Nullable<int> Tổng_lượng_tài_sản { get; set; }
+        public string Kho { get; set; }
+        public string Phân_loại { get; set; }
+        public string Tên { get; set; }
+        public string Ngày_hết_hạn { get; set; }
+        public Nullable<int> Tổng_lượng { get; set; }
         public Nullable<int> Tổng_lượng_tồn_kho { get; set; }
         public Nullable<int> Tổng_lượng_đã_sử_dụng { get; set; }
-        public Nullable<int> Tổng_lượng_đã_thanh_lý { get; set; }
         public Nullable<double> Giá_trị { get; set; }
         public string Ngày_tạo { get; set; }
     }

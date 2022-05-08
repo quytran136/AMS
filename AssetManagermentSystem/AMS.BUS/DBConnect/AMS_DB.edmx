@@ -52,6 +52,7 @@
           <Property Name="Unit" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="SupplierID" Type="nvarchar" MaxLength="64" />
+          <Property Name="ExpirationDate" Type="date" />
         </EntityType>
         <EntityType Name="chat_history">
           <Key>
@@ -107,6 +108,7 @@
           <Property Name="Quantity" Type="int" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Unit" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExpirationDate" Type="date" />
         </EntityType>
         <EntityType Name="message_list">
           <Key>
@@ -201,7 +203,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="StoreName" Type="nchar" MaxLength="10" />
+          <Property Name="StoreName" Type="nvarchar" MaxLength="128" />
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="Owner" Type="nvarchar" MaxLength="128" />
           <Property Name="IsDelete" Type="bit" />
@@ -504,17 +506,29 @@
           <Parameter Name="version" Type="int" Mode="In" />
           <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
         </Function>
-        <Function Name="sp_BaoCaoTinhTrangSuDung" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_BaoCaoNhapKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dateStart" Type="datetime" Mode="In" />
+          <Parameter Name="dateEnd" Type="datetime" Mode="In" />
+          <Parameter Name="searchContent" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="store" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="sp_BaoCaoTonKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="dateStart" Type="datetime" Mode="In" />
           <Parameter Name="dateEnd" Type="datetime" Mode="In" />
           <Parameter Name="searchContent" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="store" Type="nvarchar(max)" Mode="In" />
         </Function>
-        <Function Name="sp_BaoCaoTrangThaiTaiSan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_BaoCaoXuatKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dateStart" Type="datetime" Mode="In" />
+          <Parameter Name="dateEnd" Type="datetime" Mode="In" />
+          <Parameter Name="searchContent" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="store" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="sp_BaoCaoYeuCauPheDuyet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="dateStart" Type="datetime" Mode="In" />
           <Parameter Name="dateEnd" Type="datetime" Mode="In" />
           <Parameter Name="searchContent" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="store" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -641,49 +655,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="AMS_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AMS_DBEntities" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_BaoCaoTinhTrangSuDung" ReturnType="Collection(AMS_DBModel.sp_BaoCaoTinhTrangSuDung_Result)" />
-          <FunctionImport Name="sp_BaoCaoTonKho" ReturnType="Collection(AMS_DBModel.sp_BaoCaoTonKho_Result)">
-            <Parameter Name="dateStart" Mode="In" Type="DateTime" />
-            <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
-            <Parameter Name="searchContent" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_BaoCaoTrangThaiTaiSan" ReturnType="Collection(AMS_DBModel.sp_BaoCaoTrangThaiTaiSan_Result)" />
-          <FunctionImport Name="sp_BaoCaoYeuCauPheDuyet" ReturnType="Collection(AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result)">
-            <Parameter Name="dateStart" Mode="In" Type="DateTime" />
-            <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
-            <Parameter Name="searchContent" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(AMS_DBModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(AMS_DBModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_NewNotification" ReturnType="Collection(String)" />
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="ams_config" EntityType="AMS_DBModel.ams_config" />
           <EntitySet Name="ams_notification" EntityType="AMS_DBModel.ams_notification" />
           <EntitySet Name="asset_classify" EntityType="AMS_DBModel.asset_classify" />
@@ -777,49 +748,62 @@
             <End Role="user_identifie" EntitySet="user_identifie" />
             <End Role="system_log" EntitySet="system_log" />
           </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_BaoCaoNhapKho" ReturnType="Collection(AMS_DBModel.sp_BaoCaoNhapKho_Result)">
+            <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+            <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="searchContent" Mode="In" Type="String" />
+            <Parameter Name="store" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_BaoCaoTonKho" ReturnType="Collection(AMS_DBModel.sp_BaoCaoTonKho_Result)">
+            <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+            <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="searchContent" Mode="In" Type="String" />
+            <Parameter Name="store" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_BaoCaoXuatKho" ReturnType="Collection(AMS_DBModel.sp_BaoCaoXuatKho_Result)">
+            <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+            <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="searchContent" Mode="In" Type="String" />
+            <Parameter Name="store" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_BaoCaoYeuCauPheDuyet" ReturnType="Collection(AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result)">
+            <Parameter Name="dateStart" Mode="In" Type="DateTime" />
+            <Parameter Name="dateEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="searchContent" Mode="In" Type="String" />
+            <Parameter Name="store" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(AMS_DBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(AMS_DBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_NewNotification" ReturnType="Collection(String)" />
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
-        <ComplexType Name="sp_BaoCaoTinhTrangSuDung_Result">
-          <Property Type="Int32" Name="Tồn_Kho" Nullable="true" />
-          <Property Type="Int32" Name="Đang_Sử_Dụng" Nullable="true" />
-          <Property Type="Int32" Name="Đã_Thanh_Lý" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_BaoCaoTonKho_Result">
-          <Property Type="String" Name="Kho_tài_sản" Nullable="true" MaxLength="10" />
-          <Property Type="String" Name="Lớp_tài_sản" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Tên_tài_sản" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="Tổng_lượng_tài_sản" Nullable="true" />
-          <Property Type="Int32" Name="Tổng_lượng_tồn_kho" Nullable="true" />
-          <Property Type="Int32" Name="Tổng_lượng_đã_sử_dụng" Nullable="true" />
-          <Property Type="Int32" Name="Tổng_lượng_đã_thanh_lý" Nullable="true" />
-          <Property Type="Double" Name="Giá_trị" Nullable="true" />
-          <Property Type="String" Name="Ngày_tạo" Nullable="true" MaxLength="30" />
-        </ComplexType>
-        <ComplexType Name="sp_BaoCaoTrangThaiTaiSan_Result">
-          <Property Type="Int32" Name="Mua_Sắm" Nullable="true" />
-          <Property Type="Int32" Name="Cấp_Phát" Nullable="true" />
-          <Property Type="Int32" Name="Thu_hồi" Nullable="true" />
-          <Property Type="Int32" Name="Thanh_Lý" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_BaoCaoYeuCauPheDuyet_Result">
-          <Property Type="String" Name="Loại_yêu_cầu" Nullable="true" MaxLength="50" />
-          <Property Type="String" Name="Người_yêu_cầu" Nullable="true" MaxLength="64" />
-          <Property Type="String" Name="Yêu_cầu_cho" Nullable="true" MaxLength="64" />
-          <Property Type="Int32" Name="Số_lượng_yêu_cầu" Nullable="true" />
-          <Property Type="String" Name="Ghi_chú" Nullable="true" />
-          <Property Type="String" Name="Ngày_yêu_cầu" Nullable="true" MaxLength="30" />
-          <Property Type="String" Name="Tình_trạng_duyệt" Nullable="true" MaxLength="30" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
         <EntityType Name="ams_config">
           <Key>
             <PropertyRef Name="ID" />
@@ -868,6 +852,7 @@
           <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SupplierID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ExpirationDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="asset_classify" Relationship="AMS_DBModel.FK_asset_detail_asset_classify" FromRole="asset_detail" ToRole="asset_classify" />
           <NavigationProperty Name="store_Identifie" Relationship="AMS_DBModel.FK_asset_detail_store_Identifie" FromRole="asset_detail" ToRole="store_Identifie" />
           <NavigationProperty Name="supplier" Relationship="AMS_DBModel.FK_asset_detail_supplier" FromRole="asset_detail" ToRole="supplier" />
@@ -912,11 +897,11 @@
           <Property Name="CreatorID" Type="String" MaxLength="64" FixedLength="false" Unicode="false" />
           <Property Name="TicketID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="StoreID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="IsReject" Type="Boolean" />
+          <Property Name="IsPay" Type="Boolean" />
           <NavigationProperty Name="invoice_detail" Relationship="AMS_DBModel.FK_invoice_detail_invoice" FromRole="invoice" ToRole="invoice_detail" />
           <NavigationProperty Name="request_ticket_history" Relationship="AMS_DBModel.FK_invoice_request_ticket_history" FromRole="invoice" ToRole="request_ticket_history" />
           <NavigationProperty Name="store_Identifie" Relationship="AMS_DBModel.FK_invoice_store_Identifie" FromRole="invoice" ToRole="store_Identifie" />
-          <Property Name="IsReject" Type="Boolean" />
-          <Property Name="IsPay" Type="Boolean" />
         </EntityType>
         <EntityType Name="invoice_detail">
           <Key>
@@ -931,6 +916,7 @@
           <Property Name="Quantity" Type="Int32" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ExpirationDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="invoice" Relationship="AMS_DBModel.FK_invoice_detail_invoice" FromRole="invoice_detail" ToRole="invoice" />
         </EntityType>
         <EntityType Name="message_list">
@@ -1040,7 +1026,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="StoreName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="StoreName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="Owner" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="IsDelete" Type="Boolean" />
@@ -1139,8 +1125,8 @@
           <Property Name="Actor" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="Action" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="request_ticket_history" Relationship="AMS_DBModel.FK_voting_history_request_ticket_history" FromRole="voting_history" ToRole="request_ticket_history" />
           <Property Name="StepID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="request_ticket_history" Relationship="AMS_DBModel.FK_voting_history_request_ticket_history" FromRole="voting_history" ToRole="request_ticket_history" />
         </EntityType>
         <Association Name="FK_asset_detail_asset_classify">
           <End Type="AMS_DBModel.asset_classify" Role="asset_classify" Multiplicity="0..1" />
@@ -1346,84 +1332,60 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="sp_BaoCaoNhapKho_Result">
+          <Property Type="String" Name="Người_yêu_cầu" Nullable="true" MaxLength="64" />
+          <Property Type="String" Name="Yêu_cầu_nhập" Nullable="true" MaxLength="64" />
+          <Property Type="Int32" Name="Số_lượng_nhập" Nullable="true" />
+          <Property Type="String" Name="Kho" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Ghi_chú" Nullable="true" />
+          <Property Type="String" Name="Ngày_nhập_kho" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="sp_BaoCaoTonKho_Result">
+          <Property Type="String" Name="Kho" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Phân_loại" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Tên" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Ngày_hết_hạn" Nullable="true" MaxLength="30" />
+          <Property Type="Int32" Name="Tổng_lượng" Nullable="true" />
+          <Property Type="Int32" Name="Tổng_lượng_tồn_kho" Nullable="true" />
+          <Property Type="Int32" Name="Tổng_lượng_đã_sử_dụng" Nullable="true" />
+          <Property Type="Double" Name="Giá_trị" Nullable="true" />
+          <Property Type="String" Name="Ngày_tạo" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="sp_BaoCaoXuatKho_Result">
+          <Property Type="String" Name="Người_yêu_cầu" Nullable="true" MaxLength="64" />
+          <Property Type="String" Name="Yêu_cầu_xuất" Nullable="true" MaxLength="64" />
+          <Property Type="Int32" Name="Số_lượng_xuất" Nullable="true" />
+          <Property Type="String" Name="Kho" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Ghi_chú" Nullable="true" />
+          <Property Type="String" Name="Ngày_xuất_kho" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="sp_BaoCaoYeuCauPheDuyet_Result">
+          <Property Type="String" Name="Loại_yêu_cầu" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Người_yêu_cầu" Nullable="true" MaxLength="64" />
+          <Property Type="String" Name="Yêu_cầu_cho" Nullable="true" MaxLength="64" />
+          <Property Type="Int32" Name="Số_lượng_yêu_cầu" Nullable="true" />
+          <Property Type="String" Name="Kho" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Ghi_chú" Nullable="true" />
+          <Property Type="String" Name="Ngày_yêu_cầu" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Tình_trạng_duyệt" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AMS_DBModelStoreContainer" CdmEntityContainer="AMS_DBEntities">
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AMS_DBModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_BaoCaoTinhTrangSuDung" FunctionName="AMS_DBModel.Store.sp_BaoCaoTinhTrangSuDung">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTinhTrangSuDung_Result">
-                <ScalarProperty Name="Tồn_Kho" ColumnName="Tồn Kho" />
-                <ScalarProperty Name="Đang_Sử_Dụng" ColumnName="Đang Sử Dụng" />
-                <ScalarProperty Name="Đã_Thanh_Lý" ColumnName="Đã Thanh Lý" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_BaoCaoTonKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoTonKho">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTonKho_Result">
-                <ScalarProperty Name="Kho_tài_sản" ColumnName="Kho tài sản" />
-                <ScalarProperty Name="Lớp_tài_sản" ColumnName="Lớp tài sản" />
-                <ScalarProperty Name="Tên_tài_sản" ColumnName="Tên tài sản" />
-                <ScalarProperty Name="Tổng_lượng_tài_sản" ColumnName="Tổng lượng tài sản" />
-                <ScalarProperty Name="Tổng_lượng_tồn_kho" ColumnName="Tổng lượng tồn kho" />
-                <ScalarProperty Name="Tổng_lượng_đã_sử_dụng" ColumnName="Tổng lượng đã sử dụng" />
-                <ScalarProperty Name="Tổng_lượng_đã_thanh_lý" ColumnName="Tổng lượng đã thanh lý" />
-                <ScalarProperty Name="Giá_trị" ColumnName="Giá trị" />
-                <ScalarProperty Name="Ngày_tạo" ColumnName="Ngày tạo" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_BaoCaoTrangThaiTaiSan" FunctionName="AMS_DBModel.Store.sp_BaoCaoTrangThaiTaiSan">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTrangThaiTaiSan_Result">
-                <ScalarProperty Name="Mua_Sắm" ColumnName="Mua Sắm" />
-                <ScalarProperty Name="Cấp_Phát" ColumnName="Cấp Phát" />
-                <ScalarProperty Name="Thu_hồi" ColumnName="Thu hồi" />
-                <ScalarProperty Name="Thanh_Lý" ColumnName="Thanh Lý" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_BaoCaoYeuCauPheDuyet" FunctionName="AMS_DBModel.Store.sp_BaoCaoYeuCauPheDuyet">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result">
-                <ScalarProperty Name="Loại_yêu_cầu" ColumnName="Loại yêu cầu" />
-                <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
-                <ScalarProperty Name="Yêu_cầu_cho" ColumnName="Yêu cầu cho" />
-                <ScalarProperty Name="Số_lượng_yêu_cầu" ColumnName="Số lượng yêu cầu" />
-                <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
-                <ScalarProperty Name="Ngày_yêu_cầu" ColumnName="Ngày yêu cầu" />
-                <ScalarProperty Name="Tình_trạng_duyệt" ColumnName="Tình trạng duyệt" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AMS_DBModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AMS_DBModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="AMS_DBModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="AMS_DBModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_NewNotification" FunctionName="AMS_DBModel.Store.sp_NewNotification" />
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AMS_DBModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AMS_DBModel.Store.sp_upgraddiagrams" />
           <EntitySetMapping Name="ams_config">
             <EntityTypeMapping TypeName="AMS_DBModel.ams_config">
               <MappingFragment StoreEntitySet="ams_config">
@@ -1458,6 +1420,7 @@
           <EntitySetMapping Name="asset_detail">
             <EntityTypeMapping TypeName="AMS_DBModel.asset_detail">
               <MappingFragment StoreEntitySet="asset_detail">
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
                 <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
@@ -1524,6 +1487,7 @@
           <EntitySetMapping Name="invoice_detail">
             <EntityTypeMapping TypeName="AMS_DBModel.invoice_detail">
               <MappingFragment StoreEntitySet="invoice_detail">
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
@@ -1737,7 +1701,85 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AMS_DBModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_BaoCaoNhapKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoNhapKho">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoNhapKho_Result">
+                <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+                <ScalarProperty Name="Yêu_cầu_nhập" ColumnName="Yêu cầu nhập" />
+                <ScalarProperty Name="Số_lượng_nhập" ColumnName="Số lượng nhập" />
+                <ScalarProperty Name="Kho" ColumnName="Kho" />
+                <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+                <ScalarProperty Name="Ngày_nhập_kho" ColumnName="Ngày nhập kho" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_BaoCaoTonKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoTonKho">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoTonKho_Result">
+                <ScalarProperty Name="Kho" ColumnName="Kho" />
+                <ScalarProperty Name="Phân_loại" ColumnName="Phân loại" />
+                <ScalarProperty Name="Tên" ColumnName="Tên" />
+                <ScalarProperty Name="Ngày_hết_hạn" ColumnName="Ngày hết hạn" />
+                <ScalarProperty Name="Tổng_lượng" ColumnName="Tổng lượng" />
+                <ScalarProperty Name="Tổng_lượng_tồn_kho" ColumnName="Tổng lượng tồn kho" />
+                <ScalarProperty Name="Tổng_lượng_đã_sử_dụng" ColumnName="Tổng lượng đã sử dụng" />
+                <ScalarProperty Name="Giá_trị" ColumnName="Giá trị" />
+                <ScalarProperty Name="Ngày_tạo" ColumnName="Ngày tạo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_BaoCaoXuatKho" FunctionName="AMS_DBModel.Store.sp_BaoCaoXuatKho">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoXuatKho_Result">
+                <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+                <ScalarProperty Name="Yêu_cầu_xuất" ColumnName="Yêu cầu xuất" />
+                <ScalarProperty Name="Số_lượng_xuất" ColumnName="Số lượng xuất" />
+                <ScalarProperty Name="Kho" ColumnName="Kho" />
+                <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+                <ScalarProperty Name="Ngày_xuất_kho" ColumnName="Ngày xuất kho" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_BaoCaoYeuCauPheDuyet" FunctionName="AMS_DBModel.Store.sp_BaoCaoYeuCauPheDuyet">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AMS_DBModel.sp_BaoCaoYeuCauPheDuyet_Result">
+                <ScalarProperty Name="Loại_yêu_cầu" ColumnName="Loại yêu cầu" />
+                <ScalarProperty Name="Người_yêu_cầu" ColumnName="Người yêu cầu" />
+                <ScalarProperty Name="Yêu_cầu_cho" ColumnName="Yêu cầu cho" />
+                <ScalarProperty Name="Số_lượng_yêu_cầu" ColumnName="Số lượng yêu cầu" />
+                <ScalarProperty Name="Kho" ColumnName="Kho" />
+                <ScalarProperty Name="Ghi_chú" ColumnName="Ghi chú" />
+                <ScalarProperty Name="Ngày_yêu_cầu" ColumnName="Ngày yêu cầu" />
+                <ScalarProperty Name="Tình_trạng_duyệt" ColumnName="Tình trạng duyệt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AMS_DBModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AMS_DBModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="AMS_DBModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="AMS_DBModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AMS_DBModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_NewNotification" FunctionName="AMS_DBModel.Store.sp_NewNotification" />
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AMS_DBModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AMS_DBModel.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

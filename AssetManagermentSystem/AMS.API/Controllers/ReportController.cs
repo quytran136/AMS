@@ -30,7 +30,7 @@ namespace AMS.API.Controllers
             switch (req.Key)
             {
                 case "REPORT_1":
-                    BaseModel<ReportManager> result = report.GetReport1(req.Data.DateFrom, req.Data.DateEnd, req.Data.SearchContent);
+                    BaseModel<ReportManager> result = report.GetReport1(req.Data.DateFrom, req.Data.DateEnd, req.Data.SearchContent, req.Data.Store);
                     return new BaseResponse<Res_Report>().Result(result, new BaseResponse<Res_Report>()
                     {
                         Response = new Res_Report()
@@ -40,7 +40,7 @@ namespace AMS.API.Controllers
                         }
                     });
                 case "REPORT_2":
-                    BaseModel<ReportManager> result1 = report.GetReport2(req.Data.DateFrom, req.Data.DateEnd, req.Data.SearchContent);
+                    BaseModel<ReportManager> result1 = report.GetReport2(req.Data.DateFrom, req.Data.DateEnd, req.Data.SearchContent, req.Data.Store);
                     return new BaseResponse<Res_Report>().Result(result1, new BaseResponse<Res_Report>()
                     {
                         Response = new Res_Report()
@@ -50,27 +50,25 @@ namespace AMS.API.Controllers
                         }
                     });
                 case "REPORT_3":
-                    BaseModel<ReportManager> result2 = report.GetReport3();
-                    BaseModel<ReportManager> result3 = report.GetReport4();
-                    List<Res_Report> res_s = new List<Res_Report>();
-                    res_s.Add(new Res_Report()
+                    BaseModel<ReportManager> result2 = report.GetReport3(req.Data.DateFrom, req.Data.DateEnd, req.Data.SearchContent, req.Data.Store);
+                    return new BaseResponse<Res_Report>().Result(result2, new BaseResponse<Res_Report>()
                     {
-                        Headers = result2.Result.Headers,
-                        Result = result2.Result.Result
+                        Response = new Res_Report()
+                        {
+                            Headers = result2.Result.Headers,
+                            Result = result2.Result.Result
+                        }
                     });
-                    res_s.Add(new Res_Report()
-                    {
-                        Headers = result3.Result.Headers,
-                        Result = result3.Result.Result
-                    });
+                case "REPORT_4":
+                    BaseModel<ReportManager> result3 = report.GetReport4(req.Data.DateFrom, req.Data.DateEnd, req.Data.SearchContent, req.Data.Store);
                     return new BaseResponse<Res_Report>().Result(result3, new BaseResponse<Res_Report>()
                     {
                         Response = new Res_Report()
                         {
-                            Res_Reports = res_s
+                            Headers = result3.Result.Headers,
+                            Result = result3.Result.Result
                         }
                     });
-                case "REPORT_4":
                 default:
                     return new BaseResponse<Res_Report>()
                     {

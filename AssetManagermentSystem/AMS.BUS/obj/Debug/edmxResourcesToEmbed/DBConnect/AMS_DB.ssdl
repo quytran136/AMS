@@ -47,6 +47,7 @@
     <Property Name="Unit" Type="nvarchar" MaxLength="50" />
     <Property Name="Description" Type="nvarchar(max)" />
     <Property Name="SupplierID" Type="nvarchar" MaxLength="64" />
+    <Property Name="ExpirationDate" Type="date" />
   </EntityType>
   <EntityType Name="chat_history">
     <Key>
@@ -102,6 +103,7 @@
     <Property Name="Quantity" Type="int" />
     <Property Name="Description" Type="nvarchar(max)" />
     <Property Name="Unit" Type="nvarchar" MaxLength="50" />
+    <Property Name="ExpirationDate" Type="date" />
   </EntityType>
   <EntityType Name="message_list">
     <Key>
@@ -196,7 +198,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="nvarchar" MaxLength="64" Nullable="false" />
-    <Property Name="StoreName" Type="nchar" MaxLength="10" />
+    <Property Name="StoreName" Type="nvarchar" MaxLength="128" />
     <Property Name="CreateDate" Type="datetime" />
     <Property Name="Owner" Type="nvarchar" MaxLength="128" />
     <Property Name="IsDelete" Type="bit" />
@@ -499,17 +501,29 @@
     <Parameter Name="version" Type="int" Mode="In" />
     <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
   </Function>
-  <Function Name="sp_BaoCaoTinhTrangSuDung" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_BaoCaoNhapKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="dateStart" Type="datetime" Mode="In" />
+    <Parameter Name="dateEnd" Type="datetime" Mode="In" />
+    <Parameter Name="searchContent" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="store" Type="nvarchar(max)" Mode="In" />
+  </Function>
   <Function Name="sp_BaoCaoTonKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="dateStart" Type="datetime" Mode="In" />
     <Parameter Name="dateEnd" Type="datetime" Mode="In" />
     <Parameter Name="searchContent" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="store" Type="nvarchar(max)" Mode="In" />
   </Function>
-  <Function Name="sp_BaoCaoTrangThaiTaiSan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="sp_BaoCaoXuatKho" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="dateStart" Type="datetime" Mode="In" />
+    <Parameter Name="dateEnd" Type="datetime" Mode="In" />
+    <Parameter Name="searchContent" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="store" Type="nvarchar(max)" Mode="In" />
+  </Function>
   <Function Name="sp_BaoCaoYeuCauPheDuyet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="dateStart" Type="datetime" Mode="In" />
     <Parameter Name="dateEnd" Type="datetime" Mode="In" />
     <Parameter Name="searchContent" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="store" Type="nvarchar(max)" Mode="In" />
   </Function>
   <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="diagramname" Type="nvarchar" Mode="In" />

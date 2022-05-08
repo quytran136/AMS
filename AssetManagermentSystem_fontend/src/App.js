@@ -174,10 +174,10 @@ function App(prop) {
                     <Report />
                   </Route>
                   <Route path="/Shopping">
-                    {(!requestID) ? <Home/> : <Shopping data={requestID} title={functionTitle} />}
+                    {(!requestID) ? <Home /> : <Shopping data={requestID} title={functionTitle} />}
                   </Route>
                   <Route exact path="/Allocation">
-                    <Allocation data={requestID} title={functionTitle} />
+                    {(!requestID) ? <Home /> : <Allocation data={requestID} title={functionTitle} />}
                   </Route>
                   <Route exact path="/">
                     <Home />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Col, Row, Input, InputNumber, Button, Select } from 'antd';
+import { Col, Row, Input, InputNumber, Button, Select, Modal } from 'antd';
 import {
     PlusOutlined,
     DeleteOutlined

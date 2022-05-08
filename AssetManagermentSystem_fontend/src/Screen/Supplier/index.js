@@ -119,7 +119,7 @@ function Supplier(props) {
       <h4>Danh sách nhà cung cấp</h4>
       {supplier?.Response?.Suppliers &&
         supplier?.Response?.Suppliers.map((element) => {
-          return (<div className="supplier-read-only">
+          return (<div key={element.ID} className="supplier-read-only">
             <img alt="avata" className="image" id={element.ID} src={element.Image} />
             <h5>
               {element.Name}

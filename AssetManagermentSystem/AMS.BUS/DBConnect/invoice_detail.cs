@@ -23,6 +23,7 @@ namespace AMS.BUS.DBConnect
         public Nullable<int> Quantity { get; set; }
         public string Description { get; set; }
         public string Unit { get; set; }
+        public Nullable<System.DateTime> ExpirationDate { get; set; }
     
         public virtual invoice invoice { get; set; }
     }

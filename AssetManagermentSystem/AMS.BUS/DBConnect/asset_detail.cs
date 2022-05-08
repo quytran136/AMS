@@ -29,6 +29,7 @@ namespace AMS.BUS.DBConnect
         public string Unit { get; set; }
         public string Description { get; set; }
         public string SupplierID { get; set; }
+        public Nullable<System.DateTime> ExpirationDate { get; set; }
     
         public virtual asset_classify asset_classify { get; set; }
         public virtual store_Identifie store_Identifie { get; set; }

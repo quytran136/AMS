@@ -10,5 +10,6 @@ namespace AMS.API.Models.RequestModel
         public DateTime DateFrom { get; set; }
         public DateTime DateEnd { get; set; }
         public string SearchContent { get; set; }
+        public string Store { get; set; }
     }
 }
