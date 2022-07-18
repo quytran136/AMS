@@ -1,8 +1,8 @@
 import * as type from '../Type';
-import AMS_API from '../../ControlRequest/amsAPI';
+import AMS_API from '../../AdministratorPages/ControlRequest/amsAPI';
 import { call, put, takeLatest, select } from "redux-saga/effects";
 import * as amsAction from '../Actions';
-import * as cookieHandle from "../../Common/Cookie";
+import * as cookieHandle from "../../AdministratorPages/Common/Cookie";
 
 export function* amsWatcher() {
     yield takeLatest(type.GET_TOKEN, signinSaga);

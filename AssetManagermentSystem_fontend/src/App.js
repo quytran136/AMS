@@ -1,14 +1,14 @@
 import './App.scss';
 import React, { useEffect } from "react";
-import Home from './Screen/Home';
-import Login from './Screen/Login';
-import User from './Screen/User';
-import Config from './Screen/Config';
-import Warehousing from './Screen/Warehousing';
-import Asset from './Screen/Asset';
-import Supplier from './Screen/Supplier';
-import Report from './Screen/Report';
-import * as cookieHandle from "./Common/Cookie";
+import Home from './AdministratorPages/Screen/Home';
+import Login from './AdministratorPages/Screen/Login';
+import User from './AdministratorPages/Screen/User';
+import Config from './AdministratorPages/Screen/Config';
+import Warehousing from './AdministratorPages/Screen/Warehousing';
+import Asset from './AdministratorPages/Screen/Asset';
+import Supplier from './AdministratorPages/Screen/Supplier';
+import Report from './AdministratorPages/Screen/Report';
+import * as cookieHandle from "./AdministratorPages/Common/Cookie";
 import {
   BrowserRouter as Router,
   Switch,
@@ -19,21 +19,20 @@ import {
   WarningOutlined,
   CheckCircleOutlined
 } from '@ant-design/icons';
-import OpenNotification from "./Components/OpenNotification";
-import * as messageType from './Common/messageCode';
+import OpenNotification from "./AdministratorPages/Components/OpenNotification";
+import * as messageType from './AdministratorPages/Common/messageCode';
 import { connect, useDispatch } from "react-redux";
 import * as amsAction from './ReduxSaga/Actions';
-import NavigationBar from './Components/NavigationBar';
-import AMSMenu from "./Components/Menu";
+import NavigationBar from './AdministratorPages/Components/NavigationBar';
+import AMSMenu from "./AdministratorPages/Components/Menu";
 import { Row, Col } from 'antd';
-import Shopping from './Components/Shopping';
-import Allocation from './Components/Allocation';
-import Notfound from './Screen/404Notfound';
-
-import Ticket from './Screen/Ticket';
-import Invoice from './Screen/Invoice';
-import ChatList from './Components/ChatList';
-import * as signalR from './Common/SignalR';
+import Shopping from './AdministratorPages/Components/Shopping';
+import Allocation from './AdministratorPages/Components/Allocation';
+import Notfound from './AdministratorPages/Screen/404Notfound';
+import Ticket from './AdministratorPages/Screen/Ticket';
+import Invoice from './AdministratorPages/Screen/Invoice';
+import ChatList from './AdministratorPages/Components/ChatList';
+import * as signalR from './AdministratorPages/Common/SignalR';
 
 function App(prop) {
   const dispatch = useDispatch();

@@ -29,6 +29,7 @@ namespace AMS.BUS.BusinessHandle
                         Exception = new ExceptionHandle()
                         {
                             // không tồn tại user
+                            //B01AC01
                             Code = BUSMessageCode(1)
                         },
                     };
